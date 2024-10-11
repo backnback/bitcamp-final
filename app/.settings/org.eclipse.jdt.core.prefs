@@ -1,6 +1,5 @@
-#
-#Thu Oct 10 19:17:26 KST 2024
 eclipse.preferences.version=1
+org.eclipse.jdt.core.classpath.outputOverlappingAnotherSource=ignore
 org.eclipse.jdt.core.compiler.codegen.inlineJsrBytecode=enabled
 org.eclipse.jdt.core.compiler.codegen.targetPlatform=21
 org.eclipse.jdt.core.compiler.codegen.unusedLocal=preserve
