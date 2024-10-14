@@ -1,6 +1,27 @@
 plugins {
-    id 'application'
-    id 'eclipse'
+//    기존 gradle 어플리케이션 플러그인 app을 실행할 수 있도록 해주는 기능을 제공.
+//    하지만 Spring Boot에서 자체 제공하기에 필요없음
+//    id 'application'
+
+    id 'java'
+    id 'org.springframework.boot' version '3.3.4'
+    id 'io.spring.dependency-management' version '1.1.6'
+}
+
+group = 'org.example'
+version = '0.0.1-SNAPSHOT'
+
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(17)
+    }
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
@@ -8,34 +29,15 @@ repositories {
 }
 
 dependencies {
-    testImplementation libs.junit.jupiter
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-
-    implementation libs.guava
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(21)
-    }
-}
-
-application {
-    mainClass = 'bitcamp.project.App'
-}
-
-tasks.named('test') {
-    useJUnitPlatform()
-}
-
-eclipse {
-    project {
-        name = "bitcamp-final" // 프로젝트 이름을 지정하지 않으면 폴더 이름(ex: app)을 사용한다
-    }
-    jdt {
-      sourceCompatibility = 21
-      targetCompatibility = 21
-      javaRuntimeName = "JavaSE-21"
-    }
 }
