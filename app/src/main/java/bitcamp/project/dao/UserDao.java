@@ -7,5 +7,6 @@ import java.util.List;
 
 @Mapper
 public interface UserDao {
+    boolean add(User user);
     List<User> findAll();
 }

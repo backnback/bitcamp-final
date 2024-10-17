@@ -6,4 +6,9 @@
     <select id="findAll" resultType="bitcamp.project.vo.User">
         SELECT * FROM user
     </select>
+
+    <insert id="add" parameterType="bitcamp.project.vo.User" useGeneratedKeys="true">
+        INSERT INTO user(email, password, nickname, path)
+        values (#{email}, sha1(#{password}), #{nickname}, #{path})
+    </insert>
 </mapper>
