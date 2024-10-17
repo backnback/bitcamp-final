@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>퍼블리싱 목록</title>
+    <style>
+        body {
+            padding: 30px;
+        }
+
+        h1 {
+            margin: 30px 0 5px;
+        }
+
+        a {
+            color: blue;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table tr:hover {
+            background: #ddd;
+        }
+
+        .table .double td {
+            border-top-width: 3px;
+        }
+
+        .table td,
+        .table th {
+            padding: 5px;
+            border: 1px solid #ddd;
+            font-weight: normal;
+        }
+
+        .table th {
+            background-color: #f8f8f8;
+        }
+
+        .red {
+            color: red;
+        }
+
+        .ing {
+            color: blue;
+        }
+
+        .line-through {
+            text-decoration: line-through;
+        }
+
+        @media screen and (max-width: 768px) {
+
+            .table td,
+            .table th {
+                padding: 20px;
+                font-size: 33px;
+            }
+        }
+
+        @media screen and (max-width: 1200px) {
+
+            .table td,
+            .table th {
+                padding: 20px;
+                font-size: 18px;
+            }
+
+            .table th:nth-of-type(3),
+            .table td:nth-of-type(3) {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>기억하길 테스트 페이지 목록</h1>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">화면명</th>
+                <th scope="col">링크</th>
+                <th scope="col">비고</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="double">
+                <td>로그인</td>
+                <td><a href="login.html" target="_blank"></a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>회원가입</td>
+                <td><a href="form.html" target="_blank"></a></td>
+                <td></td>
+            </tr>
+            <tr class="double">
+                <td>목록</td>
+                <td><a href="list.html" target="_blank"></a></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>조회/수정</td>
+                <td><a href="view.html" target="_blank"></a></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        window.addEventListener('DOMContentLoaded', function () {
+            const linkBlank = document.querySelectorAll('a');
+
+            linkBlank.forEach(element => {
+                element.setAttribute('target', '_blank');
+                element.innerHTML = element.href.split('/').pop();
+            });
+        });
+    </script>
+</body>
+
+</html>
