@@ -17,7 +17,7 @@ public class AuthController {
 
     @Transactional
     @PostMapping("up")
-    public void up(User user){
+    public void up(User user)throws Exception{
         userService.add(user);
     }
 }

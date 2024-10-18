@@ -3,12 +3,35 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="bitcamp.project.dao.UserDao">
+
+    <resultMap id="UserMap" type="bitcamp.project.vo.User">
+        <id column="user_id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="path" property="path"/>
+    </resultMap>
+
     <select id="findAll" resultType="bitcamp.project.vo.User">
         SELECT * FROM user
     </select>
 
     <insert id="add" parameterType="bitcamp.project.vo.User" useGeneratedKeys="true">
         INSERT INTO user(email, password, nickname, path)
-        values (#{email}, sha1(#{password}), #{nickname}, #{path})
+        VALUES (#{email}, sha1(#{password}), #{nickname}, #{path})
     </insert>
+
+    <select id="findUser" resultMap="UserMap" parameterType="int">
+        SELECT * FROM user WHERE user_id = #{userId}
+    </select>
+
+    <update id="update" parameterType="map">
+        UPDATE user
+        SET password=#{user.password}, nickname=#{user.nickname}, path=#{user.path}
+        WHERE user_id=#{no}
+    </update>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM user WHERE user_id=#{no}
+    </delete>
 </mapper>
