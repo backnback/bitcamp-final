@@ -1,5 +1,8 @@
-import {useEffect, useState} from "react";
+import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import SignUp from "./SignUp";
+import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -7,26 +10,37 @@ function App() {
   const fetchUsers = async () => {
     try {
       const response = await axios.get('http://localhost:8080/user/list');
-      //console.log(response.data); // 데이터 확인
-      setUsers(response.data); // JSON 응답을 상태에 설정
+      setUsers(response.data);
     } catch (error) {
       console.error("There was an error fetching the user!", error);
     }
   };
 
   useEffect(() => {
-    fetchUsers(); // users를 가져오기
+    fetchUsers();
   }, []);
 
   return (
-      <div>
-        <h1>User List</h1>
-        <ul>
-          {Array.isArray(users) && users.map(user => (
-              <li key={user.id}>{user.nickname} - {user.email}</li>
-          ))}
-        </ul>
-      </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={
+          <div>
+            <h1>User List</h1>
+            <ul>
+              {Array.isArray(users) && users.map(user => (
+                <li key={user.id}>
+                  <Link to={`/viewuser/${user.id}`}>{user.nickname}</Link> - {user.email}
+                </li>
+              ))}
+            </ul>
+            <Link to="/signup">회원가입</Link>
+          </div>
+        } />
+
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/viewuser/:id" element={<ViewUser />} /> {/* ViewUser 경로 추가 */}
+      </Routes>
+    </Router>
   );
 }
 
