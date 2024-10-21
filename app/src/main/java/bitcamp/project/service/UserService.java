@@ -10,4 +10,5 @@ public interface UserService {
     boolean update(int no, User user)throws Exception;
     User findUser(int no)throws Exception;
     boolean delete(int no)throws Exception;
+    User findByEmailAndPassword(String email, String password) throws Exception;
 }

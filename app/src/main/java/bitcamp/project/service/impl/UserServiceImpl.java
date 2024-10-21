@@ -41,4 +41,10 @@ public class UserServiceImpl implements UserService {
         return userDao.delete(no);
     }
 
+    @Override
+    public User findByEmailAndPassword(String email, String password) throws Exception {
+        System.out.println("여기");
+        return userDao.findByEmailAndPassword(email, password);
+    }
+
 }
