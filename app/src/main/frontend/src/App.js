@@ -3,6 +3,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import SignUp from "./SignUp";
 import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
+import Login from "./Login"; // Login 컴포넌트 import
+
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -34,11 +36,14 @@ function App() {
               ))}
             </ul>
             <Link to="/signup">회원가입</Link>
+            <Link to="/login">로그인</Link>
           </div>
         } />
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/viewuser/:id" element={<ViewUser />} /> {/* ViewUser 경로 추가 */}
+        <Route path="/login" element={<Login />} /> {/* 로그인 경로 추가 */}
+
       </Routes>
     </Router>
   );

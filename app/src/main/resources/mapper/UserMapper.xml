@@ -12,7 +12,12 @@
         <result column="path" property="path"/>
     </resultMap>
 
-    <select id="findAll" resultType="bitcamp.project.vo.User">
+    <resultMap id="UserInfo" type="bitcamp.project.vo.User">
+        <result property="id" column="user_id"/>
+        <result property="nickname" column="nickname"/>
+    </resultMap>
+
+    <select id="findAll" resultMap="UserMap">
         SELECT * FROM user
     </select>
 
@@ -27,11 +32,15 @@
 
     <update id="update" parameterType="map">
         UPDATE user
-        SET password=#{user.password}, nickname=#{user.nickname}, path=#{user.path}
+        SET password=sha1(#{user.password}), nickname=#{user.nickname}, path=#{user.path}
         WHERE user_id=#{no}
     </update>
 
     <delete id="delete" parameterType="int">
         DELETE FROM user WHERE user_id=#{no}
     </delete>
+
+    <select id="findByEmailAndPassword" resultMap="UserMap" parameterType="map">
+        SELECT * FROM user WHERE email=#{email} AND password=sha1(#{password})
+    </select>
 </mapper>
