@@ -1,10 +1,10 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.3.4'
+    id 'org.springframework.boot' version '2.7.18'
     id 'io.spring.dependency-management' version '1.1.6'
 }
 
-group = 'bitcamp.project'
+group = 'bitcamp'
 version = '0.0.1-SNAPSHOT'
 
 java {
@@ -13,19 +13,44 @@ java {
     }
 }
 
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
 repositories {
     mavenCentral()
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+//    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.3.2'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    runtimeOnly 'com.mysql:mysql-connector-j'
+    annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    // MyBatis와 MySQL 드라이버 의존성 추가
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.3' // 안정적인 이전 버전
-    implementation 'mysql:mysql-connector-java:8.0.33' // 또는 8.0.33로 업데이트 가능
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc' // JDBC 스타터 추가
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.2'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+    // Tomcat Embedded Server용 JSP 엔진 라이브러리
+    implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.83'
+
+    // JSTL API 및 구현체 라이브러리
+    implementation 'javax.servlet:jstl:1.2'
+
+    // Amazon S3 라이브러리
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.772'
+
+//    implementation libs.guava
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
 }
