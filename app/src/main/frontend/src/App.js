@@ -4,10 +4,12 @@ import axios from "axios";
 import SignUp from "./SignUp";
 import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./Login"; // Login 컴포넌트 import
+import Header from "./header";
 
 
 function App() {
   const [users, setUsers] = useState([]);
+  const [storys, setStorys] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -18,12 +20,23 @@ function App() {
     }
   };
 
+  const fetchStorys = async () => {
+    try {
+      const response = await axios.get('http://localhost:8080/story/list'); // /story/list API 호출
+      setStorys(response.data);
+    } catch (error) {
+      console.error("There was an error fetching the storys!", error);
+    }
+  };
+
   useEffect(() => {
     fetchUsers();
+    fetchStorys();
   }, []);
 
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={
           <div>
@@ -35,6 +48,14 @@ function App() {
                 </li>
               ))}
             </ul>
+
+            <h2>Story List</h2>
+            <ul>
+               {Array.isArray(storys) && storys.map((story) => (
+                 <li key={story.storyId}>{story.title}</li>
+               ))}
+            </ul>
+
             <Link to="/signup">회원가입</Link>
             <Link to="/login">로그인</Link>
           </div>
