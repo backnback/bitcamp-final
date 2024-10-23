@@ -1,14 +1,14 @@
--- 회원
-DROP TABLE IF EXISTS user RESTRICT;
-
--- 스토리
-DROP TABLE IF EXISTS story RESTRICT;
-
 -- 스토리사진
 DROP TABLE IF EXISTS story_photo RESTRICT;
 
 -- 좋아요
 DROP TABLE IF EXISTS story_like RESTRICT;
+
+-- 스토리
+DROP TABLE IF EXISTS story RESTRICT;
+
+-- 회원
+DROP TABLE IF EXISTS user RESTRICT;
 
 -- 지역
 DROP TABLE IF EXISTS location RESTRICT;

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.project.dao.StoryDao">
+
+    <resultMap id="StoryMap" type="story">
+        <id column="story_id" property="id"/>
+        <result column="travel_date" property="travelDate"/>
+        <result column="create_date" property="createDate"/>
+        <result column="location_detail" property="locationDetail"/>
+        <result column="content" property="content"/>
+        <result column="share" property="share"/>
+
+        <association property="location" javaType="location">
+            <id column="location_id" property="id"/>
+        </association>
+
+        <association property="user" javaType="user">
+            <id column="user_id" property="id"/>
+        </association>
+    </resultMap>
+
+    <select id="findAll" resultMap="StoryMap">
+        SELECT * FROM story
+    </select>
+
+    <select id="findBy" resultMap="StoryMap" parameterType="int">
+        SELECT * FROM story WHERE story_id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="story"
+            useGeneratedKeys="true" keyColumn="story_id" keyProperty="storyId">
+        INSERT INTO story(user_id, location_id, title, travel_date, create_date, location_detail, content, share)
+        VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{createDate}, #{locationDetail}, #{content}, #{share})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM story WHERE story_id=#{id}
+    </delete>
+
+    <delete id="deleteLikes" parameterType="int">
+        delete from story_like
+        where story_id = #{id}
+    </delete>
+
+    <delete id="deletePhotos" parameterType="int">
+        delete from story_photo
+        where story_id = #{id}
+    </delete>
+
+
+</mapper>

@@ -6,6 +6,15 @@ VALUES
 (4, 'lee@example.com', 'lee8765', '이민수', '/images/lee.jpg'),
 (5, 'choi@example.com', 'choi9876', '최은정', '/images/choi.jpg');
 
+INSERT INTO location (location_id, first_name, second_name)
+VALUES
+(1, '서울', '관악구'),
+(2, '부산', '해운대구'),
+(3, '제주', '서귀포시'),
+(4, '대구', '달성군'),
+(5, '인천', '연수구');
+
+
 INSERT INTO story (story_id, user_id, location_id, title, travel_date, create_date, location_detail, content, share)
 VALUES 
 (1, 1, 1, '서울 여행', '2024-09-01', '2024-09-10 12:00:00', '광화문', '경복궁에 다녀왔습니다.', 1),
@@ -40,12 +49,5 @@ VALUES
 (4, '어떤 종류의 스토리를 올릴 수 있나요?', '여행과 관련된 모든 이야기를 올릴 수 있습니다.'),
 (5, '여러 개의 스토리에 좋아요를 누를 수 있나요?', '네, 여러 개의 스토리에 좋아요를 누를 수 있습니다.');
 
-INSERT INTO location (location_id, first_name, second_name)
-VALUES 
-(1, '서울', '관악구'),
-(2, '부산', '해운대구'),
-(3, '제주', '서귀포시'),
-(4, '대구', '달성군'),
-(5, '인천', '연수구');
 
 
