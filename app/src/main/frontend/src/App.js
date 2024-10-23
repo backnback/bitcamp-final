@@ -49,10 +49,12 @@ function App() {
               ))}
             </ul>
 
+            <img src="http://localhost:8080/images/test.jpg" alt="Test" />
+
             <h2>Story List</h2>
             <ul>
                {Array.isArray(storys) && storys.map((story) => (
-                 <li key={story.storyId}>{story.title}</li>
+                 <li key={story.id}>{story.title}</li>
                ))}
             </ul>
 

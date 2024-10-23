@@ -6,6 +6,7 @@
 
     <resultMap id="StoryMap" type="story">
         <id column="story_id" property="id"/>
+        <result column="title" property="title"/>
         <result column="travel_date" property="travelDate"/>
         <result column="create_date" property="createDate"/>
         <result column="location_detail" property="locationDetail"/>

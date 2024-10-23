@@ -21,8 +21,8 @@ public class StoryController {
     }
 
 
-    @GetMapping("view")
-    public Story view(int id) throws Exception {
+    @GetMapping("view/{id}")
+    public Story view(@PathVariable  int id) throws Exception {
         Story story = storyService.get(id);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
