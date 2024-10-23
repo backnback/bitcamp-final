@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.project.dao.FaqDao">
+
+    <resultMap id="FaqMap" type="bitcamp.project.vo.Faq">
+        <id column="faq_id" property="id" />
+        <result column="title" property="title" />
+        <result column="content" property="content" />
+    </resultMap>
+
+    <select id="findAll" resultMap="FaqMap">
+        SELECT * FROM faq
+    </select>
+
+    <select id="findBy" resultMap="FaqMap" parameterType="int">
+        SELECT * FROM faq WHERE faq_id = #{id}
+    </select>
+
+    <insert id="add" parameterType="bitcamp.project.vo.Faq" useGeneratedKeys="true" keyColumn="faq_id" keyProperty="id">
+        INSERT INTO faq (title, content)
+        VALUES (#{title}, #{content})
+    </insert>
+
+    <delete id="delete" parameterType="int">
+        DELETE FROM faq WHERE faq_id=#{id}
+    </delete>
+
+
+</mapper>
