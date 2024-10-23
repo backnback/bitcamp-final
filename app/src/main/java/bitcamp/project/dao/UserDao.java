@@ -10,8 +10,8 @@ import java.util.List;
 public interface UserDao {
     boolean add(User user);
     List<User> findAll();
-    User findUser(int no);
-    boolean update(int no, User user);
-    boolean delete(int no);
+    User findUser(int id);
+    boolean update(int id, User user);
+    boolean delete(int id);
     User findByEmailAndPassword(@Param("email") String email, @Param("password")String password);
 }

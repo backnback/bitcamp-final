@@ -27,7 +27,7 @@
     </insert>
 
     <select id="findUser" resultMap="UserMap" parameterType="int">
-        SELECT * FROM user WHERE user_id = #{userId}
+        SELECT user_id, email, nickname, path FROM user WHERE user_id = #{no}
     </select>
 
     <update id="update" parameterType="map">
@@ -37,10 +37,10 @@
     </update>
 
     <delete id="delete" parameterType="int">
-        DELETE FROM user WHERE user_id=#{no}
+        DELETE FROM user WHERE user_id=#{id}
     </delete>
 
-    <select id="findByEmailAndPassword" resultMap="UserMap" parameterType="map">
-        SELECT * FROM user WHERE email=#{email} AND password=sha1(#{password})
+    <select id="findByEmailAndPassword" resultMap="UserMap">
+        SELECT user_id, nickname FROM user WHERE email=#{email} AND password=sha1(#{password})
     </select>
 </mapper>

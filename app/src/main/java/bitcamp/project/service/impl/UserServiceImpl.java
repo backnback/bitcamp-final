@@ -26,19 +26,19 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public boolean update(int no, User user) throws Exception {
-        return userDao.update(no, user);
+    public boolean update(int id, User user) throws Exception {
+        return userDao.update(id, user);
     }
 
     @Override
-    public User findUser(int no) throws Exception {
-        return userDao.findUser(no);
+    public User findUser(int id) throws Exception {
+        return userDao.findUser(id);
     }
 
     @Transactional
     @Override
-    public boolean delete(int no) throws Exception {
-        return userDao.delete(no);
+    public boolean delete(int id) throws Exception {
+        return userDao.delete(id);
     }
 
     @Override

@@ -29,6 +29,7 @@ function SignUp() {
     }
 
     try {
+      console.log(profileImage)
       const response = await axios.post('http://localhost:8080/sign/up', formData, {
         headers: {
           'Content-Type': 'multipart/form-data',

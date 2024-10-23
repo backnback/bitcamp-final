@@ -14,7 +14,7 @@ function ViewUser() {
   // 사용자 정보 가져오기
   const fetchUser = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/user/finduser?no=${id}`);
+      const response = await axios.get(`http://localhost:8080/user/finduser?id=${id}`);
       setUser(response.data); // 사용자 정보를 가져오기 (배열이 아니라 객체일 경우)
     } catch (error) {
       console.error("사용자 정보를 가져오는 중 오류 발생:", error);
@@ -44,7 +44,7 @@ const handleUpdate = async (e) => {
   try {
     // 사용자 정보 업데이트 요청 (POST 방식)
     await axios.post(`http://localhost:8080/user/update`, updatedUser, {
-      params: { no: user.id }, // URL 파라미터로 ID 전달
+      params: { id: user.id }, // URL 파라미터로 ID 전달
     });
     // 업데이트 후 app.js 페이지로 리다이렉트
     window.location.replace('/');// app.js 페이지로 이동
@@ -69,7 +69,7 @@ const handleDelete = async () => {
     <form onSubmit={handleUpdate}> {/* form 요소로 감싸서 onSubmit 처리 */}
       <h2>사용자 정보</h2>
       <div>
-        <img src={user.path || "../images/default.png"} alt="프로필 이미지" style={{ height: '150px' }} />
+        <img src={user.path} alt="프로필 이미지" />
       </div>
       <input type="hidden" value={user.id} /> {/* ID를 hidden 필드로 추가 */}
       <dl>
