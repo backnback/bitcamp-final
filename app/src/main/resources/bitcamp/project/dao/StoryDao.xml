@@ -15,10 +15,16 @@
 
         <association property="location" javaType="location">
             <id column="location_id" property="id"/>
+            <result column="first_name" property="firstName"/>
+            <result column="second_name" property="secondName"/>
         </association>
 
         <association property="user" javaType="user">
             <id column="user_id" property="id"/>
+            <result column="email" property="email"/>
+            <result column="password" property="password"/>
+            <result column="nickname" property="nickname"/>
+            <result column="path" property="path"/>
         </association>
     </resultMap>
 
@@ -30,11 +36,51 @@
 
 
     <select id="findAll" resultMap="StoryMap">
-        SELECT * FROM story
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+        ORDER BY
+            s.story_id desc
     </select>
 
     <select id="findBy" resultMap="StoryMap" parameterType="int">
-        SELECT * FROM story WHERE story_id = #{id}
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+        WHERE
+            story_id = #{id}
     </select>
 
     <insert id="insert" parameterType="story"
