@@ -11,6 +11,9 @@ IDE 내부 콘솔 창에서 cd app/src/main/frontend 진입 후 npm install 입�
 이후 npm start 입력 시 리액트 실행됨   
 종료 : ctrl + c 입력
 
+=> chmod +x reactstart.sh && ./reactstart.sh
+//간단 스크립트 실행
+
 ---
 
 ### [파이널] 기능 중간 정리

@@ -13,6 +13,7 @@ const Header = () => {
             <ul>
               <li><Link to="/">홈</Link></li>
               <li><Link to="/story/list">스토리</Link></li>
+            <li className="faq"><Link to="/faqs/list">고객 문의</Link></li>
             </ul>
           </nav>
       <h1>My Application</h1>
@@ -25,7 +26,6 @@ const Header = () => {
           <p>로그인 해주세요.</p>
         </div>
       )}
-    </header>
   );
 };
 

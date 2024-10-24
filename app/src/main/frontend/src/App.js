@@ -7,6 +7,7 @@ import Login from "./Login"; // Login 컴포넌트 import
 import Header from "./header";
 import StoryList from "./StoryList"; // StoryList 컴포넌트 import
 import StoryView from "./StoryView";
+import FaqList from "./FaqList";
 import { UserProvider } from './UserContext'; // UserContext import
 
 function App() {
@@ -50,14 +51,15 @@ function App() {
             </div>
           } />
 
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/viewuser/:id" element={<ViewUser />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/story/list" element={<StoryList />} />
-          <Route path="/story/view/:id" element={<StoryView />} />
-        </Routes>
-      </Router>
-    </UserProvider>
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/viewuser/:id" element={<ViewUser />} /> {/* ViewUser 경로 추가 */}
+        <Route path="/login" element={<Login />} /> {/* 로그인 경로 추가 */}
+        <Route path="/story/list" element={<StoryList />} /> {/* StoryList 컴포넌트를 위한 경로 추가 */}
+        <Route path="/story/view/:id" element={<StoryView />} />
+        <Route path="/faqs/list" element={<FaqList />} />
+
+      </Routes>
+    </Router>
   );
 }
 
