@@ -8,24 +8,25 @@ const Header = () => {
 
   return (
     <header>
-     <div className="logo">MyApp</div>
-          <nav className="nav">
-            <ul>
-              <li><Link to="/">홈</Link></li>
-              <li><Link to="/story/list">스토리</Link></li>
-            <li className="faq"><Link to="/faqs/list">고객 문의</Link></li>
-            </ul>
-          </nav>
+      <div className="logo">MyApp</div>
+      <nav className="nav">
+        <ul>
+          <li><Link to="/">홈</Link></li>
+          <li><Link to="/story/list">스토리</Link></li>
+          <li className="faq"><Link to="/faqs/list">고객 문의</Link></li>
+        </ul>
+      </nav>
       <h1>My Application</h1>
       {user ? (
         <div>
-          <p>안녕하세요, {user.nickname}님!</p> {/* 사용자 닉네임 표시 */}
+          <p>안녕하세요, {user.nickname}님!</p>
         </div>
       ) : (
         <div>
           <p>로그인 해주세요.</p>
         </div>
       )}
+    </header>
   );
 };
 
