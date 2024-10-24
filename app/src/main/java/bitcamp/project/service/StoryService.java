@@ -12,5 +12,7 @@ public interface StoryService {
 
     Story get(int id) throws Exception;
 
+    void update(Story story) throws Exception;
+
     void delete(int id) throws Exception;
 }

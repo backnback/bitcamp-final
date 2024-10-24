@@ -22,6 +22,13 @@
         </association>
     </resultMap>
 
+    <resultMap id="LocationMap" type="location">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="firstName"/>
+        <result column="second_name" property="secondName"/>
+    </resultMap>
+
+
     <select id="findAll" resultMap="StoryMap">
         SELECT * FROM story
     </select>
@@ -31,10 +38,22 @@
     </select>
 
     <insert id="insert" parameterType="story"
-            useGeneratedKeys="true" keyColumn="story_id" keyProperty="storyId">
+            useGeneratedKeys="true" keyColumn="story_id" keyProperty="id">
         INSERT INTO story(user_id, location_id, title, travel_date, create_date, location_detail, content, share)
         VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{createDate}, #{locationDetail}, #{content}, #{share})
     </insert>
+
+    <update id="update" parameterType="story">
+        update story set
+        title=#{title},
+        travel_date=#{travelDate},
+        create_date=#{createDate},
+        location_detail=#{locationDetail},
+        content=#{content},
+        share=#{share},
+        location_id=#{location.id}
+        where story_id=#{id}
+    </update>
 
     <delete id="delete" parameterType="int">
         DELETE FROM story WHERE story_id=#{id}
@@ -50,5 +69,9 @@
         where story_id = #{id}
     </delete>
 
+    <select id="findByLocation" resultMap="LocationMap">
+        SELECT * FROM location
+        WHERE first_name = #{firstName} AND second_name = #{secondName}
+    </select>
 
 </mapper>

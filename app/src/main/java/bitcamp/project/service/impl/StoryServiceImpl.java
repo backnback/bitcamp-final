@@ -32,6 +32,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    public void update(Story story) throws Exception {
+        storyDao.update(story);
+    }
+
+    @Override
     @Transactional
     public void delete(int id) throws Exception {
         storyDao.deleteLikes(id);
