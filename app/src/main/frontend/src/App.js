@@ -4,7 +4,9 @@ import axios from "axios";
 import SignUp from "./SignUp";
 import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./Login"; // Login 컴포넌트 import
-
+import Header from "./header";
+import StoryList from "./StoryList"; // StoryList 컴포넌트 import
+import StoryView from "./StoryView";
 
 function App() {
   const [users, setUsers] = useState([]);
@@ -24,6 +26,7 @@ function App() {
 
   return (
     <Router>
+      <Header />
       <Routes>
         <Route path="/" element={
           <div>
@@ -35,14 +38,20 @@ function App() {
                 </li>
               ))}
             </ul>
+
+            <img src="http://localhost:8080/images/test.jpg" alt="Test" />
+
             <Link to="/signup">회원가입</Link>
             <Link to="/login">로그인</Link>
+            <Link to="/story/list">스토리 보기</Link> {/* StoryList로 이동하는 링크 추가 */}
           </div>
         } />
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/viewuser/:id" element={<ViewUser />} /> {/* ViewUser 경로 추가 */}
         <Route path="/login" element={<Login />} /> {/* 로그인 경로 추가 */}
+        <Route path="/story/list" element={<StoryList />} /> {/* StoryList 컴포넌트를 위한 경로 추가 */}
+        <Route path="/story/view/:id" element={<StoryView />} />
 
       </Routes>
     </Router>

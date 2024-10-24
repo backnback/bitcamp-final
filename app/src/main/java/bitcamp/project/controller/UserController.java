@@ -16,12 +16,14 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 public class UserController {
+
     @Autowired
     UserService userService;
 
     @GetMapping("list")
     public List<User> list() throws Exception{
         List<User> users =  userService.list();
+
         return users;
     }
 
