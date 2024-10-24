@@ -5,11 +5,11 @@ import SignUp from "./SignUp";
 import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./Login"; // Login 컴포넌트 import
 import Header from "./header";
-
+import StoryList from "./StoryList"; // StoryList 컴포넌트 import
+import StoryView from "./StoryView";
 
 function App() {
   const [users, setUsers] = useState([]);
-  const [storys, setStorys] = useState([]);
 
   const fetchUsers = async () => {
     try {
@@ -20,18 +20,8 @@ function App() {
     }
   };
 
-  const fetchStorys = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/story/list'); // /story/list API 호출
-      setStorys(response.data);
-    } catch (error) {
-      console.error("There was an error fetching the storys!", error);
-    }
-  };
-
   useEffect(() => {
     fetchUsers();
-    fetchStorys();
   }, []);
 
   return (
@@ -51,21 +41,17 @@ function App() {
 
             <img src="http://localhost:8080/images/test.jpg" alt="Test" />
 
-            <h2>Story List</h2>
-            <ul>
-               {Array.isArray(storys) && storys.map((story) => (
-                 <li key={story.id}>{story.title}</li>
-               ))}
-            </ul>
-
             <Link to="/signup">회원가입</Link>
             <Link to="/login">로그인</Link>
+            <Link to="/story/list">스토리 보기</Link> {/* StoryList로 이동하는 링크 추가 */}
           </div>
         } />
 
         <Route path="/signup" element={<SignUp />} />
         <Route path="/viewuser/:id" element={<ViewUser />} /> {/* ViewUser 경로 추가 */}
         <Route path="/login" element={<Login />} /> {/* 로그인 경로 추가 */}
+        <Route path="/story/list" element={<StoryList />} /> {/* StoryList 컴포넌트를 위한 경로 추가 */}
+        <Route path="/story/view/:id" element={<StoryView />} />
 
       </Routes>
     </Router>

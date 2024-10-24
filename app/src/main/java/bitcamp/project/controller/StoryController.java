@@ -94,4 +94,17 @@ public class StoryController {
     }
 
 
+    @GetMapping("share/{id}")
+    public Story share(@PathVariable int id) throws Exception {
+        Story story = storyService.get(id);
+        if (story == null) {
+            throw new Exception("스토리 정보 없음");
+        }
+
+        story.setShare(!story.isShare());
+        storyService.update(story);
+        return story;
+    }
+
+
 }

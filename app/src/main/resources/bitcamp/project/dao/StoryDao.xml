@@ -91,13 +91,13 @@
 
     <update id="update" parameterType="story">
         update story set
-        title=#{title},
-        travel_date=#{travelDate},
-        create_date=#{createDate},
-        location_detail=#{locationDetail},
-        content=#{content},
-        share=#{share},
-        location_id=#{location.id}
+            title=#{title},
+            travel_date=#{travelDate},
+            create_date=#{createDate},
+            location_detail=#{locationDetail},
+            content=#{content},
+            share=#{share},
+            location_id=#{location.id}
         where story_id=#{id}
     </update>
 

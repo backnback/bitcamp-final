@@ -1,0 +1,6 @@
+.story-view {
+    margin-left: 300px; /* 사이드바 너비 만큼 여백 추가 */
+    padding: 20px;
+    position: relative; /* 일반 흐름에 맞추어 위치 */
+    z-index: 1; /* 사이드바 아래에 위치하도록 z-index 낮추기 */
+}
