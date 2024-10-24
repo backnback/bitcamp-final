@@ -1,15 +1,16 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.service.UserService;
+import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
@@ -21,7 +22,13 @@ public class AuthController {
 
     @Transactional
     @PostMapping("up")
-    public void up(User user)throws Exception{
+    public void up(@RequestParam("profileImage") MultipartFile file, User user)throws Exception{
+       if (file.isEmpty()){
+           user.setPath(null);
+       }else{
+           FileServiceImpl fileService = new FileServiceImpl();
+           user.setPath("/images/" + fileService.saveFile(file));
+       }
         userService.add(user);
     }
 
