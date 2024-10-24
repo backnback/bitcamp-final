@@ -1,34 +1,37 @@
 import { useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom'; // 로그인 후 페이지 이동을 위해 사용
+import { useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext'; // UserContext를 가져옵니다.
 
 function Login() {
-  const [email, setEmail] = useState(''); // userId -> email로 변경
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [saveId, setSaveId] = useState(false);
-  const navigate = useNavigate(); // 페이지 이동을 위한 hook
+  const navigate = useNavigate();
+  const { setUser } = useUser(); // UserContext에서 setUser를 가져옵니다.
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-  const params = new URLSearchParams();
-  params.append('email', email);
-  params.append('password', password);
+    const params = new URLSearchParams();
+    params.append('email', email);
+    params.append('password', password);
 
     try {
-       const response = await axios.post('http://localhost:8080/sign/in', params);
+      const response = await axios.post('http://localhost:8080/sign/in', params);
 
-      if (response.data != null) {
-        // 로그인 성공 시 페이지 이동
+      if (response.data) {
+        // 로그인 성공 시 사용자 정보를 설정
         console.log("로그인 성공");
-        window.location.replace('/'); // 홈으로 이동
+        setUser({ id: response.data.id, nickname: response.data.nickname }); // 사용자 정보를 UserContext에 설정
+        navigate('/'); // useNavigate로 홈으로 이동
       } else {
         // 로그인 실패 처리
         alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
-        window.location.reload(); // 페이지 새로고침
       }
     } catch (error) {
       console.error("로그인 요청 중 오류 발생:", error);
+      alert("로그인 요청 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
     }
   };
 

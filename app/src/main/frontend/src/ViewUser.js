@@ -68,9 +68,11 @@ const handleDelete = async () => {
   return (
     <form onSubmit={handleUpdate}> {/* form 요소로 감싸서 onSubmit 처리 */}
       <h2>사용자 정보</h2>
-      <div>
-        <img src={user.path} alt="프로필 이미지" />
-      </div>
+      <img
+              src={user.path ? user.path : '/default.png'}
+              alt="프로필 이미지"
+              style={{ width: '150px', height: '150px' }}
+            />
       <input type="hidden" value={user.id} /> {/* ID를 hidden 필드로 추가 */}
       <dl>
         <dt>이메일: </dt>

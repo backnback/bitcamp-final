@@ -1,6 +1,7 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.service.UserService;
+import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -40,6 +41,9 @@ public class UserController {
 
     @DeleteMapping("delete/{id}")
     public boolean delete(@PathVariable int id) throws Exception{
+        FileServiceImpl fileService = new FileServiceImpl();
+        User user = userService.findUser(id);
+        fileService.deleteFile(user.getPath());
         return userService.delete(id);
     }
 }
