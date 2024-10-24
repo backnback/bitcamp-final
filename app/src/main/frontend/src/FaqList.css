@@ -8,9 +8,65 @@
     z-index: 10; /* 사이드바가 다른 요소 위에 보이도록 z-index 설정 */
 }
 
-.faq-list {
-    margin-left: 300px; /* 사이드바 너비 만큼 여백 추가 */
+/* FaqList.css */
+.faq-list-container {
+    width: 50%;
+    margin: 0 auto;
+    background-color: #fff;
+    margin-left: 550px;
     padding: 20px;
-    position: relative; /* 일반 흐름에 맞추어 위치 */
-    z-index: 1; /* 사이드바 아래에 위치하도록 z-index 낮추기 */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq-title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.faq-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.faq-item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.faq-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.faq-header:hover {
+    background-color: #e6e6e6;
+}
+
+.faq-number {
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.faq-question {
+    flex: 1;
+}
+
+.faq-toggle {
+    font-size: 14px;
+}
+
+.faq-content {
+    padding: 15px;
+    background-color: #fafafa;
+    font-size: 14px;
+    line-height: 1.5;
 }
