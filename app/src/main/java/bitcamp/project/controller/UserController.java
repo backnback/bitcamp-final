@@ -25,14 +25,14 @@ public class UserController {
     @GetMapping("finduser")
     public User get(@RequestParam int no) throws Exception{
         User user = userService.findUser(no);
-        user.setPassword(null);
+//        user.setPassword(null);
         return user;
     }
 
     @PostMapping("update")
     public boolean update(@RequestParam("no") int no, @RequestBody User user) throws Exception{
         System.out.println("여기");
-        System.out.println(user.getPassword());
+//        System.out.println(user.getPassword());
         return userService.update(no, user);
     }
 
