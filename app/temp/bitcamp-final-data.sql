@@ -30,7 +30,7 @@ VALUES
 (3, 2, 1, '/photos/busan1.jpg'),
 (4, 3, 1, '/photos/jeju1.jpg'),
 (5, 4, 1, '/photos/daegu1.jpg'),
-(6, 5, 0, '/photos/incheon1.jpg');
+(6, 5, 1, '/photos/incheon1.jpg');
 
 INSERT INTO story_like (user_id, story_id, like_date, view)
 VALUES 

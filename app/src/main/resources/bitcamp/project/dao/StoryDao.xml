@@ -137,4 +137,12 @@
         where photo_id = #{id}
     </delete>
 
+    <select id="getPhotos" resultMap="PhotoMap">
+        SELECT *
+        FROM
+            story_photo
+        WHERE
+            story_id=#{id}
+    </select>
+
 </mapper>

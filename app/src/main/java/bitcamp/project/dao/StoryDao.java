@@ -29,5 +29,7 @@ public interface StoryDao {
 
     Photo getPhoto(int id) throws Exception;
 
+    List<Photo> getPhotos(int id) throws Exception;
+
     boolean deletePhoto(int id) throws Exception;
 }
