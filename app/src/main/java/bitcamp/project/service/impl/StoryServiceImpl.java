@@ -47,6 +47,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    public List<Photo> getPhotos(int id) throws Exception {
+        return storyDao.getPhotos(id);
+    }
+
+    @Override
     public Photo getPhoto(int id) throws Exception {
         return storyDao.getPhoto(id);
     }

@@ -9,7 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/story")
@@ -25,20 +28,44 @@ public class StoryController {
     UserService userService;
 
     @GetMapping("list")
-    public List<Story> list() throws Exception {
-        return storyService.list();
+    public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
+
+        List<Map<String, Object>> responseList = new ArrayList<>();
+
+        // Story 1개 + Main 사진 1개
+        for (Story story : storyService.list()) {
+            HashMap<String, Object> map = new HashMap<>();
+            map.put("story", story);
+
+            for (Photo photo : storyService.getPhotos(story.getId())) {
+                if (photo.isMainPhoto()) {
+                    map.put("mainPhoto", photo);
+                }
+            }
+
+            responseList.add(map);
+        }
+
+        return ResponseEntity.ok(responseList);
     }
 
 
     @GetMapping("view/{id}")
-    public Story view(@PathVariable  int id) throws Exception {
+    public ResponseEntity<Map<String, Object>> view(@PathVariable  int id) throws Exception {
         Story story = storyService.get(id);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
         }
 
-        return story;
+        List<Photo> photos = storyService.getPhotos(id);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("story", story);
+        response.put("photos", photos);
+
+        return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("form")
     public void form() {
@@ -122,8 +149,12 @@ public class StoryController {
 //        }
 
         // Photo 파일 삭제
-        FileServiceImpl fileServiceImpl = new FileServiceImpl();
-        fileServiceImpl.deletePhotos(photo.getPath());
+        try {
+            FileServiceImpl fileServiceImpl = new FileServiceImpl();
+            fileServiceImpl.deletePhotos(photo.getPath());
+        } catch (Exception e) {
+            throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
+        }
 
         // Photo DB 삭제
         storyService.deletePhoto(id);
