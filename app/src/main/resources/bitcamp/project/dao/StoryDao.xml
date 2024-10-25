@@ -127,6 +127,12 @@
         WHERE first_name = #{firstName} AND second_name = #{secondName}
     </select>
 
+    <insert id="insertPhoto" parameterType="photo"
+            useGeneratedKeys="true" keyColumn="photo_id" keyProperty="id">
+        INSERT INTO story_photo(story_id, main_photo, path)
+        VALUES (#{storyId}, #{mainPhoto}, #{path})
+    </insert>
+
     <select id="getPhoto" resultMap="PhotoMap">
         SELECT * FROM story_photo
         WHERE photo_id = #{id}

@@ -5,27 +5,21 @@ import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
 import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.*;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/story")
 public class StoryController {
 
-    @Autowired
-    StoryService storyService;
-
-    @Autowired
-    LocationService locationService;
-
-    @Autowired
-    UserService userService;
+    private final StoryService storyService;
+    private final LocationService locationService;
+    private final UserService userService;
 
     @GetMapping("list")
     public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
@@ -59,6 +53,7 @@ public class StoryController {
 
         List<Photo> photos = storyService.getPhotos(id);
 
+        // Story와 함께 Photo 데이터 보내기
         Map<String, Object> response = new HashMap<>();
         response.put("story", story);
         response.put("photos", photos);
@@ -85,19 +80,46 @@ public class StoryController {
 
 
     @PostMapping("add/{firstName}/{secondName}")
-    public void add(@RequestBody Story story,
+    public void add(
+        @ModelAttribute Story story,
+        MultipartFile[] files,
         @PathVariable String firstName, @PathVariable String secondName) throws Exception {
 
+        // 로그인 사용자
+        User user = userService.findUser(4);
+
+        // 위치 정보
         Location location = locationService.findByLocation(firstName, secondName);
         if (location == null) {
             throw new Exception("위치 정보 없음");
         }
 
-        User user = userService.findUser(4);
-
+        // Story에 로그인 사용자 및 위치 정보 삽입
         story.setLocation(location);
         story.setUser(user);
         storyService.add(story);
+
+
+        List<Photo> photos = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
+                continue;
+            }
+
+            // 첨부파일 저장
+            FileServiceImpl fileServiceImpl = new FileServiceImpl();
+            String fileName = fileServiceImpl.upload(file);
+
+            Photo photo = new Photo();
+            photo.setStoryId(story.getId());
+            photo.setMainPhoto(false);
+            photo.setPath("/photos/" + fileName);
+
+            photos.add(photo);
+        }
+
+        storyService.addPhotos(photos);
     }
 
 
@@ -151,7 +173,7 @@ public class StoryController {
         // Photo 파일 삭제
         try {
             FileServiceImpl fileServiceImpl = new FileServiceImpl();
-            fileServiceImpl.deletePhotos(photo.getPath());
+            fileServiceImpl.deletePhoto(photo.getPath());
         } catch (Exception e) {
             throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
         }
