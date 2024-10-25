@@ -3,9 +3,8 @@ package bitcamp.project.controller;
 import bitcamp.project.service.LocationService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
-import bitcamp.project.vo.Location;
-import bitcamp.project.vo.Story;
-import bitcamp.project.vo.User;
+import bitcamp.project.service.impl.FileServiceImpl;
+import bitcamp.project.vo.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -106,5 +105,28 @@ public class StoryController {
         return story;
     }
 
+
+    @DeleteMapping("photo/delete/{id}")
+    public void photoDelete(@PathVariable int id) throws Exception {
+
+        // 삭제할 Photo 가져오기
+        Photo photo = storyService.getPhoto(id);
+        if (photo == null) {
+            throw new Exception("없는 사진입니다.");
+        }
+
+        // Story에서 로그인 사용자 정보를 가져와서 권한 파악 시 필요 (지금 X)
+//        Story story = storyService.get(photo.getStoryId());
+//        if (story == null) {
+//            throw new Exception("없는 스토리입니다.");
+//        }
+
+        // Photo 파일 삭제
+        FileServiceImpl fileServiceImpl = new FileServiceImpl();
+        fileServiceImpl.deletePhotos(photo.getPath());
+
+        // Photo DB 삭제
+        storyService.deletePhoto(id);
+    }
 
 }

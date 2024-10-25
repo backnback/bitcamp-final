@@ -34,6 +34,13 @@
         <result column="second_name" property="secondName"/>
     </resultMap>
 
+    <resultMap id="PhotoMap" type="photo">
+        <id column="photo_id" property="id"/>
+        <result column="story_id" property="storyId"/>
+        <result column="main_photo" property="mainPhoto"/>
+        <result column="path" property="path"/>
+    </resultMap>
+
 
     <select id="findAll" resultMap="StoryMap">
         SELECT
@@ -119,5 +126,15 @@
         SELECT * FROM location
         WHERE first_name = #{firstName} AND second_name = #{secondName}
     </select>
+
+    <select id="getPhoto" resultMap="PhotoMap">
+        SELECT * FROM story_photo
+        WHERE photo_id = #{id}
+    </select>
+
+    <delete id="deletePhoto" parameterType="int">
+        delete from story_photo
+        where photo_id = #{id}
+    </delete>
 
 </mapper>

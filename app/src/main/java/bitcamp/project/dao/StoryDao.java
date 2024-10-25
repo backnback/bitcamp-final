@@ -1,6 +1,7 @@
 package bitcamp.project.dao;
 
 import bitcamp.project.vo.Location;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
@@ -25,4 +26,8 @@ public interface StoryDao {
     boolean deletePhotos(int id) throws Exception;
 
     Location findByLocation(String firstName, String secondName) throws Exception;
+
+    Photo getPhoto(int id) throws Exception;
+
+    boolean deletePhoto(int id) throws Exception;
 }

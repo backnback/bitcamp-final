@@ -2,6 +2,8 @@ package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.StoryDao;
 import bitcamp.project.service.StoryService;
+import bitcamp.project.vo.AttachedFile;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,6 +44,16 @@ public class StoryServiceImpl implements StoryService {
         storyDao.deleteLikes(id);
         storyDao.deletePhotos(id);
         storyDao.delete(id);
+    }
+
+    @Override
+    public Photo getPhoto(int id) throws Exception {
+        return storyDao.getPhoto(id);
+    }
+
+    @Override
+    public void deletePhoto(int id) throws Exception {
+        storyDao.deletePhoto(id);
     }
 
 }

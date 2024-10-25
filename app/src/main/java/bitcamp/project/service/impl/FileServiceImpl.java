@@ -52,4 +52,22 @@ public class FileServiceImpl {
             System.out.println("삭제할 파일이 존재하지 않습니다: " + allFilePath);
         }
     }
+
+    public void deletePhotos(String filePath) throws Exception {
+        // 파일 경로 설정
+        String allFilePath = System.getProperty("user.dir") + "\\src\\main\\frontend\\public\\images\\" + filePath;
+
+        // 파일 삭제
+        File file = new File(allFilePath);
+        if (file.exists()) {
+            boolean deleted = file.delete(); // 파일 삭제 시도
+            if (deleted) {
+                System.out.println("파일이 성공적으로 삭제되었습니다: " + allFilePath);
+            } else {
+                System.out.println("파일 삭제에 실패했습니다: " + allFilePath);
+            }
+        } else {
+            System.out.println("삭제할 파일이 존재하지 않습니다: " + allFilePath);
+        }
+    }
 }

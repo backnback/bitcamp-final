@@ -1,5 +1,7 @@
 package bitcamp.project.service;
 
+import bitcamp.project.vo.AttachedFile;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 
 import java.util.List;
@@ -15,4 +17,9 @@ public interface StoryService {
     void update(Story story) throws Exception;
 
     void delete(int id) throws Exception;
+
+    Photo getPhoto(int id) throws Exception;
+
+    void deletePhoto(int id) throws Exception;
+
 }
