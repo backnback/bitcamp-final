@@ -6,6 +6,8 @@ import java.util.Map;
 
 public interface StorageService {
 
+  // bitcamp myapp
+
   String CONTENT_TYPE = "contentType";
 
   void upload(String filePath, InputStream in, Map<String, Object> options) throws Exception;
