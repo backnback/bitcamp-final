@@ -15,5 +15,7 @@ public interface LikeService {
 
   List<Like> findAllByUser(int userId) throws Exception;
 
+  void confirmView(int storyId, int userId) throws Exception;
+
   void delete(int storyId, int userId) throws Exception;
 }

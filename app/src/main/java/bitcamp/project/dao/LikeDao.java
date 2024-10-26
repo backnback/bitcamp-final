@@ -17,6 +17,8 @@ public interface LikeDao {
 
   List<Like> findAllByUser(int userId) throws Exception;
 
+  boolean update(Like like) throws Exception;
+
   boolean delete(@Param("storyId") int storyId, @Param("userId") int userId) throws Exception;
 
 }

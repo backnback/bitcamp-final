@@ -37,6 +37,15 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
+  public void confirmView(int storyId, int userId) throws Exception {
+    Like like = new Like();
+    like.setStoryId(storyId);
+    like.setUserId(userId);
+    like.setView(true);
+    likeDao.update(like);
+  }
+
+  @Override
   public void delete(int storyId, int userId) throws Exception {
     likeDao.delete(storyId, userId);
   }

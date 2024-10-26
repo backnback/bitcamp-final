@@ -29,6 +29,11 @@
         VALUES (#{userId}, #{storyId})
     </insert>
 
+    <update id="update" parameterType="like">
+        UPDATE story_like SET view=#{view}
+        WHERE story_id=#{storyId} AND user_id=#{userId}
+    </update>
+
     <delete id="delete">
         DELETE FROM story_like WHERE story_id=#{storyId} AND user_id=#{userId}
     </delete>
