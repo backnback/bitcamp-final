@@ -35,11 +35,15 @@ public class LikeController {
 
   @GetMapping("add/{storyId}")
   public void add(@PathVariable int storyId) throws Exception {
-    User loginUser = userService.findUser(4);
+    User loginUser = userService.findUser(1);
 
     Story story = storyService.get(storyId);
     if (story == null) {
       throw new Exception("없는 스토리입니다");
+    }
+
+    if (likeService.get(storyId, loginUser.getId()) != null) {
+      throw new Exception("이미 좋아요 처리된 스토리입니다.");
     }
 
     likeService.add(storyId, loginUser.getId());

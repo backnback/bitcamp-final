@@ -22,6 +22,11 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
+  public Like get(int storyId, int userId) throws Exception {
+    return likeDao.findBy(storyId, userId);
+  }
+
+  @Override
   public List<Like> findAllByStory(int storyId) throws Exception {
     return likeDao.findAllByStory(storyId);
   }

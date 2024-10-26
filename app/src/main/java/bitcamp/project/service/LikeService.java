@@ -9,6 +9,8 @@ public interface LikeService {
 
   void add(int storyId, int userId) throws Exception;
 
+  Like get(int storyId, int userId) throws Exception;
+
   List<Like> findAllByStory(int storyId) throws Exception;
 
   List<Like> findAllByUser(int userId) throws Exception;

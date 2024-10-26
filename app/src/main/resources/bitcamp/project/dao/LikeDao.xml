@@ -19,6 +19,11 @@
         SELECT * FROM story_like WHERE user_id = #{userId}
     </select>
 
+    <select id="findBy" resultMap="LikeMap">
+        SELECT * FROM story_like
+        WHERE story_id = #{storyId} AND user_id = #{userId}
+    </select>
+
     <insert id="insert">
         INSERT INTO story_like(user_id, story_id)
         VALUES (#{userId}, #{storyId})
