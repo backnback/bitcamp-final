@@ -22,6 +22,11 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
+  public Like get(int storyId, int userId) throws Exception {
+    return likeDao.findBy(storyId, userId);
+  }
+
+  @Override
   public List<Like> findAllByStory(int storyId) throws Exception {
     return likeDao.findAllByStory(storyId);
   }
@@ -29,6 +34,15 @@ public class LikeServiceImpl implements LikeService {
   @Override
   public List<Like> findAllByUser(int userId) throws Exception {
     return likeDao.findAllByUser(userId);
+  }
+
+  @Override
+  public void confirmView(int storyId, int userId) throws Exception {
+    Like like = new Like();
+    like.setStoryId(storyId);
+    like.setUserId(userId);
+    like.setView(true);
+    likeDao.update(like);
   }
 
   @Override
