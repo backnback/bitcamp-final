@@ -10,6 +10,6 @@ public class Like {
   private int userId;
   private int storyId;
   private Date likeDate;
-  private int view;
+  private boolean view;
 
 }

@@ -92,15 +92,14 @@
 
     <insert id="insert" parameterType="story"
             useGeneratedKeys="true" keyColumn="story_id" keyProperty="id">
-        INSERT INTO story(user_id, location_id, title, travel_date, create_date, location_detail, content, share)
-        VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{createDate}, #{locationDetail}, #{content}, #{share})
+        INSERT INTO story(user_id, location_id, title, travel_date, location_detail, content, share)
+        VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{locationDetail}, #{content}, #{share})
     </insert>
 
     <update id="update" parameterType="story">
         update story set
             title=#{title},
             travel_date=#{travelDate},
-            create_date=#{createDate},
             location_detail=#{locationDetail},
             content=#{content},
             share=#{share},
