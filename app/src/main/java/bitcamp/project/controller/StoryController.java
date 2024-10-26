@@ -44,14 +44,14 @@ public class StoryController {
     }
 
 
-    @GetMapping("view/{id}")
-    public ResponseEntity<Map<String, Object>> view(@PathVariable  int id) throws Exception {
-        Story story = storyService.get(id);
+    @GetMapping("view/{storyId}")
+    public ResponseEntity<Map<String, Object>> view(@PathVariable  int storyId) throws Exception {
+        Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
         }
 
-        List<Photo> photos = storyService.getPhotos(id);
+        List<Photo> photos = storyService.getPhotos(storyId);
 
         // Story와 함께 Photo 데이터 보내기
         Map<String, Object> response = new HashMap<>();
@@ -67,20 +67,34 @@ public class StoryController {
     }
 
 
-    @DeleteMapping("delete/{id}")
-    public void delete(@PathVariable int id) throws Exception{
+    @DeleteMapping("delete/{storyId}")
+    public void delete(@PathVariable int storyId) throws Exception {
 
-        Story story = storyService.get(id);
+        Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
         }
 
-        storyService.delete(id);
+
+        FileServiceImpl fileServiceImpl = new FileServiceImpl();
+
+        for (Photo photo : storyService.getPhotos(storyId)) {
+            try {
+                // 첨부파일 삭제
+                fileServiceImpl.deletePhoto(photo.getPath());
+
+            } catch (Exception e) {
+                System.out.printf("%s 파일 ", photo.getPath());
+                throw new Exception("삭제 실패 !");
+            }
+        }
+
+        storyService.delete(storyId);
     }
 
 
     @PostMapping("add/{firstName}/{secondName}")
-    public void add(
+    public ResponseEntity<Map<String, Object>> add(
         @ModelAttribute Story story,
         MultipartFile[] files,
         @PathVariable String firstName, @PathVariable String secondName) throws Exception {
@@ -99,8 +113,9 @@ public class StoryController {
         story.setUser(user);
         storyService.add(story);
 
-
+        // Photo 정보
         List<Photo> photos = new ArrayList<>();
+        FileServiceImpl fileServiceImpl = new FileServiceImpl();
 
         for (MultipartFile file : files) {
             if (file.getSize() == 0) {
@@ -108,7 +123,6 @@ public class StoryController {
             }
 
             // 첨부파일 저장
-            FileServiceImpl fileServiceImpl = new FileServiceImpl();
             String fileName = fileServiceImpl.upload(file);
 
             Photo photo = new Photo();
@@ -119,32 +133,68 @@ public class StoryController {
             photos.add(photo);
         }
 
+        // Photo DB 처리
         storyService.addPhotos(photos);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("story", story);
+        response.put("photos", photos);
+
+        return ResponseEntity.ok(response);
     }
 
 
     @PostMapping("update/{firstName}/{secondName}")
-    public Story update(@RequestBody Story story,
+    public ResponseEntity<Map<String, Object>> update(
+        @ModelAttribute Story story,
+        MultipartFile[] files,
         @PathVariable String firstName, @PathVariable String secondName) throws Exception {
+
+        User user = userService.findUser(4);
 
         Location location = locationService.findByLocation(firstName, secondName);
         if (location == null) {
             throw new Exception("위치 정보 없음");
         }
 
-        User user = userService.findUser(4);
-
         story.setLocation(location);
         story.setUser(user);
         storyService.update(story);
 
-        return story;
+        // Photo 정보
+        List<Photo> photos = new ArrayList<>();
+        FileServiceImpl fileServiceImpl = new FileServiceImpl();
+
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
+                continue;
+            }
+
+            // 첨부파일 저장
+            String fileName = fileServiceImpl.upload(file);
+
+            Photo photo = new Photo();
+            photo.setStoryId(story.getId());
+            photo.setMainPhoto(false);
+            photo.setPath("/photos/" + fileName);
+
+            photos.add(photo);
+        }
+
+        // Photo DB 처리
+        storyService.addPhotos(photos);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("story", story);
+        response.put("photos", photos);
+
+        return ResponseEntity.ok(response);
     }
 
 
-    @GetMapping("share/{id}")
-    public Story share(@PathVariable int id) throws Exception {
-        Story story = storyService.get(id);
+    @GetMapping("share/{storyId}")
+    public Story share(@PathVariable int storyId) throws Exception {
+        Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리 정보 없음");
         }
@@ -155,11 +205,11 @@ public class StoryController {
     }
 
 
-    @DeleteMapping("photo/delete/{id}")
-    public void photoDelete(@PathVariable int id) throws Exception {
+    @DeleteMapping("photo/delete/{photoId}")
+    public void photoDelete(@PathVariable int photoId) throws Exception {
 
         // 삭제할 Photo 가져오기
-        Photo photo = storyService.getPhoto(id);
+        Photo photo = storyService.getPhoto(photoId);
         if (photo == null) {
             throw new Exception("없는 사진입니다.");
         }
@@ -174,12 +224,13 @@ public class StoryController {
         try {
             FileServiceImpl fileServiceImpl = new FileServiceImpl();
             fileServiceImpl.deletePhoto(photo.getPath());
+
         } catch (Exception e) {
             throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
         }
 
         // Photo DB 삭제
-        storyService.deletePhoto(id);
+        storyService.deletePhoto(photoId);
     }
 
 }

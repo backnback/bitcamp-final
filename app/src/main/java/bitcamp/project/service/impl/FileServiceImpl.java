@@ -107,9 +107,9 @@ public class FileServiceImpl {
     }
 
 
-    public void deletePhoto(String filePath) throws Exception {
+    public void deletePhoto(String fileName) throws Exception {
         // 파일 경로 설정
-        String allFilePath = System.getProperty("user.dir") + "\\src\\main\\frontend\\public\\images\\" + filePath;
+        String allFilePath = System.getProperty("user.dir") + "\\src\\main\\frontend\\public\\images\\" + fileName;
 
         // 파일 삭제
         File file = new File(allFilePath);
