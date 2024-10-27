@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.project.dao.LocationDao">
+
+    <resultMap id="LocationMap" type="location">
+        <id column="location_id" property="id"/>
+        <id column="first_name" property="firstName"/>
+        <result column="second_name" property="secondName"/>
+    </resultMap>
+
+    <select id="findAllByFirstName" resultMap="LocationMap" parameterType="String">
+        SELECT * FROM location WHERE first_name = #{firstName}
+    </select>
+
+    <select id="findAllFirstNames" resultType="String">
+        SELECT DISTINCT first_name FROM location;
+    </select>
+
+</mapper>

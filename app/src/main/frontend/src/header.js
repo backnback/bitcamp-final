@@ -8,7 +8,7 @@ const Header = () => {
 
   return (
     <header>
-      <div className="logo">MyApp</div>
+      <div className="logo">기억하길</div>
       <nav className="nav">
         <ul>
           <li><Link to="/">홈</Link></li>
