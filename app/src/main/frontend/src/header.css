@@ -2,7 +2,7 @@
     width: 250px;
     height: 100vh;
     background-color: rgba(44, 62, 80, 0.8);
-    color: white;
+    color: black;
     padding: 20px;
     position: fixed;
 }
@@ -22,6 +22,6 @@
 }
 
 .nav ul li a {
-    color: white;
+    color: red;
     text-decoration: none;
 }

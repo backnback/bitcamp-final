@@ -1,6 +1,81 @@
 .story-view {
-    margin-left: 300px; /* 사이드바 너비 만큼 여백 추가 */
-    padding: 20px;
-    position: relative; /* 일반 흐름에 맞추어 위치 */
-    z-index: 1; /* 사이드바 아래에 위치하도록 z-index 낮추기 */
+    margin-left: 800px;
+    /* 사이드바 너비 만큼 여백 추가 */
+    display: flex;
+    flex-direction: column;
+    /* 요소를 수직으로 쌓기 */
+    align-items: center;
+    /* 요소를 중앙 정렬 */
+    padding: 30px;
+    /* 컴포넌트 주위의 패딩 */
+    gap: 15px;
+    /* 요소 사이의 간격 */
+
+    position: relative;
+    /* 절대 위치 설정 */
+    width: 390px;
+    /* 너비 설정 */
+    height: 680px;
+    /* 높이 설정 */
+    right: 360px;
+    /* 오른쪽 위치 */
+    top: calc(10% - 340px);
+    /* 세로 중앙 정렬 */
+
+    background: #FFFFFF;
+    /* 흰색 배경 */
+    box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.25);
+    /* 그림자 효과 */
+    z-index: 1;
+    /* 다른 요소 위에 표시되도록 z-index 설정 */
+}
+
+.photos {
+    width: 100%;
+    /* 사진 갤러리의 너비를 전체로 설정 */
+    display: flex;
+    /* 사진 갤러리에서 flexbox 사용 */
+    flex-wrap: wrap;
+    /* 사진이 다음 줄로 감싸지도록 설정 */
+    justify-content: flex-start;
+    /* 사진을 왼쪽 정렬 */
+    gap: 10px;
+    /* 사진 사이의 간격 */
+}
+
+.photo {
+    display: flex;
+    flex-direction: column;
+    /* 사진과 라벨을 세로로 배치 */
+    align-items: center;
+    /* 중앙 정렬 */
+}
+
+.story-photo {
+    width: 100px;
+    /* Set a fixed width for all photos */
+    height: 100px;
+    /* Set a fixed height for all photos */
+    object-fit: cover;
+    /* Maintain aspect ratio without distortion */
+    border-radius: 5px;
+    /* Optional: Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    /* Optional: Shadow effect */
+}
+
+.main-photo {
+    border: 2px solid #4CAF50;
+    /* Highlight the main photo with a border */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    /* Stronger shadow for the main photo */
+}
+
+.main-label {
+    margin-top: 5px;
+    /* Add space above the main label */
+    font-weight: bold;
+    /* Make the label bold */
+    color: #4CAF50;
+    /* Change the color of the label */
 }

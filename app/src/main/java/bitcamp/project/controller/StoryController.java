@@ -1,5 +1,6 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.service.LikeService;
 import bitcamp.project.service.LocationService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
@@ -20,6 +21,8 @@ public class StoryController {
     private final StoryService storyService;
     private final LocationService locationService;
     private final UserService userService;
+    private final LikeService likeService;
+
 
     @GetMapping("list")
     public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
@@ -36,6 +39,9 @@ public class StoryController {
                     map.put("mainPhoto", photo);
                 }
             }
+
+            int likeCount = likeService.findAllByStory(story.getId()).size();
+            map.put("likeCount", likeCount);
 
             responseList.add(map);
         }
@@ -62,8 +68,25 @@ public class StoryController {
     }
 
 
-    @GetMapping("form")
-    public void form() {
+    @GetMapping("form/add")
+    public void formAdd() {
+    }
+
+    @GetMapping("form/update/{storyId}")
+    public ResponseEntity<Map<String, Object>> formUpdate(@PathVariable int storyId) throws Exception {
+        Story story = storyService.get(storyId);
+        if (story == null) {
+            throw new Exception("스토리가 존재하지 않습니다.");
+        }
+
+        List<Photo> photos = storyService.getPhotos(storyId);
+
+        // Story와 함께 Photo 데이터 보내기
+        Map<String, Object> response = new HashMap<>();
+        response.put("story", story);
+        response.put("photos", photos);
+
+        return ResponseEntity.ok(response);
     }
 
 
@@ -103,7 +126,7 @@ public class StoryController {
         User user = userService.findUser(4);
 
         // 위치 정보
-        Location location = locationService.findByLocation(firstName, secondName);
+        Location location = locationService.findByNames(firstName, secondName);
         if (location == null) {
             throw new Exception("위치 정보 없음");
         }
@@ -133,6 +156,8 @@ public class StoryController {
             photos.add(photo);
         }
 
+        photos.getFirst().setMainPhoto(true);
+
         // Photo DB 처리
         storyService.addPhotos(photos);
 
@@ -144,19 +169,21 @@ public class StoryController {
     }
 
 
-    @PostMapping("update/{firstName}/{secondName}")
+    @PostMapping("update/{storyId}/{firstName}/{secondName}")
     public ResponseEntity<Map<String, Object>> update(
         @ModelAttribute Story story,
         MultipartFile[] files,
+        @PathVariable int storyId,
         @PathVariable String firstName, @PathVariable String secondName) throws Exception {
 
         User user = userService.findUser(4);
 
-        Location location = locationService.findByLocation(firstName, secondName);
+        Location location = locationService.findByNames(firstName, secondName);
         if (location == null) {
             throw new Exception("위치 정보 없음");
         }
 
+        story.setId(storyId);
         story.setLocation(location);
         story.setUser(user);
         storyService.update(story);
