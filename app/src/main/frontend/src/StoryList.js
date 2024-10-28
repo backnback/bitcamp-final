@@ -41,7 +41,7 @@ const StoryList = () => {
                         {map.mainPhoto && (
                             <Link to={`/story/view/${map.story.id}`}>
                                 <div className="image-container">
-                                    <img src={`/images${map.mainPhoto.path}`} alt={map.story.title} />
+                                <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${map.mainPhoto.path ? map.mainPhoto.path : 'default.png'}`}/>
                                 </div>
                             </Link>
                         )}

@@ -6,8 +6,6 @@ import java.util.Map;
 
 public interface StorageService {
 
-  // bitcamp myapp
-
   String CONTENT_TYPE = "contentType";
 
   void upload(String filePath, InputStream in, Map<String, Object> options) throws Exception;
@@ -15,6 +13,4 @@ public interface StorageService {
   void delete(String filePath) throws Exception;
 
   // void download(String filePath, OutputStream out) throws Exception;
-
-
 }
