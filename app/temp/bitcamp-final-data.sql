@@ -1,10 +1,10 @@
 INSERT INTO user (user_id, email, password, nickname, path)
 VALUES 
-(1, 'hong@example.com', 'pass1234', '홍길동', '/images/hong.jpg'),
-(2, 'kim@example.com', 'kim4321', '김철수', '/images/kim.jpg'),
-(3, 'park@example.com', 'park5678', '박영희', '/images/park.jpg'),
-(4, 'lee@example.com', 'lee8765', '이민수', '/images/lee.jpg'),
-(5, 'choi@example.com', 'choi9876', '최은정', '/images/choi.jpg');
+(1, 'hong@example.com', sha1('pass1234'), '홍길동', '/images/hong.jpg'),
+(2, 'kim@example.com', sha1('kim4321'), '김철수', '/images/kim.jpg'),
+(3, 'park@example.com', sha1('park5678'), '박영희', '/images/park.jpg'),
+(4, 'lee@example.com', sha1('lee8765'), '이민수', '/images/lee.jpg'),
+(5, 'choi@example.com', sha1('choi9876'), '최은정', '/images/choi.jpg');
 
 INSERT INTO location (location_id, first_name, second_name)
 VALUES
@@ -42,12 +42,12 @@ VALUES
 
 INSERT INTO story_photo (photo_id, story_id, main_photo, path)
 VALUES 
-(1, 1, 1, '/photos/seoul1.png'),
-(2, 1, 0, '/photos/seoul2.png'),
-(3, 2, 1, '/photos/busan1.png'),
-(4, 3, 1, '/photos/jeju1.png'),
-(5, 4, 1, '/photos/daegu1.png'),
-(6, 5, 1, '/photos/incheon1.png');
+(1, 1, 1, 'seoul1.png'),
+(2, 1, 0, 'seoul2.png'),
+(3, 2, 1, 'busan1.png'),
+(4, 3, 1, 'jeju1.png'),
+(5, 4, 1, 'daegu1.png'),
+(6, 5, 1, 'incheon1.png');
 
 INSERT INTO story_like (user_id, story_id, like_date, view)
 VALUES 
