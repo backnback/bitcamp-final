@@ -1,5 +1,6 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.service.StorageService;
 import bitcamp.project.service.UserService;
 import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.User;
@@ -21,6 +22,11 @@ public class UserController {
     @Autowired
     UserService userService;
 
+    @Autowired
+    private StorageService storageService;
+
+    private String folderName = "user/";
+
     @GetMapping("list")
     public List<User> list() throws Exception{
         List<User> users =  userService.list();
@@ -41,9 +47,15 @@ public class UserController {
 
     @DeleteMapping("delete/{id}")
     public boolean delete(@PathVariable int id) throws Exception{
-        FileServiceImpl fileService = new FileServiceImpl();
-        User user = userService.findUser(id);
-        fileService.deleteFile(user.getPath());
-        return userService.delete(id);
+//        FileServiceImpl fileService = new FileServiceImpl();
+//        User user = userService.findUser(id);
+//        fileService.deleteFile(user.getPath());
+        User old = userService.findUser(id);
+        if (userService.delete(id)) {
+            storageService.delete(folderName + old.getPath());
+            return true;
+        }else {
+            return false;
+        }
     }
 }

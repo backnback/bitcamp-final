@@ -58,7 +58,8 @@ const StoryView = () => {
                         {photos.map(photo => (
                             <div className="photo" key={photo.photoId}>
                                 <img
-                                    src={`/images${photo.path}`}
+                                    src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story${photo.path ? photo.path : 'default.png'}`}
+//                                    src={`/images${photo.path}`}
                                     alt={`Photo ${photo.photoId}`}
                                     className={`story-photo ${photo.mainPhoto ? 'main-photo' : ''}`} // Apply main-photo class if it's the main photo
                                 />
