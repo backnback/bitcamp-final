@@ -102,7 +102,7 @@ CREATE TABLE story_like (
     user_id   INTEGER  NOT NULL COMMENT '회원번호', -- 회원번호
     story_id  INTEGER  NOT NULL COMMENT '스토리번호', -- 스토리번호
     like_date DATETIME NOT NULL DEFAULT now() COMMENT '일시', -- 일시
-    view      TINYINT  NOT NULL COMMENT '조회여부' -- 조회여부
+    view      TINYINT  NOT NULL DEFAULT false COMMENT '조회여부' -- 조회여부
 )
 COMMENT '좋아요';
 

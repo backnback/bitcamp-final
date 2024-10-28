@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="bitcamp.project.dao.LikeDao">
+
+    <resultMap id="LikeMap" type="like">
+        <id column="user_id" property="userId"/>
+        <id column="story_id" property="storyId"/>
+        <result column="like_date" property="likeDate"/>
+        <result column="view" property="view"/>
+    </resultMap>
+
+    <select id="findAllByStory" resultMap="LikeMap" parameterType="int">
+        SELECT * FROM story_like WHERE story_id = #{storyId}
+    </select>
+
+    <select id="findAllByUser" resultMap="LikeMap" parameterType="int">
+        SELECT * FROM story_like WHERE user_id = #{userId}
+    </select>
+
+    <select id="findBy" resultMap="LikeMap">
+        SELECT * FROM story_like
+        WHERE story_id = #{storyId} AND user_id = #{userId}
+    </select>
+
+    <insert id="insert">
+        INSERT INTO story_like(user_id, story_id)
+        VALUES (#{userId}, #{storyId})
+    </insert>
+
+    <update id="update" parameterType="like">
+        UPDATE story_like SET view=#{view}
+        WHERE story_id=#{storyId} AND user_id=#{userId}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM story_like WHERE story_id=#{storyId} AND user_id=#{userId}
+    </delete>
+
+</mapper>

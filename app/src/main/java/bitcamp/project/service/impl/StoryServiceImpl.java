@@ -46,6 +46,19 @@ public class StoryServiceImpl implements StoryService {
         storyDao.delete(id);
     }
 
+    @Transactional
+    @Override
+    public void addPhotos(List<Photo> photos) throws Exception {
+        for (Photo photo : photos) {
+            storyDao.insertPhoto(photo);
+        }
+    }
+
+    @Override
+    public List<Photo> getPhotos(int id) throws Exception {
+        return storyDao.getPhotos(id);
+    }
+
     @Override
     public Photo getPhoto(int id) throws Exception {
         return storyDao.getPhoto(id);

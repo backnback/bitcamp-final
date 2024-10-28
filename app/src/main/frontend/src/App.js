@@ -8,6 +8,8 @@ import Header from "./header";
 import StoryList from "./StoryList"; // StoryList 컴포넌트 import
 import StoryView from "./StoryView";
 import FaqList from "./FaqList";
+import StoryAddForm from "./StoryAddForm";
+import StoryUpdateForm from "./StoryUpdateForm";
 import { UserProvider } from './UserContext'; // UserContext import
 
 function App() {
@@ -46,8 +48,6 @@ function App() {
                 ))}
               </ul>
 
-              {/* 이미지 렌더링 */}
-              <img src="http://localhost:8080/images/test.jpg" alt="Test" />
 
               {/* 링크 */}
               <Link to="/signup">회원가입</Link> {/* 회원가입 페이지로 이동 */}
@@ -62,7 +62,10 @@ function App() {
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
           <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
           <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
+          <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
+          <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
           <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
+
 
         </Routes>
       </Router>

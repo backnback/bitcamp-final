@@ -18,6 +18,10 @@ public interface StoryService {
 
     void delete(int id) throws Exception;
 
+    void addPhotos(List<Photo> photos) throws Exception;
+
+    List<Photo> getPhotos(int id) throws Exception;
+
     Photo getPhoto(int id) throws Exception;
 
     void deletePhoto(int id) throws Exception;
