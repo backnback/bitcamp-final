@@ -7,8 +7,13 @@ const UserContext = createContext();
 export const UserProvider = ({ children }) => {
     const [user, setUser] = useState(null); // 사용자 상태 관리
 
+    // 로그아웃 함수
+    const logout = () => {
+        setUser(null);
+    };
+
     return (
-        <UserContext.Provider value={{ user, setUser }}>
+        <UserContext.Provider value={{ user, setUser, logout }}>
             {children}
         </UserContext.Provider>
     );

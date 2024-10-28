@@ -26,6 +26,8 @@ function SignUp() {
     formData.append('nickname', nickname);
     if (profileImage) {
       formData.append('profileImage', profileImage);
+    }else{
+        formData.append('profileImage', null);
     }
 
     try {
