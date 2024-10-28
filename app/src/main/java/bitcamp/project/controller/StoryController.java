@@ -202,7 +202,7 @@ public class StoryController {
 
             Photo photo = new Photo();
             photo.setStoryId(story.getId());
-            photo.setMainPhoto(false);
+             photo.setMainPhoto(false);
             photo.setPath("/photos/" + fileName);
 
             photos.add(photo);

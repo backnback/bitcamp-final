@@ -28,8 +28,10 @@ const StoryList = () => {
     return (
         <div className="story-list">
             <h2>Story List</h2>
-            <button className="add-story-button" onClick={handleAddStory}>스토리 추가</button> {/* 스토리 추가 버튼 */}
             <ul>
+                <li className="story-card add-story-card" onClick={handleAddStory}>
+                    <div className="add-story-icon">+</div> {/* 버튼 대신 아이콘을 div로 만듦 */}
+                </li>
                 {Array.isArray(responseList) && responseList.map((map) => (
                     <li key={map.story.id} className="story-card">
                         <div className="story-header">
