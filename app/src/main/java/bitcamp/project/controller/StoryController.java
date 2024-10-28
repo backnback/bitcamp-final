@@ -1,9 +1,6 @@
 package bitcamp.project.controller;
 
-import bitcamp.project.service.LikeService;
-import bitcamp.project.service.LocationService;
-import bitcamp.project.service.StoryService;
-import bitcamp.project.service.UserService;
+import bitcamp.project.service.*;
 import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +19,9 @@ public class StoryController {
     private final LocationService locationService;
     private final UserService userService;
     private final LikeService likeService;
+    private final StorageService storageService;
 
+    private String folderName = "story/";
 
     @GetMapping("list")
     public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
@@ -99,12 +98,13 @@ public class StoryController {
         }
 
 
-        FileServiceImpl fileServiceImpl = new FileServiceImpl();
+        //FileServiceImpl fileServiceImpl = new FileServiceImpl();
 
         for (Photo photo : storyService.getPhotos(storyId)) {
             try {
                 // 첨부파일 삭제
-                fileServiceImpl.deletePhoto(photo.getPath());
+                //fileServiceImpl.deletePhoto(photo.getPath());
+                storageService.delete(folderName + photo.getPath());
 
             } catch (Exception e) {
                 System.out.printf("%s 파일 ", photo.getPath());
@@ -138,7 +138,7 @@ public class StoryController {
 
         // Photo 정보
         List<Photo> photos = new ArrayList<>();
-        FileServiceImpl fileServiceImpl = new FileServiceImpl();
+        // FileServiceImpl fileServiceImpl = new FileServiceImpl();
 
         for (MultipartFile file : files) {
             if (file.getSize() == 0) {
@@ -146,12 +146,20 @@ public class StoryController {
             }
 
             // 첨부파일 저장
-            String fileName = fileServiceImpl.upload(file);
+            // String fileName = fileServiceImpl.upload(file);
+
+            String filename = UUID.randomUUID().toString();
+
+            HashMap<String, Object> options = new HashMap<>();
+            options.put(StorageService.CONTENT_TYPE, file.getContentType());
+            storageService.upload(folderName + filename,
+                file.getInputStream(),
+                options);
 
             Photo photo = new Photo();
             photo.setStoryId(story.getId());
             photo.setMainPhoto(false);
-            photo.setPath("/photos/" + fileName);
+            photo.setPath(filename);
 
             photos.add(photo);
         }
@@ -190,7 +198,6 @@ public class StoryController {
 
         // Photo 정보
         List<Photo> photos = new ArrayList<>();
-        FileServiceImpl fileServiceImpl = new FileServiceImpl();
 
         for (MultipartFile file : files) {
             if (file.getSize() == 0) {
@@ -198,12 +205,18 @@ public class StoryController {
             }
 
             // 첨부파일 저장
-            String fileName = fileServiceImpl.upload(file);
+            String filename = UUID.randomUUID().toString();
+
+            HashMap<String, Object> options = new HashMap<>();
+            options.put(StorageService.CONTENT_TYPE, file.getContentType());
+            storageService.upload(folderName + filename,
+                file.getInputStream(),
+                options);
 
             Photo photo = new Photo();
             photo.setStoryId(story.getId());
              photo.setMainPhoto(false);
-            photo.setPath("/photos/" + fileName);
+            photo.setPath(filename);
 
             photos.add(photo);
         }
@@ -249,8 +262,7 @@ public class StoryController {
 
         // Photo 파일 삭제
         try {
-            FileServiceImpl fileServiceImpl = new FileServiceImpl();
-            fileServiceImpl.deletePhoto(photo.getPath());
+            storageService.delete(folderName + photo.getPath());
 
         } catch (Exception e) {
             throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
