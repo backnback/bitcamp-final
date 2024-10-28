@@ -160,7 +160,8 @@ const StoryUpdateForm = () => {
                 {files.map((file, index) => (
                     <div key={index} className="photo">
                         {/* Assuming 'file' has a 'path' property for the image URL */}
-                        <img src={`/images${file.path}`} alt={`Photo ${index + 1}`} />
+
+                        <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path ? file.path : 'default.png'}`} alt={`Photo ${index + 1}`} />
                         <span>{file.mainPhoto ? 'main' : ''}</span>
                     </div>
                 ))}
