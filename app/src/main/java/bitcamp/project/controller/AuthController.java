@@ -31,13 +31,8 @@ public class AuthController {
 
     @Transactional
     @PostMapping("up")
-    public void up(@RequestParam("profileImage") MultipartFile file, User user)throws Exception{
-       if (file.isEmpty()){
-           user.setPath(null);
-       }else{
-//           FileServiceImpl fileService = new FileServiceImpl();
-//           user.setPath("/images/" + fileService.saveFile(file));
-           // 클라이언트가 보낸 파일을 저장할 때 다른 파일 이름과 충돌나지 않도록 임의의 새 파일 이름을 생성한다.
+    public void up(@RequestParam(name = "profileImage", required = false) MultipartFile file, User user)throws Exception{
+       if (file != null && !file.isEmpty()){
            String filename = UUID.randomUUID().toString();
 
            HashMap<String, Object> options = new HashMap<>();
@@ -46,6 +41,8 @@ public class AuthController {
                    file.getInputStream(),
                    options);
            user.setPath(filename);
+       }else{
+           user.setPath("");
        }
         userService.add(user);
     }

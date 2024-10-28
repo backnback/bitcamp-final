@@ -4,12 +4,13 @@ import axios from 'axios';
 
 function ViewUser() {
   const { id } = useParams();
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
+
   useEffect(() => {
     console.log("URL에서 가져온 ID:", id); // 여기서 ID 값을 출력하여 확인
     fetchUser();
   }, [id]);
-  const [user, setUser] = useState(null);
-  const navigate = useNavigate(); // 페이지 이동을 위한 navigate 함수
 
   // 사용자 정보 가져오기
   const fetchUser = async () => {
@@ -21,60 +22,62 @@ function ViewUser() {
     }
   };
 
-  useEffect(() => {
-    fetchUser();
-  }, [id]);
-
   // 사용자 정보가 없을 경우 로딩 상태 표시
   if (!user) {
     return <div>Loading...</div>; // 또는 다른 대체 UI
   }
 
-// 수정하기 핸들러
 const handleUpdate = async (e) => {
-  e.preventDefault(); // 폼 기본 동작 방지
+    e.preventDefault(); // 폼 기본 동작 방지
 
-  // 수정된 사용자 정보 객체 생성
-  const updatedUser = {
-    password: e.target.password.value,
-    nickname: e.target.nickname.value,
-    path: user.path, // 프로필 이미지를 추가 구현 가능
-  };
+    // FormData 객체 생성
+    const formData = new FormData();
 
-  try {
-    // 사용자 정보 업데이트 요청 (POST 방식)
-    await axios.post(`http://localhost:8080/user/update`, updatedUser, {
-      params: { id: user.id }, // URL 파라미터로 ID 전달
-    });
-    // 업데이트 후 app.js 페이지로 리다이렉트
-    window.location.replace('/');// app.js 페이지로 이동
-  } catch (error) {
-    console.error("사용자 정보를 업데이트하는 중 오류 발생:", error);
-  }
+    // 수정된 사용자 정보 추가
+    formData.append("nickname", e.target.nickname.value);
+    formData.append("password", e.target.password.value);
+    formData.append("id", user.id); // ID 추가
+
+    // 프로필 이미지 파일 추가
+    const fileInput = e.target.profileImage; // 파일 input의 name 속성 확인
+    if (fileInput && fileInput.files[0]) {
+        formData.append("file", fileInput.files[0]);
+    }
+
+    try {
+        // 사용자 정보 업데이트 요청
+        await axios.post(`http://localhost:8080/user/update`, formData, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+
+        // 업데이트 후 app.js 페이지로 리다이렉트
+        window.location.replace('/'); // app.js 페이지로 이동
+    } catch (error) {
+        console.error("사용자 정보를 업데이트하는 중 오류 발생:", error);
+    }
 };
 
   // 삭제하기 핸들러
-const handleDelete = async () => {
-  try {
-    // 사용자 삭제 요청 (DELETE 방식)
-    await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
-    // 삭제 후 app.js 페이지로 리다이렉트
-    window.location.replace('/');// app.js 페이지로 이동
-  } catch (error) {
-    console.error("사용자 정보를 삭제하는 중 오류 발생:", error);
-  }
-};
+  const handleDelete = async () => {
+    try {
+      // 사용자 삭제 요청 (DELETE 방식)
+      await axios.delete(`http://localhost:8080/user/delete/${user.id}`);
+      // 삭제 후 app.js 페이지로 리다이렉트
+      window.location.replace('/'); // app.js 페이지로 이동
+    } catch (error) {
+      console.error("사용자 정보를 삭제하는 중 오류 발생:", error);
+    }
+  };
 
   return (
     <form onSubmit={handleUpdate}> {/* form 요소로 감싸서 onSubmit 처리 */}
       <h2>사용자 정보</h2>
-        <img
-          src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${user.path ? user.path : 'default.png'}`}
-          alt="프로필 이미지"
-          style={{ width: '150px', height: '150px' }}
-        />
+      <img
+        src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${user.path ? user.path : 'default.png'}`}
+        alt="프로필 이미지"
+        style={{ width: '150px', height: '150px' }}
+      />
 
-      <input type="hidden" value={user.id} /> {/* ID를 hidden 필드로 추가 */}
       <dl>
         <dt>이메일: </dt>
         <dd>{user.email}</dd>
@@ -89,7 +92,7 @@ const handleDelete = async () => {
       </div>
       <div>
         <label htmlFor="user-profile">프로필 이미지: </label>
-        <input type="file" id="user-profile" />
+        <input type="file" id="user-profile" name="profileImage" /> {/* name 속성 추가 */}
       </div>
       <button type="submit">수정하기</button> {/* 수정하기 버튼 */}
       <button type="button" onClick={handleDelete}>삭제하기</button> {/* 삭제하기 버튼 */}
