@@ -54,11 +54,16 @@ public class MyStoryController {
     }
 
 
-    @GetMapping("view/{storyId}")
-    public ResponseEntity<Map<String, Object>> view(@PathVariable  int storyId) throws Exception {
+    @GetMapping("view/{storyId}/{userId}")
+    public ResponseEntity<Map<String, Object>> view(
+        @PathVariable int storyId, @PathVariable int userId) throws Exception {
         Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
+        }
+
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
         }
 
         List<Photo> photos = storyService.getPhotos(storyId);
