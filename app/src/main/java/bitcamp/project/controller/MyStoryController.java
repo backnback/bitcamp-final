@@ -26,9 +26,9 @@ public class MyStoryController {
     private String folderName = "story/";
 
 
-    @GetMapping("list/{userId}")
+    @GetMapping("list")
     public ResponseEntity<List<Map<String, Object>>> list(
-        @PathVariable int userId
+        @RequestParam int userId
     ) throws Exception {
 
         List<Map<String, Object>> responseList = new ArrayList<>();
@@ -54,9 +54,9 @@ public class MyStoryController {
     }
 
 
-    @GetMapping("view/{storyId}/{userId}")
+    @GetMapping("view/{storyId}")
     public ResponseEntity<Map<String, Object>> view(
-        @PathVariable int storyId, @PathVariable int userId) throws Exception {
+        @PathVariable int storyId, @RequestParam int userId) throws Exception {
         Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
@@ -82,10 +82,15 @@ public class MyStoryController {
     }
 
     @GetMapping("form/update/{storyId}")
-    public ResponseEntity<Map<String, Object>> formUpdate(@PathVariable int storyId) throws Exception {
+    public ResponseEntity<Map<String, Object>> formUpdate(
+        @PathVariable int storyId, @RequestParam int userId) throws Exception {
         Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
+        }
+
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
         }
 
         List<Photo> photos = storyService.getPhotos(storyId);
@@ -100,11 +105,16 @@ public class MyStoryController {
 
 
     @DeleteMapping("delete/{storyId}")
-    public void delete(@PathVariable int storyId) throws Exception {
+    public void delete(
+        @PathVariable int storyId, @RequestParam int userId) throws Exception {
 
         Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
+        }
+
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
         }
 
         for (Photo photo : storyService.getPhotos(storyId)) {
@@ -139,6 +149,10 @@ public class MyStoryController {
         Location location = locationService.findByFullName(firstName, secondName);
         if (location == null) {
             throw new Exception("위치 정보 없음");
+        }
+
+        if (files.length == 0) {
+            throw new Exception("사진 입력 필요");
         }
 
         // Story에 로그인 사용자 및 위치 정보 삽입
@@ -189,9 +203,29 @@ public class MyStoryController {
         @ModelAttribute Story story,
         MultipartFile[] files,
         @PathVariable int storyId,
-        @PathVariable String firstName, @PathVariable String secondName) throws Exception {
+        @PathVariable String firstName, @PathVariable String secondName,
+        @RequestParam int userId) throws Exception {
 
-        User user = userService.findUser(4);
+        Story oldStory = storyService.get(storyId);
+        if (oldStory == null) {
+            throw new Exception("스토리가 존재하지 않습니다.");
+        }
+
+
+        // 로그인 사용자
+        User user = userService.findUser(userId);
+        if (user == null) {
+            throw new Exception("로그인이 필요합니다.");
+        }
+
+        if (oldStory.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
+        }
+
+        List<Photo> oldPhotos = storyService.getPhotos(storyId);
+        if (files.length == 0 && oldPhotos.isEmpty()) {
+            throw new Exception("사진 입력 필요");
+        }
 
         Location location = locationService.findByFullName(firstName, secondName);
         if (location == null) {
@@ -240,10 +274,14 @@ public class MyStoryController {
 
 
     @GetMapping("share/{storyId}")
-    public Story share(@PathVariable int storyId) throws Exception {
+    public Story share(@PathVariable int storyId, @RequestParam int userId) throws Exception {
         Story story = storyService.get(storyId);
         if (story == null) {
             throw new Exception("스토리 정보 없음");
+        }
+
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
         }
 
         story.setShare(!story.isShare());
@@ -253,7 +291,8 @@ public class MyStoryController {
 
 
     @DeleteMapping("photo/delete/{photoId}")
-    public void deletePhoto(@PathVariable int photoId) throws Exception {
+    public void deletePhoto(
+        @PathVariable int photoId, @RequestParam int userId) throws Exception {
 
         // 삭제할 Photo 가져오기
         Photo photo = storyService.getPhoto(photoId);
@@ -261,11 +300,14 @@ public class MyStoryController {
             throw new Exception("없는 사진입니다.");
         }
 
-        // Story에서 로그인 사용자 정보를 가져와서 권한 파악 시 필요 (지금 X)
-//        Story story = storyService.get(photo.getStoryId());
-//        if (story == null) {
-//            throw new Exception("없는 스토리입니다.");
-//        }
+        Story story = storyService.get(photo.getStoryId());
+        if (story == null) {
+            throw new Exception("없는 스토리입니다.");
+        }
+
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
+        }
 
         // Photo 파일 삭제
         try {
