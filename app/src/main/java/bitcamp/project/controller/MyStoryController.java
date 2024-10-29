@@ -1,8 +1,10 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.service.*;
-import bitcamp.project.service.impl.FileServiceImpl;
-import bitcamp.project.vo.*;
+import bitcamp.project.vo.Location;
+import bitcamp.project.vo.Photo;
+import bitcamp.project.vo.Story;
+import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,8 +14,8 @@ import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/story")
-public class StoryController {
+@RequestMapping("/my-story")
+public class MyStoryController {
 
     private final StoryService storyService;
     private final LocationService locationService;
@@ -24,13 +26,15 @@ public class StoryController {
     private String folderName = "story/";
 
 
-    @GetMapping("list")
-    public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
+    @GetMapping("list/{userId}")
+    public ResponseEntity<List<Map<String, Object>>> list(
+        @PathVariable int userId
+    ) throws Exception {
 
         List<Map<String, Object>> responseList = new ArrayList<>();
 
         // Story 1개 + Main 사진 1개
-        for (Story story : storyService.list()) {
+        for (Story story : storyService.myList(userId)) {
             HashMap<String, Object> map = new HashMap<>();
             map.put("story", story);
 

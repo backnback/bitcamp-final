@@ -28,12 +28,6 @@
         </association>
     </resultMap>
 
-    <resultMap id="LocationMap" type="location">
-        <id column="location_id" property="id"/>
-        <result column="first_name" property="firstName"/>
-        <result column="second_name" property="secondName"/>
-    </resultMap>
-
     <resultMap id="PhotoMap" type="photo">
         <id column="photo_id" property="id"/>
         <result column="story_id" property="storyId"/>
@@ -62,6 +56,32 @@
         FROM
             story s inner join user u on s.user_id=u.user_id
             inner join location l on s.location_id=l.location_id
+        ORDER BY
+            s.story_id desc
+    </select>
+
+    <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+        WHERE
+            u.user_id=#{userId}
         ORDER BY
             s.story_id desc
     </select>
@@ -120,11 +140,6 @@
         delete from story_photo
         where story_id = #{id}
     </delete>
-
-    <select id="findByLocation" resultMap="LocationMap">
-        SELECT * FROM location
-        WHERE first_name = #{firstName} AND second_name = #{secondName}
-    </select>
 
     <insert id="insertPhoto" parameterType="photo"
             useGeneratedKeys="true" keyColumn="photo_id" keyProperty="id">
