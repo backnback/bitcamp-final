@@ -29,6 +29,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    public List<Story> myList(int userId) throws Exception {
+        return storyDao.findAllByUserId(userId);
+    }
+
+    @Override
     public Story get(int id) throws Exception {
         return storyDao.findBy(id);
     }
