@@ -23,6 +23,7 @@ public class StoryController {
 
     private String folderName = "story/";
 
+
     @GetMapping("list")
     public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
 
@@ -97,13 +98,9 @@ public class StoryController {
             throw new Exception("스토리가 존재하지 않습니다.");
         }
 
-
-        //FileServiceImpl fileServiceImpl = new FileServiceImpl();
-
         for (Photo photo : storyService.getPhotos(storyId)) {
             try {
                 // 첨부파일 삭제
-                //fileServiceImpl.deletePhoto(photo.getPath());
                 storageService.delete(folderName + photo.getPath());
 
             } catch (Exception e) {
@@ -138,7 +135,6 @@ public class StoryController {
 
         // Photo 정보
         List<Photo> photos = new ArrayList<>();
-        // FileServiceImpl fileServiceImpl = new FileServiceImpl();
 
         for (MultipartFile file : files) {
             if (file.getSize() == 0) {
@@ -146,8 +142,6 @@ public class StoryController {
             }
 
             // 첨부파일 저장
-            // String fileName = fileServiceImpl.upload(file);
-
             String filename = UUID.randomUUID().toString();
 
             HashMap<String, Object> options = new HashMap<>();
