@@ -131,6 +131,9 @@ public class MyStoryController {
 
         // 로그인 사용자
         User user = userService.findUser(userId);
+        if (user == null) {
+            throw new Exception("로그인이 필요합니다.");
+        }
 
         // 위치 정보
         Location location = locationService.findByFullName(firstName, secondName);
