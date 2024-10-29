@@ -114,13 +114,14 @@ public class StoryController {
 
 
     @PostMapping("add/{firstName}/{secondName}")
-    public ResponseEntity<Map<String, Object>> add(
+    public ResponseEntity<Map<String, Object>> add (
         @ModelAttribute Story story,
         MultipartFile[] files,
-        @PathVariable String firstName, @PathVariable String secondName) throws Exception {
+        @PathVariable String firstName, @PathVariable String secondName,
+        @RequestParam int userId) throws Exception {
 
         // 로그인 사용자
-        User user = userService.findUser(4);
+        User user = userService.findUser(userId);
 
         // 위치 정보
         Location location = locationService.findByNames(firstName, secondName);
