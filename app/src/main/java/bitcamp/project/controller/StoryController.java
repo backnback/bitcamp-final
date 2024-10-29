@@ -241,7 +241,7 @@ public class StoryController {
 
 
     @DeleteMapping("photo/delete/{photoId}")
-    public void photoDelete(@PathVariable int photoId) throws Exception {
+    public void deletePhoto(@PathVariable int photoId) throws Exception {
 
         // 삭제할 Photo 가져오기
         Photo photo = storyService.getPhoto(photoId);
