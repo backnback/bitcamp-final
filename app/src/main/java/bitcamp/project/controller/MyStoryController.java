@@ -273,23 +273,6 @@ public class MyStoryController {
     }
 
 
-    @GetMapping("share/{storyId}")
-    public Story share(@PathVariable int storyId, @RequestParam int userId) throws Exception {
-        Story story = storyService.get(storyId);
-        if (story == null) {
-            throw new Exception("스토리 정보 없음");
-        }
-
-        if (story.getUser().getId() != userId) {
-            throw new Exception("접근 권한이 없습니다.");
-        }
-
-        story.setShare(!story.isShare());
-        storyService.update(story);
-        return story;
-    }
-
-
     @DeleteMapping("photo/delete/{photoId}")
     public void deletePhoto(
         @PathVariable int photoId, @RequestParam int userId) throws Exception {
