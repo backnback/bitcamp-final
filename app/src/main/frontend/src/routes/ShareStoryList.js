@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
-import './ShareStoryList.css'; // 스타일 파일 임포트
+// import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 
 const ShareStoryList = () => {
@@ -33,7 +33,7 @@ const ShareStoryList = () => {
                         {map.mainPhoto && (
                             <Link to={`/share-story/view/${map.story.id}`}>
                                 <div className="image-container">
-                                <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${map.mainPhoto.path ? map.mainPhoto.path : 'default.png'}`}/>
+                                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${map.mainPhoto.path ? map.mainPhoto.path : 'default.png'}`} />
                                 </div>
                             </Link>
                         )}

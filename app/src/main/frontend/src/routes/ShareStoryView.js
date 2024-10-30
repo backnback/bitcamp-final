@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
 import axios from 'axios';
-import './ShareStoryView.css';
+// import './ShareStoryView.css';
 
 const ShareStoryView = () => {
     const { id } = useParams(); // URL에서 ID 파라미터를 가져옴
@@ -42,7 +42,7 @@ const ShareStoryView = () => {
                             <div className="photo" key={photo.photoId}>
                                 <img
                                     src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${photo.path ? photo.path : 'default.png'}`}
-//                                    src={`/images${photo.path}`}
+                                    //                                    src={`/images${photo.path}`}
                                     alt={`Photo ${photo.photoId}`}
                                     className={`story-photo ${photo.mainPhoto ? 'main-photo' : ''}`} // Apply main-photo class if it's the main photo
                                 />

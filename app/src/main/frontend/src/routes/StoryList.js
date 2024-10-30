@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 // import './StoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
-import { useUser } from './UserContext';
+import { useUser } from '../UserContext';
 
 const MyStoryList = () => {
     const [responseList, setResponseList] = useState([]); // 변수 이름을 stories로 수정
