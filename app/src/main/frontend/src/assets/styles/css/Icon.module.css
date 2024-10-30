@@ -1,0 +1,14 @@
+.icon {
+    display: inline-flex;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.profile {
+    width: 60px;
+    height: 60px;
+    border-radius: 100%;
+    background-size: cover;
+    background-color: var(--color-white);
+    background-image: url("../../../../public/images/profile-default.png");
+}

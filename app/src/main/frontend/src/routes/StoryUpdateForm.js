@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import './StoryUpdateForm.css';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUser } from './UserContext';
+import { useUser } from '../UserContext';
 
 
 const MyStoryUpdateForm = () => {

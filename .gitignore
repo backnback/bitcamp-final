@@ -60,6 +60,9 @@ Module.symvers
 Mkfile.old
 dkms.conf
 
+# module.css 파일만 재포함
+!*.module.css
+
 ### C++ ###
 # Prerequisites
 

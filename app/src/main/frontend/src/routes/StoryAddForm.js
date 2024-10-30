@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import './StoryAddForm.css'; // CSS 파일을 가져옵니다
 import { useUser } from '../UserContext';
-import { useUser } from './UserContext';
 
 const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
