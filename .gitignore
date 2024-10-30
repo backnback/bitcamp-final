@@ -1,6 +1,7 @@
 # 업로드 하지 않는 파일 설정.
 *.exe
 temp/
+svg/
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,eclipse,intellij,java,c,c++,node,gradle,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,visualstudiocode,eclipse,intellij,java,c,c++,node,gradle,maven
@@ -58,6 +59,9 @@ modules.order
 Module.symvers
 Mkfile.old
 dkms.conf
+
+# module.css 파일만 재포함
+!*.module.css
 
 ### C++ ###
 # Prerequisites
