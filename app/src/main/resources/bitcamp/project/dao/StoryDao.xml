@@ -35,6 +35,12 @@
         <result column="path" property="path"/>
     </resultMap>
 
+    <resultMap id="LikeMap" type="like">
+        <id column="user_id" property="userId"/>
+        <id column="story_id" property="storyId"/>
+        <result column="like_date" property="likeDate"/>
+        <result column="view" property="view"/>
+    </resultMap>
 
     <select id="findAll" resultMap="StoryMap">
         SELECT
@@ -86,6 +92,34 @@
         ORDER BY
             s.story_id desc
     </select>
+
+    <select id="findAllByMyLike" resultMap="StoryMap" parameterType="int">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+            inner join story_like k on k.story_id=s.story_id
+        WHERE
+            k.user_id=#{userId}
+        ORDER BY
+            k.like_date desc
+    </select>
+
 
     <select id="findBy" resultMap="StoryMap" parameterType="int">
         SELECT

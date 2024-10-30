@@ -4,6 +4,7 @@ import bitcamp.project.dao.LikeDao;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.vo.Like;
 
+import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -32,12 +33,7 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
-  public List<Like> findAllByUser(int userId) throws Exception {
-    return likeDao.findAllByUser(userId);
-  }
-
-  @Override
-  public List<Like> findAllToMe(int userId) throws Exception {
+  public List<User> findAllToMe(int userId) throws Exception {
     return likeDao.findAllToMe(userId);
   }
 

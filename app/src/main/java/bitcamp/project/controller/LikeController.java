@@ -4,12 +4,17 @@ import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
 import bitcamp.project.vo.Like;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,17 +30,45 @@ public class LikeController {
     return likeService.findAllByStory(storyId);
   }
 
-  // 내가 좋아요한 목록 (모두)
-  @GetMapping("list/user/{userId}")
-  public List<Like> listByUser(@PathVariable int userId) throws Exception {
-    return likeService.findAllByUser(userId);
-  }
-
   // 나한테 온 모든 좋아요 목록 (미확인만)
   @GetMapping("list/{userId}")
-  public List<Like> findAllToMe(@PathVariable int userId) throws Exception {
+  public List<User> findAllToMe(@PathVariable int userId) throws Exception {
     return likeService.findAllToMe(userId);
   }
+
+
+  // 내가 좋아요한 스토리 목록
+  @GetMapping("list/user/{userId}")
+  public ResponseEntity<List<Map<String, Object>>> findAllByMyLike(
+      @PathVariable int userId) throws Exception {
+
+    List<Map<String, Object>> responseList = new ArrayList<>();
+
+
+    // Story 1개 + Main 사진 1개
+    for (Story story : storyService.findAllByMyLike(userId)) {
+      if (!story.isShare()) {
+        continue;
+      }
+
+      HashMap<String, Object> map = new HashMap<>();
+      map.put("story", story);
+
+      for (Photo photo : storyService.getPhotos(story.getId())) {
+        if (photo.isMainPhoto()) {
+          map.put("mainPhoto", photo);
+        }
+      }
+
+      int likeCount = likeService.findAllByStory(story.getId()).size();
+      map.put("likeCount", likeCount);
+
+      responseList.add(map);
+    }
+
+    return ResponseEntity.ok(responseList);
+  }
+
 
   // 좋아요 등록
   @GetMapping("add/{storyId}")
