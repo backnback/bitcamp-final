@@ -1,43 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import './StoryUpdateForm.css';
-import { useParams, useNavigate } from 'react-router-dom';
+import './MyStoryAddForm.css'; // CSS 파일을 가져옵니다
+import { useUser } from './UserContext';
 
-const StoryUpdateForm = () => {
-    const { id } = useParams();
-    const navigate = useNavigate();
-
+const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
     const [travelDate, setTravelDate] = useState('');
     const [content, setContent] = useState('');
-    const [locationDetail, setLocationDetail] = useState('');
-    const [files, setFiles] = useState([]); // This will hold the existing photos
+    const [locationDetail, setLocationDetail] = useState(''); // 사용자가 입력할 위치 상세 필드
+    const [files, setFiles] = useState([]);
     const [firstNames, setFirstNames] = useState([]);
     const [secondNames, setSecondNames] = useState([]);
     const [selectedFirstName, setSelectedFirstName] = useState('');
     const [selectedSecondName, setSelectedSecondName] = useState('');
-    const [loading, setLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchStoryData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/story/view/${id}`);
-                const story = response.data.story; // Access the story object
-                setTitle(story.title);
-                setTravelDate(story.travelDate);
-                setContent(story.content);
-                setLocationDetail(story.locationDetail);
-                setSelectedFirstName(story.location.firstName);
-                setSelectedSecondName(story.location.secondName);
-                setFiles(response.data.photos || []); // Access the photos from the response
-            } catch (error) {
-                console.error("스토리 데이터를 불러오는 중 오류가 발생했습니다!", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchStoryData();
-    }, [id]);
+    const { user } = useUser(); // UserContext에서 user를 가져옵니다.
 
     useEffect(() => {
         const fetchFirstNames = async () => {
@@ -68,7 +44,7 @@ const StoryUpdateForm = () => {
     }, [selectedFirstName]);
 
     const handleFileChange = (event) => {
-        setFiles([...files, ...event.target.files]);
+        setFiles(event.target.files);
     };
 
     const handleSubmit = async (event) => {
@@ -77,35 +53,33 @@ const StoryUpdateForm = () => {
         const formData = new FormData();
         formData.append('title', title);
         formData.append('travelDate', travelDate);
-        formData.append('locationDetail', locationDetail);
+        formData.append('locationDetail', locationDetail); // 사용자가 입력한 위치 상세
         formData.append('content', content);
 
-        files.forEach(file => {
-            if (file instanceof File) {
-                formData.append('files', file);
-            }
-        });
+        if (user && user.id) {
+            formData.append('userId', user.id);  // 로그인 사용자 정보 전달
+        }
+
+        for (let i = 0; i < files.length; i++) {
+            formData.append('files', files[i]);
+        }
 
         try {
-            const response = await axios.post(`http://localhost:8080/story/update/${id}/${selectedFirstName}/${selectedSecondName}`, formData, {
+            await axios.post(`http://localhost:8080/my-story/add/${selectedFirstName}/${selectedSecondName}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            alert('스토리가 업데이트되었습니다!');
-            navigate(`/story/view/${id}`);
+            alert('스토리가 추가되었습니다!');
+            window.location.href = '/my-story/list';  // My 스토리의 list 페이지로 이동
         } catch (error) {
-            console.error("스토리 업데이트 중 오류가 발생했습니다!", error);
+            console.error("스토리 추가 중 오류가 발생했습니다!", error);
         }
     };
 
-    if (loading) {
-        return <div>로딩 중...</div>;
-    }
-
     return (
-        <form onSubmit={handleSubmit} className="story-update-form">
-            <h2>스토리 수정</h2>
+        <form onSubmit={handleSubmit} className="story-add-form">
+            <h2>스토리 추가</h2>
             <input
                 type="text"
                 placeholder="제목"
@@ -122,9 +96,9 @@ const StoryUpdateForm = () => {
             <div className="location-select-group">
                 <select onChange={(e) => setSelectedFirstName(e.target.value)} value={selectedFirstName}>
                     <option value="">지역 선택</option>
-                    {firstNames.map((name) => (
-                        <option key={name} value={name}>
-                            {name}
+                    {firstNames.map((firstName) => (
+                        <option key={firstName} value={firstName}>
+                            {firstName}
                         </option>
                     ))}
                 </select>
@@ -155,20 +129,9 @@ const StoryUpdateForm = () => {
                 multiple
                 onChange={handleFileChange}
             />
-            <h3>현재 사진들:</h3>
-            <div className="existing-photos">
-                {files.map((file, index) => (
-                    <div key={index} className="photo">
-                        {/* Assuming 'file' has a 'path' property for the image URL */}
-
-                        <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path ? file.path : 'default.png'}`} alt={`Photo ${index + 1}`} />
-                        <span>{file.mainPhoto ? 'main' : ''}</span>
-                    </div>
-                ))}
-            </div>
-            <button type="submit">수정 완료</button>
+            <button type="submit">추가</button>
         </form>
     );
 };
 
-export default StoryUpdateForm;
+export default MyStoryAddForm;
