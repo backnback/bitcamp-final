@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-<<<<<<<< HEAD:app/src/main/frontend/src/routes/StoryUpdateForm.js
 // import './StoryUpdateForm.css';
-========
-import './MyStoryUpdateForm.css';
->>>>>>>> bdde3af070984d02f1dad7283c5ed15b12788aae:app/src/main/frontend/src/MyStoryUpdateForm.js
 import { useParams, useNavigate } from 'react-router-dom';
 import { useUser } from './UserContext';
 

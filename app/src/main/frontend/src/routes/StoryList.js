@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
-<<<<<<<< HEAD:app/src/main/frontend/src/routes/StoryList.js
 // import './StoryList.css'; // 스타일 파일 임포트
-========
-import './MyStoryList.css'; // 스타일 파일 임포트
->>>>>>>> bdde3af070984d02f1dad7283c5ed15b12788aae:app/src/main/frontend/src/MyStoryList.js
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import { useUser } from './UserContext';
 
