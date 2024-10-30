@@ -37,6 +37,11 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
+  public List<Like> findAllToMe(int userId) throws Exception {
+    return likeDao.findAllToMe(userId);
+  }
+
+  @Override
   public void confirmView(int storyId, int userId) throws Exception {
     Like like = new Like();
     like.setStoryId(storyId);

@@ -60,6 +60,7 @@
             s.story_id desc
     </select>
 
+
     <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">
         SELECT
             s.story_id,

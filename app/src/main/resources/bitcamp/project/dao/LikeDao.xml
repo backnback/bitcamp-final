@@ -19,6 +19,20 @@
         SELECT * FROM story_like WHERE user_id = #{userId}
     </select>
 
+    <select id="findAllToMe" resultMap="LikeMap">
+        SELECT
+            l.user_id,
+            l.story_id,
+            l.like_date,
+            l.view
+            FROM
+            story_like l inner join story s on l.story_id=s.story_id
+        WHERE
+            s.user_id = #{userId} AND l.view = false
+        ORDER BY
+            l.like_date desc
+    </select>
+
     <select id="findBy" resultMap="LikeMap">
         SELECT * FROM story_like
         WHERE story_id = #{storyId} AND user_id = #{userId}
