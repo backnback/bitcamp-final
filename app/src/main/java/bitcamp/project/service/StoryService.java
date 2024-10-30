@@ -12,6 +12,8 @@ public interface StoryService {
 
     List<Story> list() throws Exception;
 
+    List<Story> myList(int userId) throws Exception;
+
     Story get(int id) throws Exception;
 
     void update(Story story) throws Exception;

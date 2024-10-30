@@ -1,9 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+<<<<<<<< HEAD:app/src/main/frontend/src/routes/StoryUpdateForm.js
 // import './StoryUpdateForm.css';
+========
+import './MyStoryUpdateForm.css';
+>>>>>>>> bdde3af070984d02f1dad7283c5ed15b12788aae:app/src/main/frontend/src/MyStoryUpdateForm.js
 import { useParams, useNavigate } from 'react-router-dom';
+import { useUser } from './UserContext';
 
-const StoryUpdateForm = () => {
+
+const MyStoryUpdateForm = () => {
     const { id } = useParams();
     const navigate = useNavigate();
 
@@ -11,25 +17,27 @@ const StoryUpdateForm = () => {
     const [travelDate, setTravelDate] = useState('');
     const [content, setContent] = useState('');
     const [locationDetail, setLocationDetail] = useState('');
-    const [files, setFiles] = useState([]); // This will hold the existing photos
+    const [files, setFiles] = useState([]);
     const [firstNames, setFirstNames] = useState([]);
     const [secondNames, setSecondNames] = useState([]);
     const [selectedFirstName, setSelectedFirstName] = useState('');
     const [selectedSecondName, setSelectedSecondName] = useState('');
     const [loading, setLoading] = useState(true);
+    const { user } = useUser();
+
 
     useEffect(() => {
         const fetchStoryData = async () => {
             try {
-                const response = await axios.get(`http://localhost:8080/story/view/${id}`);
-                const story = response.data.story; // Access the story object
+                const response = await axios.get(`http://localhost:8080/my-story/view/${id}?userId=${user.id}`);
+                const story = response.data.story;
                 setTitle(story.title);
                 setTravelDate(story.travelDate);
                 setContent(story.content);
                 setLocationDetail(story.locationDetail);
                 setSelectedFirstName(story.location.firstName);
                 setSelectedSecondName(story.location.secondName);
-                setFiles(response.data.photos || []); // Access the photos from the response
+                setFiles(response.data.photos || []);
             } catch (error) {
                 console.error("스토리 데이터를 불러오는 중 오류가 발생했습니다!", error);
             } finally {
@@ -80,6 +88,10 @@ const StoryUpdateForm = () => {
         formData.append('locationDetail', locationDetail);
         formData.append('content', content);
 
+        if (user && user.id) {
+            formData.append('userId', user.id);  // 로그인 사용자 정보 전달
+        }
+
         files.forEach(file => {
             if (file instanceof File) {
                 formData.append('files', file);
@@ -87,13 +99,13 @@ const StoryUpdateForm = () => {
         });
 
         try {
-            const response = await axios.post(`http://localhost:8080/story/update/${id}/${selectedFirstName}/${selectedSecondName}`, formData, {
+            const response = await axios.post(`http://localhost:8080/my-story/update/${id}/${selectedFirstName}/${selectedSecondName}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             alert('스토리가 업데이트되었습니다!');
-            navigate(`/story/view/${id}`);
+            navigate(`/my-story/view/${id}?userId=${user.id}`);
         } catch (error) {
             console.error("스토리 업데이트 중 오류가 발생했습니다!", error);
         }
@@ -171,4 +183,4 @@ const StoryUpdateForm = () => {
     );
 };
 
-export default StoryUpdateForm;
+export default MyStoryUpdateForm;

@@ -18,4 +18,9 @@
         SELECT DISTINCT first_name FROM location;
     </select>
 
+    <select id="findByFullName" resultMap="LocationMap">
+        SELECT * FROM location
+        WHERE first_name = #{firstName} AND second_name = #{secondName}
+    </select>
+
 </mapper>

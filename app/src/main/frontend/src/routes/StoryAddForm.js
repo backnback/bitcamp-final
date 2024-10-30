@@ -1,9 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+<<<<<<<< HEAD:app/src/main/frontend/src/routes/StoryAddForm.js
 // import './StoryAddForm.css'; // CSS 파일을 가져옵니다
 import { useUser } from '../UserContext';
+========
+import './MyStoryAddForm.css'; // CSS 파일을 가져옵니다
+import { useUser } from './UserContext';
+>>>>>>>> bdde3af070984d02f1dad7283c5ed15b12788aae:app/src/main/frontend/src/MyStoryAddForm.js
 
-const StoryAddForm = () => {
+const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
     const [travelDate, setTravelDate] = useState('');
     const [content, setContent] = useState('');
@@ -65,13 +70,13 @@ const StoryAddForm = () => {
         }
 
         try {
-            await axios.post(`http://localhost:8080/story/add/${selectedFirstName}/${selectedSecondName}`, formData, {
+            await axios.post(`http://localhost:8080/my-story/add/${selectedFirstName}/${selectedSecondName}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
             });
             alert('스토리가 추가되었습니다!');
-            window.location.href = '/story/list';  // list 페이지로 이동
+            window.location.href = '/my-story/list';  // My 스토리의 list 페이지로 이동
         } catch (error) {
             console.error("스토리 추가 중 오류가 발생했습니다!", error);
         }
@@ -134,4 +139,4 @@ const StoryAddForm = () => {
     );
 };
 
-export default StoryAddForm;
+export default MyStoryAddForm;

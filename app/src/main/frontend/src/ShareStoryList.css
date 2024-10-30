@@ -1,0 +1,210 @@
+.story-list {
+    margin-left: 300px;
+    /* 왼쪽 여백 */
+    padding: 20px;
+    /* 내부 여백 */
+    position: relative;
+    /* 상대 위치 */
+    z-index: 1;
+    /* z-index 설정 */
+}
+
+.story-list ul {
+    display: flex;
+    /* 플렉스 박스 사용 */
+    flex-direction: row;
+    /* 가로 방향 정렬 */
+    flex-wrap: wrap;
+    /* 줄 바꿈 허용 */
+    justify-content: space-between;
+    /* 간격 분배 */
+    padding: 0;
+    /* 기본 패딩 제거 */
+    gap: 30px;
+    /* 카드 간격 */
+    list-style-type: none;
+    /* 목록 스타일 제거 */
+    margin: 0;
+    /* 기본 마진 제거 */
+}
+
+.story-card {
+    width: 300px;
+    /* 카드 너비 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 그림자 효과 */
+    border-radius: 8px;
+    /* 모서리 둥글게 */
+    overflow: hidden;
+    /* 오버플로우 방지 */
+    transition: box-shadow 0.3s;
+    /* 그림자 전환 효과 */
+}
+
+.story-header {
+    display: flex;
+    /* 플렉스 박스 사용 */
+    justify-content: space-between;
+    /* 간격 분배 */
+    align-items: center;
+    /* 세로 정렬 */
+    padding: 10px;
+    /* 내부 여백 */
+    background: #f9f9f9;
+    /* 배경 색상 */
+}
+
+.nickname {
+    margin: 0;
+    /* 기본 마진 제거 */
+    font-weight: bold;
+    /* 두껍게 표시 */
+}
+
+.share-button {
+    border: none;
+    /* 테두리 제거 */
+    background: transparent;
+    /* 배경 투명 */
+    cursor: pointer;
+    /* 커서 포인터 변경 */
+    color: #007bff;
+    /* 버튼 색상 */
+}
+
+.image-container {
+    width: 100%;
+    /* 100% 너비 */
+    height: 150px;
+    /* 고정 높이 */
+    overflow: hidden;
+    /* 오버플로우 방지 */
+}
+
+.story-list img {
+    width: 100%;
+    /* 100% 너비 */
+    height: 150px;
+    /* 고정 높이 */
+    object-fit: cover;
+    /* 비율 유지 */
+}
+
+.story-info {
+    padding: 10px;
+    /* 내부 여백 */
+    display: flex;
+    /* 플렉스 박스 사용 */
+    flex-direction: column;
+    /* 세로 방향 정렬 */
+}
+
+.like-info {
+    display: flex;
+    /* 플렉스 박스 사용 */
+    align-items: center;
+    /* 수직 정렬 */
+    gap: 5px;
+    /* 간격 추가 */
+}
+
+.like-info span {
+    color: #666;
+    /* 좋아요 수 색상 */
+    font-size: 13px;
+    /* 폰트 크기 */
+}
+
+.like-button {
+    border: none;
+    /* 테두리 제거 */
+    background: transparent;
+    /* 배경 투명 */
+    cursor: pointer;
+    /* 커서 포인터 변경 */
+    color: #007bff;
+    /* 버튼 색상 */
+}
+
+.location-date {
+    display: flex;
+    /* 플렉스 박스 사용 */
+    justify-content: space-between;
+    /* 양 끝으로 정렬 */
+    align-items: center;
+    /* 수직 정렬 */
+    margin: 10px 0;
+    /* 공간 추가 */
+    font-size: 14px;
+    /* 기본 폰트 크기 */
+    width: 100%;
+    /* 공간을 모두 차지하도록 설정 */
+}
+
+.story-info a {
+    font-size: 18px;
+    /* 제목 폰트 크기 */
+    font-weight: bold;
+    /* 두껍게 표시 */
+    color: #333;
+    /* 텍스트 색상 */
+    text-decoration: none;
+    /* 기본 링크 스타일 제거 */
+}
+
+.story-info a:hover {
+    text-decoration: underline;
+    /* 마우스 오버 시 밑줄 추가 */
+}
+
+.story-info p {
+    font-size: 12px;
+    margin: 0;
+    margin-top: 10px;
+    /* 기본 마진 제거 */
+    color: #666;
+    /* 내용 색상 */
+}
+
+.story-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* 마우스 오버 시 그림자 효과 */
+}
+
+.add-story-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 300px;
+    /* 추가 버튼이 story-card와 같은 너비 */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    /* 기본 그림자 */
+    border-radius: 8px;
+    /* 둥근 모서리 */
+    background-color: #4CAF50;
+    /* 배경색 */
+    transition: box-shadow 0.3s;
+    /* 그림자 전환 효과 */
+}
+
+.add-story-card:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    /* 마우스 오버 시 그림자 효과 증가 */
+}
+
+.add-story-icon {
+    background-color: #4CAF50;
+    /* 버튼의 녹색 배경 */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 32px;
+    /* 추가 버튼 폰트 크기 */
+}
+
+.add-story-icon:hover {
+    background-color: #45a049;
+    /* 버튼 호버 시 더 어두운 녹색 */
+}
