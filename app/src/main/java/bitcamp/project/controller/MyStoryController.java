@@ -224,11 +224,16 @@ public class MyStoryController {
         }
 
         List<Photo> oldPhotos = storyService.getPhotos(storyId);
+
+        // 기존 사진이 없고 추가하는 사진도 없는 경우 처리
         if ((files == null || files.length == 0) && oldPhotos.isEmpty()) {
             throw new Exception("사진 입력 필요");
-        } else if (Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
+        } else if (files == null || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
             throw new Exception("사진 입력 필요");
         }
+
+        // 기존 사진이 있
+
 
         Location location = locationService.findByFullName(firstName, secondName);
         if (location == null) {

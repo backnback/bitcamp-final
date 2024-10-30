@@ -5,11 +5,13 @@ import SignUp from "./SignUp";
 import ViewUser from "./ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./Login"; // Login 컴포넌트 import
 import Header from "./header";
-import StoryList from "./StoryList"; // StoryList 컴포넌트 import
-import StoryView from "./StoryView";
+import ShareStoryList from "./ShareStoryList"; // ShareStoryList 컴포넌트 import
+import MyStoryList from "./MyStoryList"; // MyStoryList 컴포넌트 import
+import MyStoryView from "./MyStoryView";
+import ShareStoryView from "./ShareStoryView";
 import FaqList from "./FaqList";
-import StoryAddForm from "./StoryAddForm";
-import StoryUpdateForm from "./StoryUpdateForm";
+import MyStoryAddForm from "./MyStoryAddForm";
+import MyStoryUpdateForm from "./MyStoryUpdateForm";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
 
 function App() {
@@ -64,10 +66,12 @@ function App() {
         <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
         <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
         <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
-        <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
-        <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
-        <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
-        <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
+        <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 공유 스토리 목록 페이지 */}
+        <Route path="/my-story/list" element={<MyStoryList />} /> {/* My 스토리 목록 페이지 */}
+        <Route path="/my-story/view/:id" element={<MyStoryView />} /> {/* 특정 My 스토리 보기 */}
+        <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 공유 스토리 보기 */}
+        <Route path="/my-story/form/add" element={<MyStoryAddForm />} /> {/* My 스토리 추가 */}
+        <Route path="/my-story/form/update/:id" element={<MyStoryUpdateForm />} /> {/* My 스토리 수정 */}
         <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
       </Routes>
     </div>

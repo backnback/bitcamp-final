@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
 import axios from 'axios';
-import './StoryView.css';
+import './MyStoryView.css';
+import { useUser } from './UserContext';
 
-const StoryView = () => {
+const MyStoryView = () => {
     const { id } = useParams(); // URL에서 ID 파라미터를 가져옴
     const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [responseMap, setResponseMap] = useState(null);
+    const { user } = useUser();
 
     const fetchResponseMap = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/story/view/${id}`);
+            const response = await axios.get(`http://localhost:8080/my-story/view/${id}?userId=${user.id}`);
             setResponseMap(response.data);
         } catch (error) {
             console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
@@ -25,9 +27,9 @@ const StoryView = () => {
         const confirmDelete = window.confirm("정말 삭제하시겠습니까?");
         if (confirmDelete) {
             try {
-                await axios.delete(`http://localhost:8080/story/delete/${id}`);
+                await axios.delete(`http://localhost:8080/my-story/delete/${id}?userId=${user.id}`);
                 alert("스토리가 삭제되었습니다.");
-                navigate('/story/list'); // 삭제 후 목록 페이지로 이동
+                navigate('/my-story/list'); // 삭제 후 목록 페이지로 이동
             } catch (error) {
                 console.error("스토리 삭제 중 오류가 발생했습니다!", error);
                 alert("스토리 삭제에 실패했습니다.");
@@ -37,7 +39,7 @@ const StoryView = () => {
 
     // Add a function to navigate to the update form
     const handleEdit = () => {
-        navigate(`/story/form/update/${id}`); // StoryUpdateForm으로 이동
+        navigate(`/my-story/form/update/${id}?userId=${user.id}`); // MyStoryUpdateForm으로 이동
     };
 
     if (!responseMap) {
@@ -82,4 +84,4 @@ const StoryView = () => {
     );
 };
 
-export default StoryView;
+export default MyStoryView;

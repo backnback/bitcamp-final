@@ -12,7 +12,8 @@ const Header = () => {
       <nav className="nav">
         <ul>
           <li><Link to="/">홈</Link></li>
-          <li><Link to="/story/list">스토리</Link></li>
+          <li><Link to="/my-story/list">My 스토리</Link></li>
+          <li><Link to="/share-story/list">공유 스토리</Link></li>
           <li className="faq"><Link to="/faqs/list">고객 문의</Link></li>
         </ul>
       </nav>
