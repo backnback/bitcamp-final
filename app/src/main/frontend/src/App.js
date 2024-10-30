@@ -7,7 +7,9 @@ import ViewUser from "./routes/ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./routes/Login"; // Login 컴포넌트 import
 import StoryMap from "./routes/StoryMap";
 import StoryList from "./routes/StoryList"; // StoryList 컴포넌트 import
+import ShareStoryList from "./routes/ShareStoryList"; // ShareStoryList 컴포넌트 import
 import StoryView from "./routes/StoryView";
+import ShareStoryView from "./routes/ShareStoryView";
 import FaqList from "./routes/FaqList";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
@@ -81,8 +83,10 @@ function App() {
           <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
           <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
           <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
-          <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
-          <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
+          <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 스토리 목록 페이지 */}
+          <Route path="/my-story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
+          <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
+          <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
           <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
           <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
           <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
