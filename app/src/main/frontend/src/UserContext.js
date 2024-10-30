@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from 'react';
+import Header from './components/Header';
 
 // UserContext 생성
 const UserContext = createContext();
