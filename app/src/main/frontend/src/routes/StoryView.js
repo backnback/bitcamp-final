@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
 import axios from 'axios';
-<<<<<<<< HEAD:app/src/main/frontend/src/routes/StoryView.js
 // import './StoryView.css';
-========
-import './MyStoryView.css';
 import { useUser } from './UserContext';
->>>>>>>> bdde3af070984d02f1dad7283c5ed15b12788aae:app/src/main/frontend/src/MyStoryView.js
 
 const MyStoryView = () => {
     const { id } = useParams(); // URL에서 ID 파라미터를 가져옴
