@@ -12,7 +12,7 @@ import FaqList from "./routes/FaqList";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
-import layoutStyles from "./assets/styles/css/layout.module.css";
+import layoutStyles from "./assets/styles/css/Layout.module.css";
 
 import MapSeoul from "./components/map/MapSeoul";
 import MapBusan from "./components/map/MapBusan";
