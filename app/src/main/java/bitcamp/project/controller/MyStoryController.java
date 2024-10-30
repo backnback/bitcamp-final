@@ -151,7 +151,7 @@ public class MyStoryController {
             throw new Exception("위치 정보 없음");
         }
 
-        if (files.length == 0) {
+        if (files == null || files.length == 0 || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
             throw new Exception("사진 입력 필요");
         }
 
@@ -218,12 +218,15 @@ public class MyStoryController {
             throw new Exception("로그인이 필요합니다.");
         }
 
+
         if (oldStory.getUser().getId() != userId) {
             throw new Exception("접근 권한이 없습니다.");
         }
 
         List<Photo> oldPhotos = storyService.getPhotos(storyId);
-        if (files.length == 0 && oldPhotos.isEmpty()) {
+        if ((files == null || files.length == 0) && oldPhotos.isEmpty()) {
+            throw new Exception("사진 입력 필요");
+        } else if (Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
             throw new Exception("사진 입력 필요");
         }
 
