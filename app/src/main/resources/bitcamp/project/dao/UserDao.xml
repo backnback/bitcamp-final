@@ -33,7 +33,7 @@
     <update id="update" parameterType="map">
         UPDATE user
         SET password=sha1(#{user.password}), nickname=#{user.nickname}, path=#{user.path}
-        WHERE user_id=#{no}
+        WHERE user_id=#{id}
     </update>
 
     <delete id="delete" parameterType="int">

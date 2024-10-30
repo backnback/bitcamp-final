@@ -1,0 +1,101 @@
+/* font */
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 100;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Thin.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Thin.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Thin.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Thin.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 200;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Light.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Light.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Light.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Light.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 300;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-DemiLight.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-DemiLight.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-DemiLight.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-DemiLight.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 400;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Regular.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Regular.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Regular.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Regular.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 500;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Medium.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Medium.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Medium.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Medium.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 600;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Bold.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Bold.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Bold.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Bold.woff2") format("woff2");
+}
+
+@font-face {
+    font-family: "Noto Sans Korean";
+    font-weight: 700;
+    font-style: normal;
+    src: url("../../fonts/NotoSans/NotoSans-Black.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/NotoSans/NotoSans-Black.otf") format("opentype"),
+        url("../../fonts/NotoSans/NotoSans-Black.woff") format("woff"),
+        url("../../fonts/NotoSans/NotoSans-Black.woff2") format("woff2");
+}
+
+/* Roboto */
+@font-face {
+    font-family: "Roboto";
+    font-weight: 400;
+    font-style: normal;
+    src: url("../../fonts/Roboto/Roboto-Regular.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/Roboto/Roboto-Regular.otf") format("opentype"),
+        url("../../fonts/Roboto/Roboto-Regular.woff") format("woff"),
+        url("../../fonts/Roboto/Roboto-Regular.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-weight: 500;
+    font-style: normal;
+    src: url("../../fonts/Roboto/Roboto-Medium.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/Roboto/Roboto-Medium.otf") format("opentype"),
+        url("../../fonts/Roboto/Roboto-Medium.woff") format("woff"),
+        url("../../fonts/Roboto/Roboto-Medium.ttf") format("truetype");
+}
+
+@font-face {
+    font-family: "Roboto";
+    font-weight: 600;
+    font-style: normal;
+    src: url("../../fonts/Roboto/Roboto-Bold.eot?#iefix") format("embedded-opentype"),
+        url("../../fonts/Roboto/Roboto-Bold.otf") format("opentype"),
+        url("../../fonts/Roboto/Roboto-Bold.woff") format("woff"),
+        url("../../fonts/Roboto/Roboto-Bold.ttf") format("truetype");
+}

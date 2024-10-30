@@ -49,6 +49,9 @@ dependencies {
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.772'
 
 //    implementation libs.guava
+
+    implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
+
 }
 
 tasks.named('test') {
