@@ -19,10 +19,10 @@ function Header() {
                                 <Link to="/story/map" className={styles.nav__gnb__link}>지도</Link>
                             </li>
                             <li className={styles.nav__gnb__item}>
-                                <Link to="/story/list" className={styles.nav__gnb__link}>내 스토리</Link>
+                                <Link to="/my-story/list" className={styles.nav__gnb__link}>내 스토리</Link>
                             </li>
                             <li className={styles.nav__gnb__item}>
-                                <Link to="/story/list" className={styles.nav__gnb__link}>공개 스토리</Link>
+                                <Link to="/share-story/list" className={styles.nav__gnb__link}>공개 스토리</Link>
                             </li>
                             <li className={styles.nav__gnb__item}>
                                 <Link to="/viewuser/" className={styles.nav__gnb__link}>마이페이지</Link>
