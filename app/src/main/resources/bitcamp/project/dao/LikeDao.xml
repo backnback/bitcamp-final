@@ -11,13 +11,35 @@
         <result column="view" property="view"/>
     </resultMap>
 
+    <resultMap id="UserMap" type="user">
+        <id column="user_id" property="id"/>
+        <result column="email" property="email"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="path" property="path"/>
+    </resultMap>
+
+
     <select id="findAllByStory" resultMap="LikeMap" parameterType="int">
         SELECT * FROM story_like WHERE story_id = #{storyId}
     </select>
 
-    <select id="findAllByUser" resultMap="LikeMap" parameterType="int">
-        SELECT * FROM story_like WHERE user_id = #{userId}
+
+    <select id="findAllToMe" resultMap="UserMap" parameterType="int">
+        SELECT
+            u.user_id,
+            u.email,
+            u.nickname,
+            u.path
+        FROM
+            story_like l inner join story s on l.story_id=s.story_id
+            inner join user u on l.user_id=u.user_id
+        WHERE
+            s.user_id = #{userId} AND l.view = false
+        ORDER BY
+            l.like_date desc
     </select>
+
 
     <select id="findBy" resultMap="LikeMap">
         SELECT * FROM story_like

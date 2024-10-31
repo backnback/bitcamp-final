@@ -14,6 +14,8 @@ public interface StoryService {
 
     List<Story> myList(int userId) throws Exception;
 
+    List<Story> findAllByMyLike(int userId) throws Exception;
+
     Story get(int id) throws Exception;
 
     void update(Story story) throws Exception;
