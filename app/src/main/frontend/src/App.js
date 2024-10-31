@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link , useNavigate} from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -37,7 +37,7 @@ import MapUlsan from "./components/map/MapUlsan";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
-  const { user, logout } = useUser();
+  const { user, logout, setUser } = useUser();
   const [users, setUsers] = useState([]); // 사용자 목록 상태
 
   // 사용자 목록 가져오기 함수
@@ -56,7 +56,8 @@ function App() {
 
   return (
     <div className={`${layoutStyles.wrapper} ${layoutStyles.wrapper__header}`}>
-      <Header />
+    {user == null ? <Login /> : <Header />}
+
 
       <div className={`${layoutStyles.content__wrapper}`}>
         <Routes>
