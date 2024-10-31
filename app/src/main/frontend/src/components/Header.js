@@ -50,7 +50,7 @@ function Header() {
                         </div>
                         <ul className={styles.nav__aside__list}>
                             <li className={styles.nav__aside__item}>
-                                <Link to="/faq/list" className={styles.nav__aside__link}>고객문의</Link>
+                                <Link to="/faqs" className={styles.nav__aside__link}>고객문의</Link>
                             </li>
                             <li className={styles.nav__aside__item}>
                                 <Link to="/login" onClick={handleLogout} className={styles.nav__aside__link}>로그아웃</Link>

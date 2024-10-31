@@ -1,0 +1,81 @@
+/* FaqList.css */
+.faq__list__container {
+    position: relative;
+    width: 50%;
+    margin: 0 auto;
+    background-color: #fff;
+    margin-left: 500px;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.faq__title {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 30px;
+}
+
+.faq__list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.faq__item {
+    border-bottom: 1px solid #ccc;
+    margin-bottom: 10px;
+}
+
+.faq__header {
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    cursor: pointer;
+    background-color: #f7f7f7;
+    transition: background-color 0.3s ease;
+    font-weight: bold;
+}
+
+.faq__header:hover {
+    background-color: #e6e6e6;
+}
+
+.faq__number {
+    width: 50px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.faq__question {
+    flex: 1;
+}
+
+.faq__toggle {
+    font-size: 14px;
+}
+
+.faq__content {
+    padding: 15px;
+    background-color: #fafafa;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.edit__faq__button {
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 20px;
+    background-color: transparent;
+    position: absolute; /* 절대 위치 지정 */
+    top: 40px; /* 컨테이너 상단에서 10px */
+    right: 20px; /* 컨테이너 오른쪽에서 10px */
+}
+
+/*
+.add-faq-button:hover {
+    background-color: #0056b3;
+}
+*/
