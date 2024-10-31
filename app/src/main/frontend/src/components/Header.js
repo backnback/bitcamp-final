@@ -1,8 +1,17 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import styles from '../assets/styles/css/Header.module.css';
 import iconStyles from '../assets/styles/css/Icon.module.css';
+import { useUser } from '../UserContext'; // UserContext import
 
 function Header() {
+    const { user, setUser } = useUser(); // useUser를 컴포넌트 내부로 이동하고, setUser도 함께 구조 분해할당
+
+    const handleLogout = () => {
+        // 로그아웃 처리
+        localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
+        setUser(null); // UserContext에서 유저 정보 초기화
+    };
+
     return (
         <header className={styles.header}>
             <div className={styles.header__wrapper}>
@@ -25,7 +34,6 @@ function Header() {
                                 <Link to="/share-story/list" className={styles.nav__gnb__link}>공개 스토리</Link>
                             </li>
                             <li className={styles.nav__gnb__item}>
-                                {/* <Link to="/viewuser/" className={styles.nav__gnb__link}>마이페이지</Link> */}
                                 <Link to="/test/list" className={styles.nav__gnb__link}>마이페이지</Link>
                             </li>
                         </ul>
@@ -37,7 +45,7 @@ function Header() {
                         <div className={styles.nav__profile}>
                             <Link to="/viewuser/" className={styles.nav__profile__link}>
                                 <i className={`${iconStyles.icon} ${iconStyles.profile} ${styles.nav__profile__img}`}></i>
-                                <strong className={styles.nav__profile__name}>제펫토</strong>
+                                <strong className={styles.nav__profile__name}>{user ? user.nickname : "Guest"}</strong>
                             </Link>
                         </div>
                         <ul className={styles.nav__aside__list}>
@@ -45,14 +53,13 @@ function Header() {
                                 <Link to="/faq/list" className={styles.nav__aside__link}>고객문의</Link>
                             </li>
                             <li className={styles.nav__aside__item}>
-                                <Link to="/login" className={styles.nav__aside__link}>로그아웃</Link>
+                                <Link to="/login" onClick={handleLogout} className={styles.nav__aside__link}>로그아웃</Link>
                             </li>
                         </ul>
                     </nav>
                 </div>
             </div>
         </header>
-
     );
 }
 
