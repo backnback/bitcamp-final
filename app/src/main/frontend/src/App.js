@@ -10,7 +10,7 @@ import StoryList from "./routes/StoryList"; // StoryList 컴포넌트 import
 import ShareStoryList from "./routes/ShareStoryList"; // ShareStoryList 컴포넌트 import
 import StoryView from "./routes/StoryView";
 import ShareStoryView from "./routes/ShareStoryView";
-import FaqList from "./routes/FaqList";
+import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
@@ -89,7 +89,7 @@ function App() {
           <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
           <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
           <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
-          <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
+          <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
         </Routes>
       </div>
     </div>
