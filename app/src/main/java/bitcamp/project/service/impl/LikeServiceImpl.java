@@ -38,6 +38,16 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
+  public int countLikes(int storyId) throws Exception {
+    return likeDao.findAllByStory(storyId).size();
+  }
+
+  @Override
+  public boolean getStatus(int storyId, int userId) throws Exception {
+    return likeDao.getStatus(storyId, userId) > 0;
+  }
+
+  @Override
   public void confirmView(int storyId, int userId) throws Exception {
     Like like = new Like();
     like.setStoryId(storyId);

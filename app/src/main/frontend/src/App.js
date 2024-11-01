@@ -90,7 +90,7 @@ function App() {
           <Route path="/test/list" element={<Test />} /> {/* 테스트 */}
           <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
           <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
-          <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
+          <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
           <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
           <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
         </Routes>

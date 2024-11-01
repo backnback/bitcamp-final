@@ -1,5 +1,6 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.vo.Photo;
@@ -25,7 +26,7 @@ public class ShareStoryController {
     private final LikeService likeService;
 
     @GetMapping("list")
-    public ResponseEntity<List<Map<String, Object>>> list() throws Exception {
+    public ResponseEntity<List<Map<String, Object>>> list2() throws Exception {
 
         List<Map<String, Object>> responseList = new ArrayList<>();
 
@@ -51,6 +52,12 @@ public class ShareStoryController {
         }
 
         return ResponseEntity.ok(responseList);
+    }
+
+
+    @GetMapping("list/{userId}")
+    public List<StoryListDTO> list(@PathVariable int userId) throws Exception {
+        return storyService.listAllShareStories(userId);
     }
 
 

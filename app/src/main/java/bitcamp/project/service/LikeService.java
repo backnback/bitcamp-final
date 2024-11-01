@@ -16,6 +16,10 @@ public interface LikeService {
 
   List<User> findAllToMe(int userId) throws Exception;
 
+  int countLikes(int storyId) throws Exception;
+
+  boolean getStatus(int storyId, int userId) throws Exception;
+
   void confirmView(int storyId, int userId) throws Exception;
 
   void delete(int storyId, int userId) throws Exception;
