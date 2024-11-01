@@ -36,6 +36,7 @@ public class LikeController {
       System.out.println(user.getId());
       List<User> users = likeService.findAllToMe(user.getId());
       return ResponseEntity.ok(users);
+
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("나를 좋아요한 유저 목록을 불러오는 데 실패했습니다.");
     }
