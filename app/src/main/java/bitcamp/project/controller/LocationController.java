@@ -27,5 +27,4 @@ public class LocationController {
     return locationService.getSecondNames(firstName);
   }
 
-
 }
