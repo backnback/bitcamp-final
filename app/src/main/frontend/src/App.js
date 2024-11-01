@@ -16,7 +16,6 @@ import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import FormStyles from "./routes/FormStyles";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
-import layoutStyles from "./assets/styles/css/Layout.module.css";
 
 import MapSeoul from "./components/map/MapSeoul";
 import MapBusan from "./components/map/MapBusan";
@@ -56,12 +55,12 @@ function App() {
   }, []);
 
   return (
-    <div className={`${layoutStyles.wrapper} ${layoutStyles.wrapper__header}`}>
+    <div className={`layout__wrapper layout__wrapper__header`}>
       {user == null ? <Login /> : <Header />}
 
 
-      <div className={`${layoutStyles.content__wrapper}`}>
-        <div className={`${layoutStyles.contents}`}>
+      <div className={`layout__content__wrapper`}>
+        <div className={`layout__contents`}>
           <Routes>
             <Route path="/story/map" element={<StoryMap />} />
 

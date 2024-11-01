@@ -1,22 +1,20 @@
-.item {
-    flex: 1 100%;
+.button__item {
     max-width: 270px;
     margin: 5px;
 }
 
-.item__130 {
+.button__item__130 {
     max-width: 130px;
 }
 
-.item__icon {
+.button__item__icon {
     display: inline-flex;
-    flex: auto;
-    width: auto;
+    justify-content: center;
+    align-items: center;
     max-width: unset;
-    margin: 0;
 }
 
-.item button {
+.button {
     display: flex;
     flex-direction: row;
     justify-content: center;
@@ -24,14 +22,12 @@
     padding: 12px;
     width: 100%;
     min-height: 38px;
-    background: var(--color-white);
     border: 1px solid var(--color-white);
     border-radius: var(--border-radius);
     cursor: pointer;
 }
 
-
-.item button[data-button=iconButton] {
+.button__icon {
     padding: 0;
     width: auto;
     min-height: unset;
@@ -40,44 +36,46 @@
     border-color: transparent;
 }
 
-.item [data-button=text] {
+.button__text {
     font-weight: 600;
     font-size: var(--font-button);
 }
 
-.item button[data-button=primary] {
+.button__primary {
     background: var(--color-primary);
     border: 1px solid var(--color-primary);
 }
 
-.item button[data-button=primary]:hover {
+.button__primary:hover {
     background-color: var(--color-primary-button-hover);
 }
 
-.item button[data-button=primary] [data-button=text] {
+.button__primary .button__text {
     color: var(--color-gray-f5);
 }
 
-.item button[data-button^=white]:hover {
+.button[class^=button__white]:hover {
     background-color: var(--color-gray-cc-20);
 }
 
-.item button[data-button=whiteRed] {
+.button__whiteRed {
     background: var(--color-white);
     border: 1px solid var(--color-red);
+}
+
+.button__whiteRed .button__text {
     color: var(--color-red);
 }
 
-.item button[data-button=whiteRed]:hover {
+.button__whiteRed:hover {
     background-color: var(--color-gray-cc-20);
 }
 
-.item button[data-button=whitePrimary] {
+.button__whitePrimary {
     background: var(--color-white);
     border: 1px solid var(--color-primary);
-    color: var(--color-primary)
 }
 
-.item button[data-button=whitePrimary] [data-button=text] {
+.button__whitePrimary .button__text {
     color: var(--color-primary);
 }

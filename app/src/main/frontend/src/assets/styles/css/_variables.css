@@ -42,6 +42,7 @@
     --color-primaryGradient: linear-gradient(180deg, #4DA7FF 0%, #B1EDF8 100%);
 
     --color-primary-button-hover: rgba(26, 115, 232, 0.9);
+    --color-blue-83-button-hover: rgba(123, 192, 236, 0.9);
 
     /* padding, margin */
     --padding-rl: 12px;

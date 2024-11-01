@@ -1,0 +1,32 @@
+@import url('_layout.css');
+@import url('_icon.css');
+@import url('_button.css');
+@import url('_form.css');
+
+.blind {
+    opacity: 0;
+    position: absolute;
+    width: 0;
+    height: 0;
+    font-size: 0;
+    text-indent: -9999px;
+}
+
+.text__h5 {
+    font-size: var(--font-size-h5);
+}
+
+.text {
+    font-size: var(--font-size);
+}
+
+.text__content {
+    font-size: var(--font-size);
+    line-height: 1.3;
+}
+
+.line1 {
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
