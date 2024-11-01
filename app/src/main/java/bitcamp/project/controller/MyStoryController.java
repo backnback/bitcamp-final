@@ -225,14 +225,18 @@ public class MyStoryController {
 
         List<Photo> oldPhotos = storyService.getPhotos(storyId);
 
-        // 기존 사진이 없고 추가하는 사진도 없는 경우 처리
+
+        // 기존 사진이 있는 경우  =>  예외 없음
+        // 기존 사진이 없는 겨우
+        // (1) files가 들어오지 않거나 들어와도 내부에 파일이 없는 경우  =>  예외 발생
+        // (2) 유효하지 않는 (손상된) 파일  =>  예외 발생
         if ((files == null || files.length == 0) && oldPhotos.isEmpty()) {
-            throw new Exception("사진 입력 필요");
-        } else if (files == null || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
-            throw new Exception("사진 입력 필요");
+            throw new Exception("스토리에 최소 한 개의 사진이 필요합니다.");
         }
 
-        // 기존 사진이 있
+        if (files != null && Arrays.stream(files).allMatch(file -> file.getSize() == 0) && oldPhotos.isEmpty()) {
+            throw new Exception("유효하지 않는 파일입니다.");
+        }
 
 
         Location location = locationService.findByFullName(firstName, secondName);

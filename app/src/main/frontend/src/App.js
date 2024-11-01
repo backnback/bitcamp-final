@@ -7,8 +7,11 @@ import ViewUser from "./routes/ViewUser"; // ViewUser 컴포넌트 import
 import Login from "./routes/Login"; // Login 컴포넌트 import
 import StoryMap from "./routes/StoryMap";
 import StoryList from "./routes/StoryList"; // StoryList 컴포넌트 import
+import ShareStoryList from "./routes/ShareStoryList"; // ShareStoryList 컴포넌트 import
 import StoryView from "./routes/StoryView";
-import FaqList from "./routes/FaqList";
+import Test from "./routes/Test";
+import ShareStoryView from "./routes/ShareStoryView";
+import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
@@ -31,11 +34,10 @@ import MapSouthChungcheong from "./components/map/MapSouthChungcheong";
 import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
-import FormStyles from "./routes/FormStyles";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
-  const { user, logout } = useUser();
+  const { user, logout, setUser } = useUser();
   const [users, setUsers] = useState([]); // 사용자 목록 상태
 
   // 사용자 목록 가져오기 함수
@@ -54,9 +56,8 @@ function App() {
 
   return (
     <div className={`${layoutStyles.wrapper} ${layoutStyles.wrapper__header}`}>
+    {user == null ? <Login /> : <Header />}
 
-
-      <Header />
 
       <div className={`${layoutStyles.content__wrapper}`}>
         <div className={`${layoutStyles.contents}`}>
@@ -83,17 +84,18 @@ function App() {
             <Route path="/story/map/southJeolla" element={<MapSouthJeolla />} />
             <Route path="/story/map/ulsan" element={<MapUlsan />} />
 
-            <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
-            <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
-            <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
-            <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
-            <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
-            <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
-            <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
-            <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
-          </Routes>
-        </div>
-
+          <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
+          <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
+          <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
+          <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 스토리 목록 페이지 */}
+          <Route path="/my-story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
+          <Route path="/test/list" element={<Test />} /> {/* 테스트 */}
+          <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
+          <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
+          <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
+          <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
+          <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
+        </Routes>
       </div>
     </div>
   );

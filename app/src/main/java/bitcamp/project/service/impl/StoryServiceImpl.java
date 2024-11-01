@@ -3,6 +3,7 @@ package bitcamp.project.service.impl;
 import bitcamp.project.dao.StoryDao;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.vo.AttachedFile;
+import bitcamp.project.vo.Like;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +32,11 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public List<Story> myList(int userId) throws Exception {
         return storyDao.findAllByUserId(userId);
+    }
+
+    @Override
+    public List<Story> findAllByMyLike(int userId) throws Exception {
+        return storyDao.findAllByMyLike(userId);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package bitcamp.project.dao;
 
+import bitcamp.project.vo.Like;
 import bitcamp.project.vo.Location;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
@@ -15,6 +16,8 @@ public interface StoryDao {
     List<Story> findAll() throws Exception;
 
     List<Story> findAllByUserId(int userId) throws Exception;
+
+    List<Story> findAllByMyLike(int userId) throws Exception;
 
     Story findBy(int storyId) throws Exception;
 

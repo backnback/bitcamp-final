@@ -11,5 +11,7 @@ public interface FaqService {
 
     Faq get(int id) throws Exception;
 
+    boolean update(Faq faq) throws Exception;
+
     void delete(int id) throws Exception;
 }

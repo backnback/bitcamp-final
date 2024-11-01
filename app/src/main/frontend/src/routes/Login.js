@@ -1,32 +1,49 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
-import { useUser } from '../UserContext'; // UserContext를 가져옵니다.
+import { useNavigate, Link } from 'react-router-dom';
+import { jwtDecode } from 'jwt-decode';
+import { useUser } from '../UserContext';
 
 function Login() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [saveId, setSaveId] = useState(false);
   const navigate = useNavigate();
-  const { setUser } = useUser(); // UserContext에서 setUser를 가져옵니다.
+  const { setUser } = useUser();
+
+  // 페이지가 로드될 때 토큰을 확인하고 유저 정보를 설정
+  useEffect(() => {
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      const userInfo = jwtDecode(token);
+      setUser(userInfo); // UserContext에 유저 정보 설정
+    }
+  }, [setUser]);
 
   const handleLogin = async (e) => {
     e.preventDefault();
 
-    const params = new URLSearchParams();
-    params.append('email', email);
-    params.append('password', password);
-
     try {
-      const response = await axios.post('http://localhost:8080/sign/in', params);
+      const response = await axios.post('http://localhost:8080/sign/in', {
+        email: email,
+        password: password
+      }, {
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
       if (response.data) {
-        // 로그인 성공 시 사용자 정보를 설정
-        console.log("로그인 성공");
-        setUser({ id: response.data.id, nickname: response.data.nickname }); // 사용자 정보를 UserContext에 설정
-        navigate('/'); // useNavigate로 홈으로 이동
+        const { accessToken } = response.data;
+
+        // 토큰을 로컬 스토리지에 저장
+        localStorage.setItem('accessToken', accessToken);
+
+        // 토큰 디코딩하여 유저 정보 추출
+        const userInfo = jwtDecode(accessToken);
+        setUser(userInfo); // UserContext에 유저 정보 설정
+        navigate('/'); // 홈 페이지로 이동
       } else {
-        // 로그인 실패 처리
         alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
       }
     } catch (error) {
@@ -72,6 +89,7 @@ function Login() {
             <label htmlFor="save-id">아이디 저장</label>
           </div>
           <button type="submit">로그인</button>
+            <Link to="/signup"  >회원가입</Link>
         </form>
       </section>
     </div>
