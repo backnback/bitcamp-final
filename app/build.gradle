@@ -52,6 +52,10 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
+    // MapStruct 라이브러리 (DTO 관련)
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
     // Spring Security
     implementation 'org.springframework.boot:spring-boot-starter-security'
 

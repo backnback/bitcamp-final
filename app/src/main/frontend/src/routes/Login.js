@@ -16,6 +16,7 @@ function Login() {
     const token = localStorage.getItem('accessToken');
     if (token) {
       const userInfo = jwtDecode(token);
+      console.log("Decoded userInfo:", userInfo);
       setUser(userInfo); // UserContext에 유저 정보 설정
     }
   }, [setUser]);

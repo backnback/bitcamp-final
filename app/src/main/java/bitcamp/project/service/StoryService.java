@@ -1,5 +1,6 @@
 package bitcamp.project.service;
 
+import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.vo.AttachedFile;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
@@ -30,4 +31,5 @@ public interface StoryService {
 
     void deletePhoto(int id) throws Exception;
 
+    List<StoryListDTO> listAllShareStories(int userId) throws Exception;
 }
