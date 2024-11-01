@@ -1,18 +1,14 @@
-.item {
+.form__item {
     flex: 1;
     margin: 10px 0;
     word-break: break-all;
 }
 
-::placeholder {
-    color: var(--color-gray-bd);
-}
+.form__label {}
 
-.item label {}
-
-.item input,
-.item select,
-.item textarea {
+.form__input,
+.form__select,
+.form__textarea {
     display: inline-flex;
     width: 100%;
     border: 1px solid var(--color-gray-bd);
@@ -21,43 +17,41 @@
     font-size: var(--font-size);
 }
 
-.item input,
-.item select {
+.form__input,
+.form__select {
     height: 40px;
 }
 
-.item textarea {
+.form__textarea {
     resize: none;
     min-height: 80px;
     padding: 12px 16px;
 }
 
-.item label[data-label=checkbox],
-.item label[data-label=radio] {
+.form__label[type=checkbox] .form__label[type=radio] {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-.item input[type=checkbox],
-.item input[type=radio] {
+.form__input[type=checkbox],
+.form__input[type=radio] {
     width: 16px;
     height: 16px;
 }
 
-.item input[type=checkbox]:checked,
-.item input[type=radio]:checked {
+.form__input[type=checkbox]:checked,
+.form__input[type=radio]:checked {
     background-color: var(--color-red);
     border-color: red;
 }
 
-.item input[type=checkbox] [data-input=text],
-.item input[type=radio] [data-input=text] {
+.form__input__text {
     flex: 1 100%;
     word-break: break-all;
 }
 
-.item label[data-label='file'] {
+.form__label__file {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -71,27 +65,14 @@
     cursor: pointer;
 }
 
-.item label[data-label='file']:hover {
+.form__label__file:hover {
     background-color: var(--color-gray-cc-20);
     transition: .2s;
 }
 
-.item input[type='file'] {
-    opacity: 0;
-    width: 0;
-    height: 0;
-    padding: 0;
-    margin: 0;
-    border: 0;
-    position: absolute;
-    background-color: transparent;
-    font-size: 0;
-    text-indent: -9999px;
-}
+.form__input__file__icon {}
 
-.input__file__icon {}
-
-.file__text {
+.form__file__text {
     color: var(--color-gray-bd);
     text-align: center;
 }

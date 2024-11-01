@@ -1,6 +1,5 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import styles from '../assets/styles/css/Header.module.css';
-import iconStyles from '../assets/styles/css/Icon.module.css';
 import { useUser } from '../UserContext'; // UserContext import
 
 function Header() {
@@ -44,8 +43,11 @@ function Header() {
                     <nav className={styles.nav__aside}>
                         <div className={styles.nav__profile}>
                             <Link to="/viewuser/" className={styles.nav__profile__link}>
-                                <i className={`${iconStyles.icon} ${iconStyles.profile} ${styles.nav__profile__img}`}></i>
-                                <strong className={styles.nav__profile__name}>{user ? user.nickname : "Guest"}</strong>
+                                {/* <i className={`${iconStyles.icon} ${iconStyles.profile} ${styles.nav__profile__img}`}></i> */}
+                                <span className={styles.nav__profile__img__wrap}>
+                                    <img src={'/images/profile-default.png'} className={styles.nav__profile__img} />
+                                </span>
+                                <strong className={`${styles.nav__profile__name} line1`}>{user ? user.nickname : "Guest"}</strong>
                             </Link>
                         </div>
                         <ul className={styles.nav__aside__list}>

@@ -2,76 +2,68 @@ import FormFileIcon from "../components/FormFileIcon";
 import { InputProvider } from '../components/InputProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
 import { SelectProvider } from '../components/SelectProvider';
-import { TitleProvider, TextProvider } from "../components/TitleProvider";
-import iconStyles from "../assets/styles/css/Icon.module.css";
-import commonStyles from "../assets/styles/css/Commons.module.css";
+import StoryItem, { StoryAddContext } from "../components/StoryItem";
 
 function FormStyles() {
     return (
         <>
-            <TitleProvider children={
-                <h5 data-title='h5'>제목</h5>
-            } />
-
-            <TextProvider children={
-                <div>
-                    <p data-text='p'>친구들과 함께 놀이공원에서 즐겁게 놀고왔다.</p>
-                    <br />
-                    <p data-text='p'>#놀이공원 #민지피티</p>
-                </div>
-            } />
 
             <InputProvider>
-                <input />
+                <input placeholder="입력입력" className={`form__input`} />
             </InputProvider>
 
             <InputProvider>
-                <label htmlFor="checkbox01" data-label="checkbox">
+                <label htmlFor="checkbox01" className={`form__label form__label__checkbox`}>
                     <input
                         type='checkbox'
+                        className={`form__input`}
                         defaultChecked='checked'
                         id='checkbox01'
                         name='체크체크' />
-                    <span data-input="text">체크해라</span>
+                    <span className={`.input__text`}>체크해라</span>
                 </label>
             </InputProvider>
 
             <InputProvider>
-                <label htmlFor="checkbox02" data-label="checkbox">
+                <label htmlFor="checkbox02" className={`form__label form__label__checkbox`}>
                     <input
                         type='checkbox'
+                        className={`form__input`}
                         id='checkbox02'
                         name='체크체크' />
-                    <span data-input="text">체크하지마러라</span>
+                    <span className={`.input__text`}>체크하지마러라</span>
                 </label>
             </InputProvider>
 
             <InputProvider>
-                <label htmlFor="radio01" data-label="radio">
+                <label htmlFor="radio01" className={`form__label form__label__radio`}>
 
                     <input
                         type='radio'
+                        className={`form__input`}
                         defaultChecked='checked'
                         id='radio01'
                         name='라디오' />
-                    <span data-input="text">라디오버튼이여</span>
+                    <span className={`.input__text`}>라디오버튼이여</span>
 
                 </label>
             </InputProvider>
 
             <InputProvider>
-                <label htmlFor="radio02" data-label="radio">
+                <label htmlFor="radio02" className={`form__label form__label__radio`}>
                     <input
                         type='radio'
+                        className={`form__input`}
                         id='radio02'
                         name='라디오' />
-                    <span data-input="text">라디오버튼이여</span>
+                    <span className={`.input__text`}>라디오버튼이여</span>
                 </label>
             </InputProvider>
 
             <InputProvider>
                 <input
                     type='text'
+                    className={`form__input`}
                     defaultValue='텍스트를 작성하는건? value'
                     id='text01'
                     name='텍수투'
@@ -81,6 +73,7 @@ function FormStyles() {
             <InputProvider>
                 <input
                     type='password'
+                    className={`form__input`}
                     id='pwd01'
                     name='패수워드'
                     placeholder='비밀번호' />
@@ -89,6 +82,7 @@ function FormStyles() {
             <InputProvider>
                 <input
                     type='email'
+                    className={`form__input`}
                     id='email01'
                     name='이메일'
                     defaultValue='test@test.com'
@@ -96,8 +90,8 @@ function FormStyles() {
             </InputProvider>
 
             <InputProvider>
-                <label htmlFor="file01" data-label="file">
-                    <input type='file' id="file01" />
+                <label htmlFor="file01" className={`form__label form__label__file`}>
+                    <input type='file' className={`blind`} id="file01" />
                     <FormFileIcon />
                 </label>
             </InputProvider>
@@ -106,29 +100,30 @@ function FormStyles() {
                 <textarea
                     id='textarea01'
                     placeholder='내용 입력'
+                    className={`form__textarea`}
                 ></textarea>
             </InputProvider>
 
             <ButtonProvider>
-                <button type="button" data-button='primary'>
-                    <span data-button="text">등록</span>
+                <button type="button" className={`button button__primary`}>
+                    <span className={`button__text`}>등록</span>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider>
-                <button type="button" data-button='whiteRed'>
-                    <span data-button="text">삭제</span>
+                <button type="button" className={`button button__whiteRed`}>
+                    <span className={`button__text`}>삭제</span>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider width={'130'}>
-                <button type="button" data-button='whitePrimary'>
-                    <span data-button="text">삭제</span>
+                <button type="button" className={`button button__whitePrimary`}>
+                    <span className={`button__text`}>삭제</span>
                 </button>
             </ButtonProvider>
 
             <SelectProvider>
-                <select id="select01" name="selectName">
+                <select id="select01" name="selectName" className={`form__select`}>
                     <option value={'0'}>선택해라</option>
                     <option value={'1'}>2021</option>
                     <option value={'2'}>2022</option>
@@ -137,31 +132,35 @@ function FormStyles() {
             </SelectProvider>
 
             <ButtonProvider width={'icon'}>
-                <button type="button" data-button='iconButton'>
-                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.arrow__right__black}`}></i>
-                    <span className={commonStyles.blind}>닫기</span>
+                <button type="button" className={`button button__icon`}>
+                    <i data-button="icon" className={`icon icon__arrow__right__black`}></i>
+                    <span className={`blind`}>닫기</span>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider width={'icon'}>
-                <button type="button" data-button='iconButton'>
-                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.edit__black}`}></i>
+                <button type="button" className={`button button__icon`}>
+                    <i data-button="icon" className={`icon icon__edit__black`}></i>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider width={'icon'}>
-                <button type="button" data-button='iconButton'>
-                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.share__black}`}></i>
+                <button type="button" className={`button button__icon`}>
+                    <i data-button="icon" className={`icon icon__share__black`}></i>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider width={'icon'}>
-                <button type="button" data-button='iconButton'>
-                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.trash__red}`}></i>
+                <button type="button" className={`button button__icon`}>
+                    <i data-button="icon" className={`icon icon__trash__red`}></i>
                 </button>
             </ButtonProvider>
 
-            <i className={`${iconStyles.icon} ${iconStyles.lock__black}`}></i>
+            <i className={`icon icon__lock__black`}></i>
+
+            <StoryItem />
+
+            <StoryAddContext />
         </>
     )
 }
