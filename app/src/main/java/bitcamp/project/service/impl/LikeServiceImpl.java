@@ -1,9 +1,11 @@
 package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.LikeDao;
+import bitcamp.project.dao.StoryDao;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.vo.Like;
 
+import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,9 +18,15 @@ import java.util.List;
 public class LikeServiceImpl implements LikeService {
 
   private final LikeDao likeDao;
+  private final StoryDao storyDao;
 
   @Override
-  public void add(int storyId, int userId) throws Exception {
+  public void addLike(int storyId, int userId) throws Exception {
+    Story story = storyDao.findByStoryId(storyId);
+    if (story == null) {
+      throw new Exception("없는 스토리입니다");
+    }
+
     likeDao.insert(storyId, userId);
   }
 
@@ -48,16 +56,37 @@ public class LikeServiceImpl implements LikeService {
   }
 
   @Override
-  public void confirmView(int storyId, int userId) throws Exception {
-    Like like = new Like();
-    like.setStoryId(storyId);
-    like.setUserId(userId);
+  public void confirmLikeView(int storyId, int otherUserId, int loginUserId) throws Exception {
+
+    Story story = storyDao.findByStoryId(storyId);
+    if (story == null) {
+      throw new Exception("없는 스토리입니다");
+    } else if  (story.getUser().getId() != loginUserId) {
+      throw new Exception("접근 권한이 없습니다.");
+    }
+
+    Like like = likeDao.findBy(storyId, otherUserId);
+    if (like.isView()) {
+      throw new Exception("이미 확인하였습니다.");
+    }
+
     like.setView(true);
     likeDao.update(like);
   }
 
   @Override
-  public void delete(int storyId, int userId) throws Exception {
+  public void deleteLike(int storyId, int userId) throws Exception {
+
+    Story story = storyDao.findByStoryId(storyId);
+    if (story == null) {
+      throw new Exception("없는 스토리입니다");
+    }
+
+    Like like = likeDao.findBy(storyId, userId);
+    if (like == null) {
+      throw new Exception("접근 권한이 없습니다.");
+    }
+
     likeDao.delete(storyId, userId);
   }
 }

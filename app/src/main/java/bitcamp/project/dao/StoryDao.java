@@ -1,7 +1,5 @@
 package bitcamp.project.dao;
 
-import bitcamp.project.vo.Like;
-import bitcamp.project.vo.Location;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import org.apache.ibatis.annotations.Mapper;
@@ -19,7 +17,7 @@ public interface StoryDao {
 
     List<Story> findAllByMyLike(int userId) throws Exception;
 
-    Story findBy(int storyId) throws Exception;
+    Story findByStoryId(int storyId) throws Exception;
 
     boolean update(Story story) throws Exception;
 
