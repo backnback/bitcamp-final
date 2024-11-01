@@ -5,7 +5,10 @@ import bitcamp.project.security.JwtTokenProvider;
 import bitcamp.project.service.UserService;
 import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -20,6 +23,10 @@ import java.util.List;
 
 @Service
 public class UserServiceImpl implements UserService {
+
+    @Value("${jwt.secret}")
+    String secret;
+
     @Autowired
     private UserDao userDao;
 
@@ -89,5 +96,24 @@ public class UserServiceImpl implements UserService {
     @Override
     public String encodePassword(String password) throws Exception {
         return passwordEncoder.encode(password);
+    }
+
+    @Override
+    public User decodeToken(String token) throws Exception {
+        // Bearer 문자열 제거
+        String jwtToken = token.replace("Bearer ", "");
+
+        // 토큰을 디코딩하고 페이로드 정보 추출
+        Claims claims = Jwts.parser()
+                .setSigningKey(secret)
+                .parseClaimsJws(jwtToken)
+                .getBody();
+
+        // Claims에서 필요한 정보를 추출하여 User 객체 생성
+        User user = new User();
+        user.setId(Integer.parseInt(claims.getSubject())); // 사용자 ID
+        user.setNickname(claims.get("nickname", String.class)); // 닉네임
+        user.setPath(claims.get("path", String.class)); // path
+        return user;
     }
 }
