@@ -22,4 +22,5 @@ public interface LikeDao {
 
   boolean delete(@Param("storyId") int storyId, @Param("userId") int userId) throws Exception;
 
+  int getStatus(@Param("storyId") int storyId, @Param("userId") int userId) throws Exception;
 }

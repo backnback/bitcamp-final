@@ -9,6 +9,9 @@ import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -32,7 +35,18 @@ public class LikeController {
 
   // 나한테 온 모든 좋아요 목록 (미확인만)
   @GetMapping("list/{userId}")
-  public List<User> findAllToMe(@PathVariable int userId) throws Exception {
+  public List<User> findAllToMe(@PathVariable int userId, @RequestHeader("Authorization") String authorizationHeader) throws Exception {
+
+    // 요청 헤더에서 토큰 추출
+    String token = authorizationHeader.startsWith("Bearer ") ? authorizationHeader.substring(7) : authorizationHeader;
+    System.out.println("Extracted token: " + token);
+
+    // SecurityContextHolder에서 인증된 사용자 정보 가져오기
+    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    User user = (User) authentication.getPrincipal();  // UserDetailsService에서 반환한 User 타입으로 캐스팅
+
+    System.out.println(user.getId());
+
     return likeService.findAllToMe(userId);
   }
 
@@ -40,10 +54,10 @@ public class LikeController {
   // 내가 좋아요한 스토리 목록
   @GetMapping("list/user/{userId}")
   public ResponseEntity<List<Map<String, Object>>> findAllByMyLike(
-      @PathVariable int userId) throws Exception {
+      @PathVariable  int userId
+      ) throws Exception {
 
     List<Map<String, Object>> responseList = new ArrayList<>();
-
 
     // Story 1개 + Main 사진 1개
     for (Story story : storyService.findAllByMyLike(userId)) {

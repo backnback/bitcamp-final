@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추�
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import { useUser } from '../UserContext';
 
+
 const MyStoryList = () => {
     const [responseList, setResponseList] = useState([]); // 변수 이름을 stories로 수정
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
@@ -11,7 +12,7 @@ const MyStoryList = () => {
 
     const fetchList = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/my-story/list?userId=${user.id}`); // API 요청
+            const response = await axios.get(`http://localhost:8080/my-story/list?userId=${user.userId}`); // API 요청
             setResponseList(response.data);
         } catch (error) {
             console.error("There was an error", error);

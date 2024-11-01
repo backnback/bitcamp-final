@@ -1,22 +1,33 @@
 package bitcamp.project.service.impl;
 
+import bitcamp.project.dao.LikeDao;
 import bitcamp.project.dao.StoryDao;
+import bitcamp.project.dao.UserDao;
+import bitcamp.project.dto.PhotoDTO;
+import bitcamp.project.dto.StoryListDTO;
+import bitcamp.project.mapper.StoryMapper;
+import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
-import bitcamp.project.vo.AttachedFile;
-import bitcamp.project.vo.Like;
-import bitcamp.project.vo.Photo;
-import bitcamp.project.vo.Story;
+import bitcamp.project.vo.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
+@RequiredArgsConstructor
 public class StoryServiceImpl implements StoryService {
 
-    @Autowired
-    private StoryDao storyDao;
+    private final StoryDao storyDao;
+    private final LikeDao likeDao;
+    private final LikeService likeService;
+    private final StoryMapper storyMapper;
+
 
     @Transactional
     @Override
@@ -71,13 +82,46 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
-    public Photo getPhoto(int id) throws Exception {
-        return storyDao.getPhoto(id);
+    public Photo getPhoto(int storyId) throws Exception {
+        return storyDao.getPhoto(storyId);
     }
 
     @Override
     public void deletePhoto(int id) throws Exception {
         storyDao.deletePhoto(id);
+    }
+
+
+    @Override
+    public List<StoryListDTO> listAllShareStories(int userId) throws Exception {
+        // list : 공유 허용된 모든 스토리 목록   (로그인 ID에 따라 좋아요 상태 변화)
+
+        List<StoryListDTO> storyListDTOs = new ArrayList<>();
+
+        for (Story story : storyDao.findAll()) {
+            if (!story.isShare()) {
+                continue;
+            }
+
+            StoryListDTO storyListDTO = storyMapper.toStoryListDTO(story);
+
+            Photo mainPhoto = storyDao.getPhotos(story.getId())
+                .stream()
+                .filter(Photo::isMainPhoto)
+                .findFirst()
+                .orElse(null);
+
+            if (mainPhoto != null) {
+                storyListDTO.setMainPhoto(storyMapper.toPhotoDTO(mainPhoto));
+            }
+
+            storyListDTO.setLikeCount(likeService.countLikes(story.getId()));
+            storyListDTO.setLikeStatus(likeService.getStatus(story.getId(), userId));
+
+            storyListDTOs.add(storyListDTO);
+        }
+
+        return storyListDTOs;
     }
 
 }
