@@ -7,7 +7,7 @@ export const useButtonContext = () => useContext(Button);
 
 export const ButtonProvider = ({ children, type, width }) => {
     return (
-        <div className={`${styles.item} ${width == '130' ? styles.item__130 : ''}`}>
+        <div className={`${styles.item} ${width == '130' ? styles.item__130 : width == 'icon' ? styles.item__icon : ''}`}>
             <Button.Provider value={type}>
                 {children}
             </Button.Provider>

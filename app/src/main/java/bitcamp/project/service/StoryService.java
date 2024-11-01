@@ -1,32 +1,31 @@
 package bitcamp.project.service;
 
+import bitcamp.project.dto.AddStoryRequestDTO;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
+import bitcamp.project.dto.UpdateStoryRequestDTO;
 import bitcamp.project.vo.AttachedFile;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Map;
 
 public interface StoryService {
 
-    void add(Story story) throws Exception;
+    ResponseEntity<Map<String, Object>> add(AddStoryRequestDTO addStoryRequestDTO, MultipartFile[] files) throws Exception;
 
     List<Story> list() throws Exception;
 
     Story get(int id) throws Exception;
 
-    void update(Story story) throws Exception;
+    ResponseEntity<Map<String, Object>> update(UpdateStoryRequestDTO updateStoryRequestDTO, MultipartFile[] files) throws Exception;
 
-    void delete(int id) throws Exception;
+    void delete(int storyId, int userId) throws Exception;
 
-    void addPhotos(List<Photo> photos) throws Exception;
-
-    List<Photo> getPhotos(int id) throws Exception;
-
-    Photo getPhoto(int id) throws Exception;
-
-    void deletePhoto(int id) throws Exception;
+    void deletePhoto(int photoId, int userId) throws Exception;
 
     List<StoryListDTO> listAllShareStories(int userId) throws Exception;
 

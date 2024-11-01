@@ -10,6 +10,7 @@
         <result column="password" property="password"/>
         <result column="nickname" property="nickname"/>
         <result column="path" property="path"/>
+        <result column="role" property="role"/>
     </resultMap>
 
     <resultMap id="UserInfo" type="bitcamp.project.vo.User">

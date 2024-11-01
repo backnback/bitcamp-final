@@ -13,6 +13,8 @@ public class User {
     private String password;
     private String nickname;
     private String path;
+    private String role;
+
     private Collection<? extends GrantedAuthority> authorities;
 
     public User() {

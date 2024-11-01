@@ -2,13 +2,23 @@ import FormFileIcon from "../components/FormFileIcon";
 import { InputProvider } from '../components/InputProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
 import { SelectProvider } from '../components/SelectProvider';
-import { TitleProvider } from "../components/TitleProvider";
+import { TitleProvider, TextProvider } from "../components/TitleProvider";
+import iconStyles from "../assets/styles/css/Icon.module.css";
+import commonStyles from "../assets/styles/css/Commons.module.css";
 
 function FormStyles() {
     return (
         <>
             <TitleProvider children={
                 <h5 data-title='h5'>제목</h5>
+            } />
+
+            <TextProvider children={
+                <div>
+                    <p data-text='p'>친구들과 함께 놀이공원에서 즐겁게 놀고왔다.</p>
+                    <br />
+                    <p data-text='p'>#놀이공원 #민지피티</p>
+                </div>
             } />
 
             <InputProvider>
@@ -101,19 +111,19 @@ function FormStyles() {
 
             <ButtonProvider>
                 <button type="button" data-button='primary'>
-                    <span data-button="text" className="button__text">등록</span>
+                    <span data-button="text">등록</span>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider>
                 <button type="button" data-button='whiteRed'>
-                    <span data-button="text" className="button__text">삭제</span>
+                    <span data-button="text">삭제</span>
                 </button>
             </ButtonProvider>
 
             <ButtonProvider width={'130'}>
-                <button type="button" data-button='whiteRed'>
-                    <span data-button="text" className="button__text">삭제</span>
+                <button type="button" data-button='whitePrimary'>
+                    <span data-button="text">삭제</span>
                 </button>
             </ButtonProvider>
 
@@ -125,6 +135,33 @@ function FormStyles() {
                     <option value={'3'}>2023</option>
                 </select>
             </SelectProvider>
+
+            <ButtonProvider width={'icon'}>
+                <button type="button" data-button='iconButton'>
+                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.arrow__right__black}`}></i>
+                    <span className={commonStyles.blind}>닫기</span>
+                </button>
+            </ButtonProvider>
+
+            <ButtonProvider width={'icon'}>
+                <button type="button" data-button='iconButton'>
+                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.edit__black}`}></i>
+                </button>
+            </ButtonProvider>
+
+            <ButtonProvider width={'icon'}>
+                <button type="button" data-button='iconButton'>
+                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.share__black}`}></i>
+                </button>
+            </ButtonProvider>
+
+            <ButtonProvider width={'icon'}>
+                <button type="button" data-button='iconButton'>
+                    <i data-button="icon" className={`${iconStyles.icon} ${iconStyles.trash__red}`}></i>
+                </button>
+            </ButtonProvider>
+
+            <i className={`${iconStyles.icon} ${iconStyles.lock__black}`}></i>
         </>
     )
 }

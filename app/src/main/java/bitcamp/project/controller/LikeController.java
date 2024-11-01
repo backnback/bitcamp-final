@@ -3,11 +3,13 @@ package bitcamp.project.controller;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
+import bitcamp.project.service.UserService;
 import bitcamp.project.vo.Like;
 import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,14 +24,19 @@ public class LikeController {
 
   private final LikeService likeService;
   private final StoryService storyService;
+  @Autowired
+  private UserService userService;
 
   // 나를 좋아요한 User 목록 (미확인만)
   // 확인 방법 : confirmView()
-  @GetMapping("list/{userId}")
-  public ResponseEntity<?> findAllToMe(@PathVariable int userId) {
+  @GetMapping("list")
+  public ResponseEntity<?> findAllToMe(@RequestHeader("Authorization") String token) {
     try {
-      List<User> users = likeService.findAllToMe(userId);
+      User user = userService.decodeToken(token);
+      System.out.println(user.getId());
+      List<User> users = likeService.findAllToMe(user.getId());
       return ResponseEntity.ok(users);
+
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("나를 좋아요한 유저 목록을 불러오는 데 실패했습니다.");
     }

@@ -34,7 +34,6 @@ public class UserController {
     @GetMapping("list")
     public List<User> list() throws Exception{
         List<User> users =  userService.list();
-
         return users;
     }
 

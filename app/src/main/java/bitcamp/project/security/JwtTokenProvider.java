@@ -44,6 +44,7 @@ public class JwtTokenProvider {
                 .claim("auth", authoritiesString) // 권한 정보를 클레임에 추가
                 .claim("nickname", user.getNickname()) // 사용자 닉네임 추가
                 .claim("userId", user.getId()) // 사용자 ID 추가
+                .claim("path", user.getPath()) // 사용자 ID 추가\
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 30)) // 만료 시간 설정
                 .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 설정
                 .compact();
