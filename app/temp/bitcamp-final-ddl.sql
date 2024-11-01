@@ -23,6 +23,7 @@ CREATE TABLE user (
     password VARCHAR(255)  NOT NULL COMMENT '비밀번호', -- 비밀번호
     nickname VARCHAR(50)  NOT NULL COMMENT '닉네임', -- 닉네임
     path     VARCHAR(255) NULL     COMMENT '프로필 사진' -- 프로필 사진
+    role     VARCHAR(255) NOT NULL COMMENT '역할' -- 프로필 사진
 )
 COMMENT '회원';
 

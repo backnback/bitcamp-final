@@ -100,20 +100,28 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User decodeToken(String token) throws Exception {
-        // Bearer 문자열 제거
-        String jwtToken = token.replace("Bearer ", "");
+        try {
+            // Bearer 문자열 제거
+            String jwtToken = token.replace("Bearer ", "");
 
-        // 토큰을 디코딩하고 페이로드 정보 추출
-        Claims claims = Jwts.parser()
-                .setSigningKey(secret)
-                .parseClaimsJws(jwtToken)
-                .getBody();
+            // 토큰을 디코딩하고 페이로드 정보 추출
+            Claims claims = Jwts.parser()
+                    .setSigningKey(secret)
+                    .parseClaimsJws(jwtToken)
+                    .getBody();
 
-        // Claims에서 필요한 정보를 추출하여 User 객체 생성
-        User user = new User();
-        user.setId(Integer.parseInt(claims.getSubject())); // 사용자 ID
-        user.setNickname(claims.get("nickname", String.class)); // 닉네임
-        user.setPath(claims.get("path", String.class)); // path
-        return user;
+// Claims에서 필요한 정보를 추출하여 User 객체 생성
+            User user = new User();
+            user.setEmail(claims.getSubject()); // 사용자 이메일
+            user.setNickname(claims.get("nickname", String.class)); // 닉네임
+            user.setId(claims.get("userId", Integer.class)); // 사용자 ID
+            user.setPath(claims.get("path", String.class)); // 경로
+            user.setRole(claims.get("auth", String.class)); // 역할
+
+            return user;
+        }catch (Exception e){
+            e.printStackTrace();
+            throw e; // 예외를 다시 던져 호출자에게 알림
+        }
     }
 }
