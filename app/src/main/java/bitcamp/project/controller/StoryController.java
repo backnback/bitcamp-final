@@ -26,7 +26,7 @@ public class StoryController {
         }
 
         story.setShare(!story.isShare());
-        storyService.update(story);
+        // storyService.update(story);
         return story;
     }
 

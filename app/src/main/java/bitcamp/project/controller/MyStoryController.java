@@ -3,12 +3,14 @@ package bitcamp.project.controller;
 import bitcamp.project.dto.AddStoryRequestDTO;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
+import bitcamp.project.dto.UpdateStoryRequestDTO;
 import bitcamp.project.service.*;
 import bitcamp.project.vo.Location;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -21,26 +23,35 @@ import java.util.*;
 public class MyStoryController {
 
     private final StoryService storyService;
-    private final LocationService locationService;
-    private final UserService userService;
-    private final LikeService likeService;
     private final StorageService storageService;
+    private final PhotoService photoService;
 
     private String folderName = "story/";
 
 
     @GetMapping("list/{userId}")
-    public List<StoryListDTO> list(@PathVariable int userId) throws Exception {
-        return storyService.listAllMyStories(userId);
+    public ResponseEntity<?> list(@PathVariable int userId) {
+        try {
+            List<StoryListDTO> storyListDTOs = storyService.listAllMyStories(userId);
+            return ResponseEntity.ok(storyListDTOs);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내 스토리 목록 가져오기 실패");
+        }
     }
 
 
     @GetMapping("view/{storyId}/{userId}")
-    public StoryViewDTO view(
+    public ResponseEntity<?> view(
         @PathVariable int storyId,
-        @RequestParam int userId) throws Exception {
+        @RequestParam int userId) {
+        try {
+            StoryViewDTO storyViewDTO = storyService.viewMyStory(storyId, userId);
+            return ResponseEntity.ok(storyViewDTO);
 
-        return storyService.viewMyStory(storyId, userId);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내 스토리 상세 조회 실패");
+        }
     }
 
 
@@ -60,7 +71,7 @@ public class MyStoryController {
             throw new Exception("접근 권한이 없습니다.");
         }
 
-        List<Photo> photos = storyService.getPhotos(storyId);
+        List<Photo> photos = photoService.getPhotos(storyId);
 
         // Story와 함께 Photo 데이터 보내기
         Map<String, Object> response = new HashMap<>();
@@ -84,7 +95,7 @@ public class MyStoryController {
             throw new Exception("접근 권한이 없습니다.");
         }
 
-        for (Photo photo : storyService.getPhotos(storyId)) {
+        for (Photo photo : photoService.getPhotos(storyId)) {
             try {
                 // 첨부파일 삭제
                 storageService.delete(folderName + photo.getPath());
@@ -98,261 +109,45 @@ public class MyStoryController {
         storyService.delete(storyId);
     }
 
-
-    @PostMapping("add/{firstName}/{secondName}")
-    public ResponseEntity<Map<String, Object>> add2 (
-        @ModelAttribute Story story,
-        MultipartFile[] files,
-        @PathVariable String firstName, @PathVariable String secondName,
-        @RequestParam int userId) throws Exception {
-
-        // 로그인 사용자
-        User user = userService.findUser(userId);
-        if (user == null) {
-            throw new Exception("로그인이 필요합니다.");
-        }
-
-        // 위치 정보
-        Location location = locationService.findByFullName(firstName, secondName);
-        if (location == null) {
-            throw new Exception("위치 정보 없음");
-        }
-
-        if (files == null || files.length == 0 || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
-            throw new Exception("사진 입력 필요");
-        }
-
-        // Story에 로그인 사용자 및 위치 정보 삽입
-        story.setLocation(location);
-        story.setUser(user);
-        storyService.add(story);
-
-        // Photo 정보
-        List<Photo> photos = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {
-                continue;
-            }
-
-            // 첨부파일 저장
-            String filename = UUID.randomUUID().toString();
-
-            HashMap<String, Object> options = new HashMap<>();
-            options.put(StorageService.CONTENT_TYPE, file.getContentType());
-            storageService.upload(folderName + filename,
-                file.getInputStream(),
-                options);
-
-            Photo photo = new Photo();
-            photo.setStoryId(story.getId());
-            photo.setMainPhoto(false);
-            photo.setPath(filename);
-
-            photos.add(photo);
-        }
-
-        photos.getFirst().setMainPhoto(true);
-
-        // Photo DB 처리
-        storyService.addPhotos(photos);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("story", story);
-        response.put("photos", photos);
-
-        return ResponseEntity.ok(response);
-    }
-
-
     @PostMapping("add")
-    public ResponseEntity<Map<String, Object>> add (
-        @ModelAttribute AddStoryRequestDTO request,
-        MultipartFile[] files) throws Exception {
-
-        // 로그인 사용자
-        User user = userService.findUser(request.getUserId());
-        if (user == null) {
-            throw new Exception("로그인이 필요합니다.");
-        }
-
-        // 위치 정보
-        Location location = locationService.findByFullName(request.getFirstName(),
-            request.getSecondName());
-        if (location == null) {
-            throw new Exception("위치 정보 없음");
-        }
-
-        if (files == null || files.length == 0 || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
-            throw new Exception("사진 입력 필요");
-        }
-
-        // Story에 로그인 사용자 및 위치 정보 삽입
-        Story story = new Story();
-        story.setTitle(request.getTitle());
-        story.setTravelDate(request.getTravelDate());
-        story.setLocationDetail(request.getLocationDetail());
-        story.setContent(request.getContent());
-        story.setShare(request.isShare());
-        story.setLocation(location);
-        story.setUser(user);
-        storyService.add(story);
-
-        // Photo 정보
-        List<Photo> photos = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {
-                continue;
-            }
-
-            // 첨부파일 저장
-            String filename = UUID.randomUUID().toString();
-
-            HashMap<String, Object> options = new HashMap<>();
-            options.put(StorageService.CONTENT_TYPE, file.getContentType());
-            storageService.upload(folderName + filename,
-                file.getInputStream(),
-                options);
-
-            Photo photo = new Photo();
-            photo.setStoryId(story.getId());
-            photo.setMainPhoto(false);
-            photo.setPath(filename);
-
-            photos.add(photo);
-        }
-
-        photos.getFirst().setMainPhoto(true);
-
-        // Photo DB 처리
-        storyService.addPhotos(photos);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("story", story);
-        response.put("photos", photos);
-
-        return ResponseEntity.ok(response);
-    }
-
-
-
-    @PostMapping("update/{storyId}/{firstName}/{secondName}")
-    public ResponseEntity<Map<String, Object>> update(
-        @ModelAttribute Story story,
-        MultipartFile[] files,
-        @PathVariable int storyId,
-        @PathVariable String firstName, @PathVariable String secondName,
-        @RequestParam int userId) throws Exception {
-
-        Story oldStory = storyService.get(storyId);
-        if (oldStory == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
-        }
-
-
-        // 로그인 사용자
-        User user = userService.findUser(userId);
-        if (user == null) {
-            throw new Exception("로그인이 필요합니다.");
-        }
-
-
-        if (oldStory.getUser().getId() != userId) {
-            throw new Exception("접근 권한이 없습니다.");
-        }
-
-        List<Photo> oldPhotos = storyService.getPhotos(storyId);
-
-
-        // 기존 사진이 있는 경우  =>  예외 없음
-        // 기존 사진이 없는 겨우
-        // (1) files가 들어오지 않거나 들어와도 내부에 파일이 없는 경우  =>  예외 발생
-        // (2) 유효하지 않는 (손상된) 파일  =>  예외 발생
-        if ((files == null || files.length == 0) && oldPhotos.isEmpty()) {
-            throw new Exception("스토리에 최소 한 개의 사진이 필요합니다.");
-        }
-
-        if (files != null && Arrays.stream(files).allMatch(file -> file.getSize() == 0) && oldPhotos.isEmpty()) {
-            throw new Exception("유효하지 않는 파일입니다.");
-        }
-
-
-        Location location = locationService.findByFullName(firstName, secondName);
-        if (location == null) {
-            throw new Exception("위치 정보 없음");
-        }
-
-        story.setId(storyId);
-        story.setLocation(location);
-        story.setUser(user);
-        storyService.update(story);
-
-        // Photo 정보
-        List<Photo> photos = new ArrayList<>();
-
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {
-                continue;
-            }
-
-            // 첨부파일 저장
-            String filename = UUID.randomUUID().toString();
-
-            HashMap<String, Object> options = new HashMap<>();
-            options.put(StorageService.CONTENT_TYPE, file.getContentType());
-            storageService.upload(folderName + filename,
-                file.getInputStream(),
-                options);
-
-            Photo photo = new Photo();
-            photo.setStoryId(story.getId());
-             photo.setMainPhoto(false);
-            photo.setPath(filename);
-
-            photos.add(photo);
-        }
-
-        // Photo DB 처리
-        storyService.addPhotos(photos);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("story", story);
-        response.put("photos", photos);
-
-        return ResponseEntity.ok(response);
-    }
-
-
-    @DeleteMapping("photo/delete/{photoId}")
-    public void deletePhoto(
-        @PathVariable int photoId, @RequestParam int userId) throws Exception {
-
-        // 삭제할 Photo 가져오기
-        Photo photo = storyService.getPhoto(photoId);
-        if (photo == null) {
-            throw new Exception("없는 사진입니다.");
-        }
-
-        Story story = storyService.get(photo.getStoryId());
-        if (story == null) {
-            throw new Exception("없는 스토리입니다.");
-        }
-
-        if (story.getUser().getId() != userId) {
-            throw new Exception("접근 권한이 없습니다.");
-        }
-
-        // Photo 파일 삭제
-        try {
-            storageService.delete(folderName + photo.getPath());
+    public ResponseEntity<?> add (
+        @ModelAttribute AddStoryRequestDTO addStoryRequestDTO,
+        MultipartFile[] files) {
+        try {  // API 요청 테스트로 인한 return
+            ResponseEntity<Map<String, Object>> response = storyService.add(addStoryRequestDTO, files);
+            return ResponseEntity.ok(response);
 
         } catch (Exception e) {
-            throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("스토리 추가에 실패했습니다.");
         }
+    }
 
-        // Photo DB 삭제
-        storyService.deletePhoto(photoId);
+
+    @PostMapping("update")
+    public ResponseEntity<?> update(
+        @ModelAttribute UpdateStoryRequestDTO updateStoryRequestDTO,
+        MultipartFile[] files) {
+        try {  // API 요청 테스트로 인한 return
+            ResponseEntity<Map<String, Object>> response = storyService.update(updateStoryRequestDTO, files);
+            return ResponseEntity.ok(response);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("스토리 수정에 실패했습니다.");
+        }
+    }
+
+
+
+    @DeleteMapping("photo/delete/{photoId}/{userId}")
+    public ResponseEntity<String> deletePhoto(
+        @PathVariable int photoId, @PathVariable int userId) throws Exception {
+        try {
+            storyService.deletePhoto(photoId, userId);
+            return ResponseEntity.ok("첨부사진 제거가 성공하였습니다.");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 }
