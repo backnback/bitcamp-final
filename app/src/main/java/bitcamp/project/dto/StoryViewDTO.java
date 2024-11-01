@@ -1,12 +1,12 @@
 package bitcamp.project.dto;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
-public class StoryListDTO {
+public class StoryViewDTO {
 
   private int storyId;
   private String title;
@@ -14,11 +14,7 @@ public class StoryListDTO {
   private String locationDetail;
   private String content;
   private boolean share;
-  private String userNickname;
-  private String userPath;
   private String locationFirstName;
   private String locationSecondName;
-  private PhotoDTO mainPhoto;
-  private int likeCount;
-  private boolean likeStatus;
+  private List<PhotoDTO> photos;
 }
