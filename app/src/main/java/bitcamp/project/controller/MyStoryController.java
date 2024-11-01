@@ -1,5 +1,6 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.dto.AddStoryRequestDTO;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.service.*;
@@ -99,7 +100,7 @@ public class MyStoryController {
 
 
     @PostMapping("add/{firstName}/{secondName}")
-    public ResponseEntity<Map<String, Object>> add (
+    public ResponseEntity<Map<String, Object>> add2 (
         @ModelAttribute Story story,
         MultipartFile[] files,
         @PathVariable String firstName, @PathVariable String secondName,
@@ -162,6 +163,78 @@ public class MyStoryController {
 
         return ResponseEntity.ok(response);
     }
+
+
+    @PostMapping("add")
+    public ResponseEntity<Map<String, Object>> add (
+        @ModelAttribute AddStoryRequestDTO request,
+        MultipartFile[] files) throws Exception {
+
+        // 로그인 사용자
+        User user = userService.findUser(request.getUserId());
+        if (user == null) {
+            throw new Exception("로그인이 필요합니다.");
+        }
+
+        // 위치 정보
+        Location location = locationService.findByFullName(request.getFirstName(),
+            request.getSecondName());
+        if (location == null) {
+            throw new Exception("위치 정보 없음");
+        }
+
+        if (files == null || files.length == 0 || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
+            throw new Exception("사진 입력 필요");
+        }
+
+        // Story에 로그인 사용자 및 위치 정보 삽입
+        Story story = new Story();
+        story.setTitle(request.getTitle());
+        story.setTravelDate(request.getTravelDate());
+        story.setLocationDetail(request.getLocationDetail());
+        story.setContent(request.getContent());
+        story.setShare(request.isShare());
+        story.setLocation(location);
+        story.setUser(user);
+        storyService.add(story);
+
+        // Photo 정보
+        List<Photo> photos = new ArrayList<>();
+
+        for (MultipartFile file : files) {
+            if (file.getSize() == 0) {
+                continue;
+            }
+
+            // 첨부파일 저장
+            String filename = UUID.randomUUID().toString();
+
+            HashMap<String, Object> options = new HashMap<>();
+            options.put(StorageService.CONTENT_TYPE, file.getContentType());
+            storageService.upload(folderName + filename,
+                file.getInputStream(),
+                options);
+
+            Photo photo = new Photo();
+            photo.setStoryId(story.getId());
+            photo.setMainPhoto(false);
+            photo.setPath(filename);
+
+            photos.add(photo);
+        }
+
+        photos.getFirst().setMainPhoto(true);
+
+        // Photo DB 처리
+        storyService.addPhotos(photos);
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("story", story);
+        response.put("photos", photos);
+
+        return ResponseEntity.ok(response);
+    }
+
 
 
     @PostMapping("update/{storyId}/{firstName}/{secondName}")
