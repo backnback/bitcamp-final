@@ -86,7 +86,7 @@ public class StoryServiceImpl implements StoryService {
         photos.getFirst().setMainPhoto(true);
 
         // Photo DB 처리
-        addPhotos(photos);
+        photoService.addPhotos(photos);
 
         Map<String, Object> response = new HashMap<>();
         response.put("story", story);
@@ -95,16 +95,17 @@ public class StoryServiceImpl implements StoryService {
         return ResponseEntity.ok(response);
     }
 
+
     @Override
     public List<Story> list() throws Exception {
         return storyDao.findAll();
     }
 
+
     @Override
     public Story get(int id) throws Exception {
         return storyDao.findByStoryId(id);
     }
-
 
 
     @Transactional
@@ -183,7 +184,7 @@ public class StoryServiceImpl implements StoryService {
         }
 
         // Photo DB 처리
-        addPhotos(photos);
+        photoService.addPhotos(photos);
 
         Map<String, Object> response = new HashMap<>();
         response.put("story", story);
@@ -195,20 +196,32 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     @Transactional
-    public void delete(int id) throws Exception {
-        storyDao.deleteLikes(id);
-        storyDao.deletePhotos(id);
-        storyDao.delete(id);
-    }
+    public void delete(int storyId, int userId) throws Exception {
 
-    @Transactional
-    @Override
-    public void addPhotos(List<Photo> photos) throws Exception {
-        for (Photo photo : photos) {
-            storyDao.insertPhoto(photo);
+        Story story = storyDao.findByStoryId(storyId);
+        if (story == null) {
+            throw new Exception("스토리가 존재하지 않습니다.");
         }
-    }
 
+        if (story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
+        }
+
+        for (Photo photo : photoService.getPhotosByStoryId(storyId)) {
+            try {
+                // 첨부파일 삭제
+                storageService.delete(folderName + photo.getPath());
+
+            } catch (Exception e) {
+                System.out.printf("%s 파일 ", photo.getPath());
+                throw new Exception("삭제 실패 !");
+            }
+        }
+
+        storyDao.deleteLikes(storyId);
+        storyDao.deletePhotos(storyId);
+        storyDao.delete(storyId);
+    }
 
 
     @Override
@@ -236,9 +249,8 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("파일 삭제 실패로 인한 DB 삭제 중단");
         }
 
-        storyDao.deletePhoto(photoId);
+        photoService.deletePhoto(photoId);
     }
-
 
 
     @Override

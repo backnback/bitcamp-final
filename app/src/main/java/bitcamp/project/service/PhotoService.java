@@ -6,8 +6,11 @@ import java.util.List;
 
 public interface PhotoService {
 
-  List<Photo> getPhotos(int id) throws Exception;
+  List<Photo> getPhotosByStoryId(int storyId) throws Exception;
 
-  Photo getPhoto(int id) throws Exception;
+  Photo getPhoto(int photoId) throws Exception;
 
+  void addPhotos(List<Photo> photos) throws Exception;
+
+  void deletePhoto(int photoId) throws Exception;
 }
