@@ -2,15 +2,21 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
 import axios from 'axios';
 // import './ShareStoryView.css';
+import { useUser } from '../UserContext';
 
 const ShareStoryView = () => {
     const { id } = useParams(); // URL에서 ID 파라미터를 가져옴
     const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [responseMap, setResponseMap] = useState(null);
+    const { user } = useUser();
 
     const fetchResponseMap = async () => {
         try {
-            const response = await axios.get(`http://localhost:8080/share-story/view/${id}`);
+            const response = await axios.get(`http://localhost:8080/share-story/view/${user.userId}`, {
+                headers: {
+                    'Authorization': `Bearer ${user?.token}` // user에서 토큰 가져오기
+                }
+            }); // API 요청
             setResponseMap(response.data);
         } catch (error) {
             console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);

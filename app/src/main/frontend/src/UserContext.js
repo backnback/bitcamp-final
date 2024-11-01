@@ -13,6 +13,7 @@ export const UserProvider = ({ children }) => {
     const token = localStorage.getItem('accessToken');
     if (token) {
       const userInfo = jwtDecode(token);
+      console.log(userInfo);
       setUser(userInfo);
     }
   }, []);

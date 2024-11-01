@@ -1,14 +1,13 @@
 package bitcamp.project.service;
 
 import bitcamp.project.vo.Like;
-import bitcamp.project.vo.Location;
 import bitcamp.project.vo.User;
 
 import java.util.List;
 
 public interface LikeService {
 
-  void add(int storyId, int userId) throws Exception;
+  void addLike(int storyId, int userId) throws Exception;
 
   Like get(int storyId, int userId) throws Exception;
 
@@ -16,7 +15,11 @@ public interface LikeService {
 
   List<User> findAllToMe(int userId) throws Exception;
 
-  void confirmView(int storyId, int userId) throws Exception;
+  int countLikes(int storyId) throws Exception;
 
-  void delete(int storyId, int userId) throws Exception;
+  boolean getStatus(int storyId, int userId) throws Exception;
+
+  void confirmLikeView(int storyId, int userId, int loginUserId) throws Exception;
+
+  void deleteLike(int storyId, int userId) throws Exception;
 }

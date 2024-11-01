@@ -40,10 +40,13 @@
             l.like_date desc
     </select>
 
-
     <select id="findBy" resultMap="LikeMap">
         SELECT * FROM story_like
         WHERE story_id = #{storyId} AND user_id = #{userId}
+    </select>
+
+    <select id="getStatus" resultType="int">
+        SELECT COUNT(*) FROM story_like WHERE story_id = #{storyId} AND user_id = #{userId}
     </select>
 
     <insert id="insert">

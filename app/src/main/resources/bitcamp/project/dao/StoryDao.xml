@@ -121,7 +121,7 @@
     </select>
 
 
-    <select id="findBy" resultMap="StoryMap" parameterType="int">
+    <select id="findByStoryId" resultMap="StoryMap" parameterType="int">
         SELECT
             s.story_id,
             s.title,

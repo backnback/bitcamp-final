@@ -41,8 +41,6 @@
     </delete>
 
     <select id="findByEmailAndPassword" resultMap="UserMap">
-        SELECT user_id, nickname, email, password
-        FROM user
-        WHERE email = #{email}
+        SELECT * FROM user WHERE email = #{email}
     </select>
 </mapper>

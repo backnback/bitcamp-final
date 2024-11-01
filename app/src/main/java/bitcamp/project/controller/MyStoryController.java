@@ -1,5 +1,7 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.dto.StoryListDTO;
+import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.service.*;
 import bitcamp.project.vo.Location;
 import bitcamp.project.vo.Photo;
@@ -26,54 +28,18 @@ public class MyStoryController {
     private String folderName = "story/";
 
 
-    @GetMapping("list")
-    public ResponseEntity<List<Map<String, Object>>> list(
-        @RequestParam int userId
-    ) throws Exception {
-
-        List<Map<String, Object>> responseList = new ArrayList<>();
-
-        // Story 1개 + Main 사진 1개
-        for (Story story : storyService.myList(userId)) {
-            HashMap<String, Object> map = new HashMap<>();
-            map.put("story", story);
-
-            for (Photo photo : storyService.getPhotos(story.getId())) {
-                if (photo.isMainPhoto()) {
-                    map.put("mainPhoto", photo);
-                }
-            }
-
-            int likeCount = likeService.findAllByStory(story.getId()).size();
-            map.put("likeCount", likeCount);
-
-            responseList.add(map);
-        }
-
-        return ResponseEntity.ok(responseList);
+    @GetMapping("list/{userId}")
+    public List<StoryListDTO> list(@PathVariable int userId) throws Exception {
+        return storyService.listAllMyStories(userId);
     }
 
 
-    @GetMapping("view/{storyId}")
-    public ResponseEntity<Map<String, Object>> view(
-        @PathVariable int storyId, @RequestParam int userId) throws Exception {
-        Story story = storyService.get(storyId);
-        if (story == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
-        }
+    @GetMapping("view/{storyId}/{userId}")
+    public StoryViewDTO view(
+        @PathVariable int storyId,
+        @RequestParam int userId) throws Exception {
 
-        if (story.getUser().getId() != userId) {
-            throw new Exception("접근 권한이 없습니다.");
-        }
-
-        List<Photo> photos = storyService.getPhotos(storyId);
-
-        // Story와 함께 Photo 데이터 보내기
-        Map<String, Object> response = new HashMap<>();
-        response.put("story", story);
-        response.put("photos", photos);
-
-        return ResponseEntity.ok(response);
+        return storyService.viewMyStory(storyId, userId);
     }
 
 

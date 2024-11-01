@@ -5,6 +5,8 @@ import bitcamp.project.vo.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -24,6 +26,7 @@ import java.util.stream.Collectors;
 @Component
 public class JwtTokenProvider {
     private final Key key;
+    private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 
     public JwtTokenProvider(@Value("${jwt.secret}") String secretKey) {
         byte[] secretByteKey = DatatypeConverter.parseBase64Binary(secretKey);
@@ -77,6 +80,7 @@ public class JwtTokenProvider {
 
     public boolean validateToken(String token) {
         try {
+            logger.info("Validating token: {}", token);
             Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
             return true;
         }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
