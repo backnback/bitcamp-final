@@ -1,0 +1,54 @@
+.item {
+    flex: 1 100%;
+    max-width: 270px;
+    margin: 5px;
+}
+
+.item__130 {
+    max-width: 130px;
+}
+
+.item button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+    min-height: 38px;
+    background: var(--color-white);
+    border: 1px solid var(--color-white);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+[data-button=text] {
+    font-weight: 600;
+    font-size: var(--font-button);
+}
+
+button[data-button=primary] {
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+button[data-button=primary]:hover {
+    background-color: var(--color-primary-button-hover);
+}
+
+button[data-button=primary] [data-button=text] {
+    color: var(--color-gray-f5);
+}
+
+button[data-button=whiteRed] {
+    background: var(--color-white);
+    border: 1px solid var(--color-red);
+}
+
+button[data-button=whiteRed]:hover {
+    background-color: var(--color-gray-cc-20);
+}
+
+button[data-button=whiteRed] [data-button=text] {
+    color: var(--color-red);
+}

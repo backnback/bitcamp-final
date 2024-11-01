@@ -12,3 +12,11 @@
     background-color: var(--color-white);
     background-image: url("../../../../public/images/profile-default.png");
 }
+
+.plus__gray {
+    width: 40px;
+    height: 40px;
+    background-size: 23px;
+    background-position: center;
+    background-image: url("data:image/svg+xml,%3Csvg width='28' height='28' viewBox='0 0 28 28' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M14.0002 2.33325V25.6666M2.3335 13.9999H25.6668' stroke='%23BDBDBD' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E%0A");
+}
