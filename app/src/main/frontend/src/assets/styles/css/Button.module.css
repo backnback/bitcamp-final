@@ -8,6 +8,14 @@
     max-width: 130px;
 }
 
+.item__icon {
+    display: inline-flex;
+    flex: auto;
+    width: auto;
+    max-width: unset;
+    margin: 0;
+}
+
 .item button {
     display: flex;
     flex-direction: row;
@@ -22,33 +30,54 @@
     cursor: pointer;
 }
 
-[data-button=text] {
+
+.item button[data-button=iconButton] {
+    padding: 0;
+    width: auto;
+    min-height: unset;
+    height: auto;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.item [data-button=text] {
     font-weight: 600;
     font-size: var(--font-button);
 }
 
-button[data-button=primary] {
+.item button[data-button=primary] {
     background: var(--color-primary);
     border: 1px solid var(--color-primary);
 }
 
-button[data-button=primary]:hover {
+.item button[data-button=primary]:hover {
     background-color: var(--color-primary-button-hover);
 }
 
-button[data-button=primary] [data-button=text] {
+.item button[data-button=primary] [data-button=text] {
     color: var(--color-gray-f5);
 }
 
-button[data-button=whiteRed] {
-    background: var(--color-white);
-    border: 1px solid var(--color-red);
-}
-
-button[data-button=whiteRed]:hover {
+.item button[data-button^=white]:hover {
     background-color: var(--color-gray-cc-20);
 }
 
-button[data-button=whiteRed] [data-button=text] {
+.item button[data-button=whiteRed] {
+    background: var(--color-white);
+    border: 1px solid var(--color-red);
     color: var(--color-red);
+}
+
+.item button[data-button=whiteRed]:hover {
+    background-color: var(--color-gray-cc-20);
+}
+
+.item button[data-button=whitePrimary] {
+    background: var(--color-white);
+    border: 1px solid var(--color-primary);
+    color: var(--color-primary)
+}
+
+.item button[data-button=whitePrimary] [data-button=text] {
+    color: var(--color-primary);
 }

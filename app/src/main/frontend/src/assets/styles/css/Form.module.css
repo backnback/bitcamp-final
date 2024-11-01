@@ -8,15 +8,11 @@
     color: var(--color-gray-bd);
 }
 
-.input__wrap {}
+.item label {}
 
-.input__wrap input {}
-
-label {}
-
-input,
-select,
-textarea {
+.item input,
+.item select,
+.item textarea {
     display: inline-flex;
     width: 100%;
     border: 1px solid var(--color-gray-bd);
@@ -25,43 +21,43 @@ textarea {
     font-size: var(--font-size);
 }
 
-input,
-select {
+.item input,
+.item select {
     height: 40px;
 }
 
-textarea {
+.item textarea {
     resize: none;
     min-height: 80px;
     padding: 12px 16px;
 }
 
-label[data-label=checkbox],
-label[data-label=radio] {
+.item label[data-label=checkbox],
+.item label[data-label=radio] {
     display: flex;
     align-items: center;
     gap: 12px;
 }
 
-input[type=checkbox],
-input[type=radio] {
+.item input[type=checkbox],
+.item input[type=radio] {
     width: 16px;
     height: 16px;
 }
 
-input[type=checkbox]:checked,
-input[type=radio]:checked {
+.item input[type=checkbox]:checked,
+.item input[type=radio]:checked {
     background-color: var(--color-red);
     border-color: red;
 }
 
-input[type=checkbox] [data-input=text],
-input[type=radio] [data-input=text] {
+.item input[type=checkbox] [data-input=text],
+.item input[type=radio] [data-input=text] {
     flex: 1 100%;
     word-break: break-all;
 }
 
-label[data-label='file'] {
+.item label[data-label='file'] {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -75,12 +71,12 @@ label[data-label='file'] {
     cursor: pointer;
 }
 
-label[data-label='file']:hover {
+.item label[data-label='file']:hover {
     background-color: var(--color-gray-cc-20);
     transition: .2s;
 }
 
-input[type='file'] {
+.item input[type='file'] {
     opacity: 0;
     width: 0;
     height: 0;

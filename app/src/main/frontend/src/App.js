@@ -14,6 +14,7 @@ import ShareStoryView from "./routes/ShareStoryView";
 import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
+import FormStyles from "./routes/FormStyles";
 import { UserProvider, useUser } from './UserContext'; // UserContext import
 import layoutStyles from "./assets/styles/css/Layout.module.css";
 
@@ -84,18 +85,18 @@ function App() {
             <Route path="/story/map/southJeolla" element={<MapSouthJeolla />} />
             <Route path="/story/map/ulsan" element={<MapUlsan />} />
 
-          <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
-          <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
-          <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
-          <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 스토리 목록 페이지 */}
-          <Route path="/my-story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
-          <Route path="/test/list" element={<Test />} /> {/* 테스트 */}
-          <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
-          <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
-          <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
-          <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
-          <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
-        </Routes>
+            <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
+            <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
+            <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
+            <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 스토리 목록 페이지 */}
+            <Route path="/my-story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
+            <Route path="/test/list" element={<Test />} /> {/* 테스트 */}
+            <Route path="/share-story/view/:id" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
+            <Route path="/my-story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
+            <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
+            <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
+            <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
+          </Routes>
         </div>
       </div>
     </div>
