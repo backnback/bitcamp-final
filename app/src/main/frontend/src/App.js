@@ -31,6 +31,7 @@ import MapSouthChungcheong from "./components/map/MapSouthChungcheong";
 import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
+import FormStyles from "./routes/FormStyles";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
@@ -53,40 +54,46 @@ function App() {
 
   return (
     <div className={`${layoutStyles.wrapper} ${layoutStyles.wrapper__header}`}>
+
+
       <Header />
 
       <div className={`${layoutStyles.content__wrapper}`}>
-        <Routes>
-          <Route path="/story/map" element={<StoryMap />} />
+        <div className={`${layoutStyles.contents}`}>
+          <Routes>
+            <Route path="/story/map" element={<StoryMap />} />
 
-          {/* 라우터 경로 설정 */}
-          <Route path="/story/map/seoul" element={<MapSeoul />} />
-          <Route path="/story/map/busan" element={<MapBusan />} />
-          <Route path="/story/map/daegu" element={<MapDaegu />} />
-          <Route path="/story/map/daejeon" element={<MapDaejeon />} />
-          <Route path="/story/map/gwangju" element={<MapGwangju />} />
-          <Route path="/story/map/gwangwon" element={<MapGwangwon />} />
-          <Route path="/story/map/gyeonggi" element={<MapGyeonggi />} />
-          <Route path="/story/map/incheon" element={<MapIncheon />} />
-          <Route path="/story/map/jeju" element={<MapJeju />} />
-          <Route path="/story/map/northChungcheoung" element={<MapNorthChungcheoung />} />
-          <Route path="/story/map/northGyeongsang" element={<MapNorthGyeongsang />} />
-          <Route path="/story/map/northJeolla" element={<MapNorthJeolla />} />
-          <Route path="/story/map/sejong" element={<MapSejong />} />
-          <Route path="/story/map/southChungcheong" element={<MapSouthChungcheong />} />
-          <Route path="/story/map/southGyeongsan" element={<MapSouthGyeongsan />} />
-          <Route path="/story/map/southJeolla" element={<MapSouthJeolla />} />
-          <Route path="/story/map/ulsan" element={<MapUlsan />} />
+            <Route path="/form/test" element={<FormStyles />} />
+            {/* 라우터 경로 설정 */}
+            <Route path="/story/map/seoul" element={<MapSeoul />} />
+            <Route path="/story/map/busan" element={<MapBusan />} />
+            <Route path="/story/map/daegu" element={<MapDaegu />} />
+            <Route path="/story/map/daejeon" element={<MapDaejeon />} />
+            <Route path="/story/map/gwangju" element={<MapGwangju />} />
+            <Route path="/story/map/gwangwon" element={<MapGwangwon />} />
+            <Route path="/story/map/gyeonggi" element={<MapGyeonggi />} />
+            <Route path="/story/map/incheon" element={<MapIncheon />} />
+            <Route path="/story/map/jeju" element={<MapJeju />} />
+            <Route path="/story/map/northChungcheoung" element={<MapNorthChungcheoung />} />
+            <Route path="/story/map/northGyeongsang" element={<MapNorthGyeongsang />} />
+            <Route path="/story/map/northJeolla" element={<MapNorthJeolla />} />
+            <Route path="/story/map/sejong" element={<MapSejong />} />
+            <Route path="/story/map/southChungcheong" element={<MapSouthChungcheong />} />
+            <Route path="/story/map/southGyeongsan" element={<MapSouthGyeongsan />} />
+            <Route path="/story/map/southJeolla" element={<MapSouthJeolla />} />
+            <Route path="/story/map/ulsan" element={<MapUlsan />} />
 
-          <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
-          <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
-          <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
-          <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
-          <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
-          <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
-          <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
-          <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
-        </Routes>
+            <Route path="/signup" element={<SignUp />} /> {/* 회원가입 페이지 */}
+            <Route path="/viewuser/:id" element={<ViewUser />} /> {/* 특정 사용자 보기 */}
+            <Route path="/login" element={<Login />} /> {/* 로그인 페이지 */}
+            <Route path="/story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
+            <Route path="/story/view/:id" element={<StoryView />} /> {/* 특정 스토리 보기 */}
+            <Route path="/story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
+            <Route path="/story/form/update/:id" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
+            <Route path="/faqs/list" element={<FaqList />} /> {/* FAQ 목록 페이지 */}
+          </Routes>
+        </div>
+
       </div>
     </div>
   );

@@ -21,22 +21,27 @@
     --color-white-90: rgba(255, 255, 255, 0.9);
 
     --color-primary: #1E90FF;
-    --color-blue-1a: #1A73E8;
+    --color-blue-1a: #1a73e8;
     --color-blue-83: #83CDFB;
     --color-blue-b0: #B0ECF880;
     --color-blue-b0-50: #b0ecf880;
     --color-skyblue: #F6FBFF;
+    --color-gray-f5: #F5f5f5;
     --color-gray-cc: #CCCCCC;
+    --color-gray-cc-10: rgba(204, 204, 204, .1);
+    --color-gray-cc-20: rgba(204, 204, 204, .2);
     --color-gray-bd: #BDBDBD;
     --color-gray-d9: #D9D9D9;
     --color-gray-75: #757575;
     --color-gray-1e: #1E1E1E;
     --color-gray-2c: #2c2c2c;
-    --color-gray-2c-34: #2c2c2c57;
+    --color-gray-2c-34: rgba(44, 44, 44, 0.341);
 
     --color-red: #FF0000;
 
     --color-primaryGradient: linear-gradient(180deg, #4DA7FF 0%, #B1EDF8 100%);
+
+    --color-primary-button-hover: rgba(26, 115, 232, 0.9);
 
     /* padding, margin */
     --padding-rl: 12px;
@@ -47,19 +52,30 @@
     --border-radius: 8px;
 
     /* font */
+    /* 16px */
     --font-size: 1rem;
+    /* 14px */
     /* p, h6 */
     --font-size-text: 0.875rem;
     --font-size-button: 0.875rem;
+    /* 12px */
     --font-size-sub: 0.75rem;
+    /* 20px */
     --font-size-h5: 1.25rem;
+    /* 24px */
     --font-size-h4: 1.5rem;
 
     /* form */
     --form-height: 40px;
-    --form-padding: 12px 16px;
-    --form-padding-lr: 12px;
-    --form-padding-xy: 16px;
+    --form-padding: 6px 16px;
+    --form-padding-lr: 16px;
+    --form-padding-xy: 6px;
     --formBorder-radius: 8px;
     --formBorder-color: var(--color-gray-bd);
+
+    /* header */
+    --header-width: 209px;
+
+    /* content */
+    --content-width: 906px;
 }
