@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import './StoryAddForm.css'; // CSS 파일을 가져옵니다
-import { useUser } from '../UserContext';
+
 
 const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
@@ -13,7 +13,18 @@ const MyStoryAddForm = () => {
     const [secondNames, setSecondNames] = useState([]);
     const [selectedFirstName, setSelectedFirstName] = useState('');
     const [selectedSecondName, setSelectedSecondName] = useState('');
-    const { user } = useUser(); // UserContext에서 user를 가져옵니다.
+    const [accessToken, setAccessToken] = useState(null);
+
+    // 로컬 스토리지에서 accessToken을 가져오는 함수
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.warn("Access token이 없습니다.");
+        }
+    }, []);
+
 
     useEffect(() => {
         const fetchFirstNames = async () => {
@@ -26,6 +37,7 @@ const MyStoryAddForm = () => {
         };
         fetchFirstNames();
     }, []);
+
 
     useEffect(() => {
         const fetchSecondNames = async () => {
@@ -43,6 +55,7 @@ const MyStoryAddForm = () => {
         fetchSecondNames();
     }, [selectedFirstName]);
 
+
     const handleFileChange = (event) => {
         setFiles(event.target.files);
     };
@@ -55,18 +68,17 @@ const MyStoryAddForm = () => {
         formData.append('travelDate', travelDate);
         formData.append('locationDetail', locationDetail); // 사용자가 입력한 위치 상세
         formData.append('content', content);
-
-        if (user && user.id) {
-            formData.append('userId', user.id);  // 로그인 사용자 정보 전달
-        }
+        formData.append('firstName', selectedFirstName);
+        formData.append('secondName', selectedSecondName);
 
         for (let i = 0; i < files.length; i++) {
             formData.append('files', files[i]);
         }
 
         try {
-            await axios.post(`http://localhost:8080/my-story/add/${selectedFirstName}/${selectedSecondName}`, formData, {
+            await axios.post('http://localhost:8080/my-story/add', formData, {
                 headers: {
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
