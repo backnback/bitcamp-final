@@ -20,11 +20,11 @@ public class AddStoryRequestDTO {
   private boolean share;
   private String firstName;
   private String secondName;
-  private int userId;
+  private User loginUser;
 
 
   // VO로 변환하는 메서드
-  public Story toStory(User user, Location location) {
+  public Story toStory(Location location) {
 
     Story story = new Story();
     story.setTitle(title);
@@ -32,8 +32,8 @@ public class AddStoryRequestDTO {
     story.setLocationDetail(locationDetail);
     story.setContent(content);
     story.setShare(share);
+    story.setUser(loginUser);
 
-    story.setUser(user);
     story.setLocation(location);
 
     return story;

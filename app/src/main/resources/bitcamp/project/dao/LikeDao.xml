@@ -20,6 +20,19 @@
     </resultMap>
 
 
+
+    <insert id="insert">
+        INSERT INTO story_like(user_id, story_id)
+        VALUES (#{userId}, #{storyId})
+    </insert>
+
+
+    <select id="findBy" resultMap="LikeMap">
+        SELECT * FROM story_like
+        WHERE story_id = #{storyId} AND user_id = #{userId}
+    </select>
+
+
     <select id="findAllByStory" resultMap="LikeMap" parameterType="int">
         SELECT * FROM story_like WHERE story_id = #{storyId}
     </select>
@@ -40,27 +53,27 @@
             l.like_date desc
     </select>
 
-    <select id="findBy" resultMap="LikeMap">
-        SELECT * FROM story_like
-        WHERE story_id = #{storyId} AND user_id = #{userId}
-    </select>
-
-    <select id="getStatus" resultType="int">
-        SELECT COUNT(*) FROM story_like WHERE story_id = #{storyId} AND user_id = #{userId}
-    </select>
-
-    <insert id="insert">
-        INSERT INTO story_like(user_id, story_id)
-        VALUES (#{userId}, #{storyId})
-    </insert>
 
     <update id="update" parameterType="like">
         UPDATE story_like SET view=#{view}
         WHERE story_id=#{storyId} AND user_id=#{userId}
     </update>
 
+
     <delete id="delete">
         DELETE FROM story_like WHERE story_id=#{storyId} AND user_id=#{userId}
     </delete>
+
+
+    <delete id="deleteAllByStory" parameterType="int">
+        delete from story_like
+        where story_id = #{storyId}
+    </delete>
+
+
+    <select id="getStatus" resultType="int">
+        SELECT COUNT(*) FROM story_like WHERE story_id = #{storyId} AND user_id = #{userId}
+    </select>
+
 
 </mapper>
