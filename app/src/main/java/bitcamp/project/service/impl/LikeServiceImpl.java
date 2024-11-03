@@ -20,6 +20,7 @@ public class LikeServiceImpl implements LikeService {
   private final LikeDao likeDao;
   private final StoryDao storyDao;
 
+
   @Override
   public void addLike(int storyId, int userId) throws Exception {
     Story story = storyDao.findByStoryId(storyId);
@@ -30,30 +31,30 @@ public class LikeServiceImpl implements LikeService {
     likeDao.insert(storyId, userId);
   }
 
+
   @Override
   public Like get(int storyId, int userId) throws Exception {
     return likeDao.findBy(storyId, userId);
   }
 
-  @Override
-  public List<Like> findAllByStory(int storyId) throws Exception {
-    return likeDao.findAllByStory(storyId);
-  }
 
   @Override
   public List<User> findAllToMe(int userId) throws Exception {
     return likeDao.findAllToMe(userId);
   }
 
+
   @Override
   public int countLikes(int storyId) throws Exception {
     return likeDao.findAllByStory(storyId).size();
   }
 
+
   @Override
   public boolean getStatus(int storyId, int userId) throws Exception {
     return likeDao.getStatus(storyId, userId) > 0;
   }
+
 
   @Override
   public void confirmLikeView(int storyId, int otherUserId, int loginUserId) throws Exception {
@@ -74,6 +75,7 @@ public class LikeServiceImpl implements LikeService {
     likeDao.update(like);
   }
 
+
   @Override
   public void deleteLike(int storyId, int userId) throws Exception {
 
@@ -89,4 +91,13 @@ public class LikeServiceImpl implements LikeService {
 
     likeDao.delete(storyId, userId);
   }
+
+
+  @Override
+  public void deleteLikes(int storyId) throws Exception {
+    likeDao.deleteAllByStory(storyId);
+  }
+
+
+
 }

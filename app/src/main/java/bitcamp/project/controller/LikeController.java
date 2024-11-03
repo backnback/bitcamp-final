@@ -1,11 +1,10 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
-import bitcamp.project.vo.Like;
-import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 
@@ -29,12 +28,10 @@ public class LikeController {
 
   // 나를 좋아요한 User 목록 (미확인만)
   // 확인 방법 : confirmView()
-  @GetMapping("list")
-  public ResponseEntity<?> findAllToMe(@RequestHeader("Authorization") String token) {
+  @GetMapping("list/users")
+  public ResponseEntity<?> findAllToMe(@LoginUser User loginUser) {
     try {
-      User user = userService.decodeToken(token);
-      System.out.println(user.getId());
-      List<User> users = likeService.findAllToMe(user.getId());
+      List<User> users = likeService.findAllToMe(loginUser.getId());
       return ResponseEntity.ok(users);
 
     } catch (Exception e) {
@@ -44,10 +41,10 @@ public class LikeController {
 
 
   // 내가 좋아요한 스토리 목록
-  @GetMapping("list/user/{userId}")
-  public ResponseEntity<?> findAllByMyLike(@PathVariable int userId) {
+  @GetMapping("list/my-stories")
+  public ResponseEntity<?> listAllMyLikeStories(@LoginUser User loginUser) {
     try {
-      List<StoryListDTO> storyListDTOs = storyService.listAllMyLikeStories(userId);
+      List<StoryListDTO> storyListDTOs = storyService.listAllMyLikeStories(loginUser.getId());
       return ResponseEntity.ok(storyListDTOs);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내가 좋아요한 스토리 목록을 불러오는 데 실패했습니다.");
@@ -56,11 +53,11 @@ public class LikeController {
 
 
   // 좋아요 등록
-  @GetMapping("add/{storyId}/{userId}")
+  @GetMapping("add/{storyId}")
   public ResponseEntity<String> add(
-      @PathVariable int storyId, @PathVariable int userId) {
+      @PathVariable int storyId, @LoginUser User loginUser) {
     try {
-      likeService.addLike(storyId, userId);
+      likeService.addLike(storyId, loginUser.getId());
       return ResponseEntity.ok("좋아요 등록 완료!");
 
     } catch (Exception e) {
@@ -69,11 +66,11 @@ public class LikeController {
   }
 
   // 좋아요 취소
-  @DeleteMapping("delete/{storyId}/{userId}")
+  @DeleteMapping("delete/{storyId}")
   public ResponseEntity<String> delete(
-      @PathVariable int storyId, @PathVariable int userId) {
+      @PathVariable int storyId, @LoginUser User loginUser) {
     try {
-      likeService.deleteLike(storyId, userId);
+      likeService.deleteLike(storyId, loginUser.getId());
       return ResponseEntity.ok("좋아요 삭제 완료!");
 
     } catch (Exception e) {
@@ -83,12 +80,12 @@ public class LikeController {
 
 
   // 스토리 알림 확인 시 목록에서 제거
-  @GetMapping("confirm/{storyId}/{otherUserId}/{loginUserId}")
+  @GetMapping("confirm/{storyId}/{otherUserId}")
   public ResponseEntity<String> confirmView(
       @PathVariable int storyId, @PathVariable int otherUserId,
-      @PathVariable int loginUserId) {
+      @LoginUser User loginUser) {
     try {
-      likeService.confirmLikeView(storyId, otherUserId, loginUserId);
+      likeService.confirmLikeView(storyId, otherUserId, loginUser.getId());
       return ResponseEntity.ok("알림 확인 완료!");
 
     } catch (Exception e) {

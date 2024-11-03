@@ -17,15 +17,11 @@ public interface StoryService {
 
     ResponseEntity<Map<String, Object>> add(AddStoryRequestDTO addStoryRequestDTO, MultipartFile[] files) throws Exception;
 
-    List<Story> list() throws Exception;
-
-    Story get(int id) throws Exception;
-
     ResponseEntity<Map<String, Object>> update(UpdateStoryRequestDTO updateStoryRequestDTO, MultipartFile[] files) throws Exception;
 
     void delete(int storyId, int userId) throws Exception;
 
-    void deletePhoto(int photoId, int userId) throws Exception;
+    void removePhoto(int photoId, int userId) throws Exception;
 
     List<StoryListDTO> listAllShareStories(int userId) throws Exception;
 
@@ -36,4 +32,6 @@ public interface StoryService {
     StoryViewDTO viewMyStory(int storyId, int userId) throws Exception;
 
     List<StoryListDTO> listAllMyLikeStories(int userId) throws Exception;
+
+    Story changeShare(int storyId, int userId) throws Exception;
 }

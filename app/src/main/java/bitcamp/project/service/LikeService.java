@@ -11,8 +11,6 @@ public interface LikeService {
 
   Like get(int storyId, int userId) throws Exception;
 
-  List<Like> findAllByStory(int storyId) throws Exception;
-
   List<User> findAllToMe(int userId) throws Exception;
 
   int countLikes(int storyId) throws Exception;
@@ -22,4 +20,6 @@ public interface LikeService {
   void confirmLikeView(int storyId, int userId, int loginUserId) throws Exception;
 
   void deleteLike(int storyId, int userId) throws Exception;
+
+  void deleteLikes(int storyId) throws Exception;
 }
