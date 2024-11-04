@@ -25,4 +25,14 @@ public class User {
         this.password = password;
         this.authorities = authorities;
     }
+
+    // 역할 추가 및 수정 메서드
+    public void addRole(String role) {
+        this.role = role;
+        // 추가적인 역할 관리 로직 구현 가능
+    }
+
+    public boolean isAdmin() {
+        return "ADMIN".equals(this.role); // 어드민 여부 확인 메서드
+    }
 }

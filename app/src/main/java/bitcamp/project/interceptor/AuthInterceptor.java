@@ -26,8 +26,7 @@ public class AuthInterceptor implements HandlerInterceptor {
 
     // 인증이 필요 없는 경로를 설정
     String requestURI = request.getRequestURI();
-    if (requestURI.startsWith("/sign") || requestURI.startsWith("/faqs")
-        || requestURI.startsWith("/user") || requestURI.startsWith("/location")) {
+    if (requestURI.startsWith("/sign") || requestURI.startsWith("/user") || requestURI.startsWith("/location")) {
       return true;
     }
 
