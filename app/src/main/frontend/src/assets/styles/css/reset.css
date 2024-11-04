@@ -164,6 +164,14 @@ a {
     color: black;
 }
 
+button {
+    margin: 0;
+    padding: 0;
+    border: initial;
+    background: initial;
+    cursor: pointer;
+}
+
 b,
 h1,
 h2,
