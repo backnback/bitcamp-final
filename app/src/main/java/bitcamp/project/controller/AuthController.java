@@ -62,8 +62,6 @@ public class AuthController {
 
         String password = user.getPassword();
 
-
-
         JwtToken token = userService.makeToken(email, password);
         return ResponseEntity.ok(token);
     }
