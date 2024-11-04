@@ -35,7 +35,8 @@ function StoryItem({ profileImg, profileName, currentLock, storyThum, currentLik
                     <Link to="/" className={styles.profile__link}>
                         <span className={styles.profile__img__wrap}>
                             {/* <img src={'/images/profile-default.png'} alt="" className={styles.profile__img} /> */}
-                            <img src={`/images/${profileImg}`} alt={`${profileName}의 프로필 이미지`} className={styles.profile__img} />
+                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${profileImg}`}
+                                alt={`${profileName}의 프로필 이미지`} className={styles.profile__img} />
                         </span>
                         {/* <span className={`${styles.profile__name} line1`}>제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토</span> */}
                         <span className={`${styles.profile__name} line1`}>{profileName}</span>
@@ -48,7 +49,8 @@ function StoryItem({ profileImg, profileName, currentLock, storyThum, currentLik
             </div>
             <div className={styles.middle}>
                 {/* <img src={"/images/sample.jpg"} alt={'story image'} className={`${styles.thumnail}`} /> */}
-                <img src={`/images/${storyThum}`} alt={'story image'} className={`${styles.thumnail}`} />
+                <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${storyThum}`}
+                    alt={'story image'} className={`${styles.thumnail}`} />
             </div>
             <div className={styles.bottom}>
                 <div className={styles.bottom__header}>
