@@ -68,8 +68,6 @@ dependencies {
     implementation 'com.sun.mail:jakarta.mail:1.6.7'
     // Spring Context Support
     implementation 'org.springframework:spring-context-support:5.3.18'
-    //이메일 인증번호 받은거 비교하기
-    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
 }
 
 tasks.named('test') {
