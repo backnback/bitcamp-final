@@ -27,6 +27,12 @@ public class UserServiceImpl implements UserService {
     @Value("${jwt.secret}")
     String secret;
 
+    @Value("${admin.username}")
+    private String adminUsername;
+
+    @Value("${admin.password}")
+    private String adminPassword;
+
     @Autowired
     private UserDao userDao;
 
@@ -82,6 +88,13 @@ public class UserServiceImpl implements UserService {
             User user = (User) authentication.getPrincipal();
             List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities()); // 권한 정보 가져오기
 
+            // ADMIN 역할 부여 로직
+            if (user.getEmail().equals(adminUsername) && password.equals(adminPassword)) {
+                user.setRole("ADMIN"); // ADMIN 역할 부여
+            } else {
+                user.setRole("USER"); // 기본 사용자 역할 설정
+            }
+
             // 인증 성공 시 JWT 토큰 생성
             return jwtTokenProvider.generateToken(user, authorities);
         } catch (AuthenticationException e) {
@@ -110,7 +123,7 @@ public class UserServiceImpl implements UserService {
                     .parseClaimsJws(jwtToken)
                     .getBody();
 
-// Claims에서 필요한 정보를 추출하여 User 객체 생성
+            // Claims에서 필요한 정보를 추출하여 User 객체 생성
             User user = new User();
             user.setEmail(claims.getSubject()); // 사용자 이메일
             user.setNickname(claims.get("nickname", String.class)); // 닉네임
