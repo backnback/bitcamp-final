@@ -23,8 +23,8 @@
     </select>
 
     <insert id="add" parameterType="bitcamp.project.vo.User" useGeneratedKeys="true">
-        INSERT INTO user(email, password, nickname, path)
-        VALUES (#{email}, #{password}, #{nickname}, #{path})
+        INSERT INTO user(email, password, nickname, path, role)
+        VALUES (#{email}, #{password}, #{nickname}, #{path}, #{role})x`
     </insert>
 
     <select id="findUser" resultMap="UserMap" parameterType="int">
