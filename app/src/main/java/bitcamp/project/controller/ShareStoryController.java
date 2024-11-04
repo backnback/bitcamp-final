@@ -1,9 +1,13 @@
 package bitcamp.project.controller;
 
+import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.service.StoryService;
+import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,15 +23,27 @@ public class ShareStoryController {
 
     private final StoryService storyService;
 
-    @GetMapping("list/{userId}")
-    public List<StoryListDTO> list(@PathVariable int userId) throws Exception {
-        return storyService.listAllShareStories(userId);
+    @GetMapping("list")
+    public ResponseEntity<?> list(@LoginUser User loginUser) throws Exception {
+        try {
+            List<StoryListDTO> storyListDTOs = storyService.listAllShareStories(loginUser.getId());
+            return ResponseEntity.ok(storyListDTOs);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
 
     @GetMapping("view/{storyId}")
-    public StoryViewDTO view(@PathVariable  int storyId) throws Exception {
-        return storyService.viewShareStory(storyId);
+    public ResponseEntity<?> view(@PathVariable  int storyId) throws Exception {
+        try {
+            StoryViewDTO storyViewDTO = storyService.viewShareStory(storyId);
+            return ResponseEntity.ok(storyViewDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 }
 

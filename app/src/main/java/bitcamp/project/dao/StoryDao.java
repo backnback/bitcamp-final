@@ -23,15 +23,4 @@ public interface StoryDao {
 
     boolean delete(int storyId) throws Exception;
 
-    boolean deleteLikes(int storyId) throws Exception;
-
-    boolean deletePhotos(int storyId) throws Exception;
-
-    Photo getPhoto(int photoId) throws Exception;
-
-    List<Photo> getPhotos(int storyId) throws Exception;
-
-    boolean deletePhoto(int photoId) throws Exception;
-
-    boolean insertPhoto(Photo photo) throws Exception;
 }

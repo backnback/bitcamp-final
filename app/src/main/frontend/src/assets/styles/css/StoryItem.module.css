@@ -1,0 +1,121 @@
+.item {
+    flex: 1 100%;
+    max-width: 282px;
+    height: 400px;
+    border-radius: var(--border-radius);
+    word-break: break-all;
+    box-shadow: 0px 4px 4px 0px #00000040;
+}
+
+.add {
+    /* 스타일 정의 */
+}
+
+.add__button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-blue-83);
+}
+
+.add__button:hover {
+    background-color: var(--color-blue-83-button-hover);
+    transition: .2s;
+}
+
+.top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 7px 12px;
+}
+
+.profile {
+    flex: 1;
+    max-width: calc(100% - 35px);
+}
+
+.profile__link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.profile__img__wrap {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 25px;
+    height: 25px;
+}
+
+.profile__img {
+    max-height: 100%;
+    border-radius: 100%;
+}
+
+.profile__name {
+    flex: 1;
+}
+
+.middle {
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 213px;
+}
+
+.thumbnail {}
+
+.bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 11px;
+    padding: 14px 15px;
+}
+
+.bottom__header {
+    /* 스타일 정의 */
+}
+
+.like__count {
+    /* 스타일 정의 */
+}
+
+.view__button {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    border: 0;
+    background-color: transparent;
+    text-align: left;
+}
+
+.bottom__body {
+    flex: 1;
+}
+
+.title {
+    /* 스타일 정의 */
+}
+
+.content {
+    /* 스타일 정의 */
+}
+
+.bottom__footer {
+    /* 스타일 정의 */
+}
+
+.location {
+    /* 스타일 정의 */
+}
+
+.date {
+    /* 스타일 정의 */
+}
