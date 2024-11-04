@@ -158,7 +158,7 @@ function FormStyles() {
 
             <i className={`icon icon__lock__black`}></i>
 
-            <StoryItem />
+            <StoryItem profileImg='data' profileName='data' currentLock='data' storyThum='data' currentLike='data' currentLikeCount='data' storyTitle='data' storyContent='data' storyLocation='data' storyDate />
 
             <StoryAddContext />
         </>

@@ -23,6 +23,7 @@
     --color-primary: #1E90FF;
     --color-blue-1a: #1a73e8;
     --color-blue-83: #83CDFB;
+    --color-blue-83-20: rgba(131, 205, 251, 0.2);
     --color-blue-b0: #B0ECF880;
     --color-blue-b0-50: #b0ecf880;
     --color-skyblue: #F6FBFF;
@@ -34,6 +35,7 @@
     --color-gray-d9: #D9D9D9;
     --color-gray-75: #757575;
     --color-gray-1e: #1E1E1E;
+    --color-gray-1e-30: rgba(30, 30, 30, 0.3);
     --color-gray-2c: #2c2c2c;
     --color-gray-2c-34: rgba(44, 44, 44, 0.341);
 
