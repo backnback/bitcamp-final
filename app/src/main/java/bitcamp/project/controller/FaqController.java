@@ -5,6 +5,7 @@ import bitcamp.project.vo.Faq;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -29,6 +30,7 @@ public class FaqController {
     }
 
     @PostMapping("/add")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Object>> add(@RequestBody Faq faq) {
         try {
             faqService.add(faq);
@@ -61,6 +63,7 @@ public class FaqController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
         }
     }
+
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Map<String, Object>> delete(@PathVariable int id) {
