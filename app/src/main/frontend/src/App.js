@@ -56,7 +56,7 @@ function App() {
 
   return (
     <div className={`layout__wrapper layout__wrapper__header`}>
-      {user == null ? null : <Header />}
+      {user == null ? <Login /> : <Header />}
 
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
