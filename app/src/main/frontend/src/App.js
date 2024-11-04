@@ -93,7 +93,7 @@ function App() {
             <Route path="/share-story/view/:storyId" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
             <Route path="/my-story/view/:storyId" element={<StoryView />} /> {/* 특정 스토리 보기 */}
             <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
-            <Route path="/story/form/update/:storyId" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
+            <Route path="/my-story/form/update/:storyId" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
             <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
           </Routes>
         </div>

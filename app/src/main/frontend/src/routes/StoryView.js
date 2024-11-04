@@ -81,11 +81,11 @@ const MyStoryView = () => {
                 {photos.length > 0 ? (
                     <div className="photo-gallery">
                         {photos.map(photo => (
-                            <div className="photo" key={photo.photoId}>
+                            <div className="photo" key={photo.id}>
                                 <img
                                     src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${photo.path ? photo.path : 'default.png'}`}
                                     //                                    src={`/images${photo.path}`}
-                                    alt={`Photo ${photo.photoId}`}
+                                    alt={`Photo ${photo.id}`}
                                     className={`story-photo ${photo.mainPhoto ? 'main-photo' : ''}`} // Apply main-photo class if it's the main photo
                                 />
                                 {photo.mainPhoto && <span className="main-label">main</span>}

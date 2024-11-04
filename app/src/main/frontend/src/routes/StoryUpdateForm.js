@@ -2,12 +2,12 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import './StoryUpdateForm.css';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useUser } from '../UserContext';
 
 
 const MyStoryUpdateForm = () => {
-    const { id } = useParams();
+    const { storyId } = useParams();
     const navigate = useNavigate();
+    const [accessToken, setAccessToken] = useState(null);
 
     const [title, setTitle] = useState('');
     const [travelDate, setTravelDate] = useState('');
@@ -19,29 +19,46 @@ const MyStoryUpdateForm = () => {
     const [selectedFirstName, setSelectedFirstName] = useState('');
     const [selectedSecondName, setSelectedSecondName] = useState('');
     const [loading, setLoading] = useState(true);
-    const { user } = useUser();
+
+
+    // 로컬 스토리지에서 accessToken을 가져오는 함수
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.warn("Access token이 없습니다.");
+        }
+    }, []);
+
 
 
     useEffect(() => {
-        const fetchStoryData = async () => {
-            try {
-                const response = await axios.get(`http://localhost:8080/my-story/view/${id}?userId=${user.id}`);
-                const story = response.data.story;
-                setTitle(story.title);
-                setTravelDate(story.travelDate);
-                setContent(story.content);
-                setLocationDetail(story.locationDetail);
-                setSelectedFirstName(story.location.firstName);
-                setSelectedSecondName(story.location.secondName);
-                setFiles(response.data.photos || []);
-            } catch (error) {
-                console.error("스토리 데이터를 불러오는 중 오류가 발생했습니다!", error);
-            } finally {
-                setLoading(false);
-            }
-        };
-        fetchStoryData();
-    }, [id]);
+        if (accessToken) {
+            const fetchStoryViewDTO = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8080/my-story/view/${storyId}`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                    const story = response.data;
+                    setTitle(story.title);
+                    setTravelDate(story.travelDate);
+                    setContent(story.content);
+                    setLocationDetail(story.locationDetail);
+                    setSelectedFirstName(story.locationFirstName);
+                    setSelectedSecondName(story.locationSecondName);
+                    setFiles(story.photos || []);
+                    setLoading(false);  // 데이터를 불러온 후 로딩 상태를 false로 설정
+                } catch (error) {
+                    console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
+                }
+            };
+            fetchStoryViewDTO();
+        }
+    }, [accessToken, storyId]);
+
 
     useEffect(() => {
         const fetchFirstNames = async () => {
@@ -71,9 +88,17 @@ const MyStoryUpdateForm = () => {
         fetchSecondNames();
     }, [selectedFirstName]);
 
+
     const handleFileChange = (event) => {
-        setFiles([...files, ...event.target.files]);
+        const newFiles = Array.from(event.target.files);
+        const previewFiles = newFiles.map(file => ({
+            file,
+            preview: URL.createObjectURL(file),  // 미리보기 URL 생성
+            mainPhoto: false,  // 기본적으로 mainPhoto는 false로 설정
+        }));
+        setFiles([...files, ...previewFiles]);  // 기존 파일과 새로운 파일을 결합
     };
+
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -83,10 +108,9 @@ const MyStoryUpdateForm = () => {
         formData.append('travelDate', travelDate);
         formData.append('locationDetail', locationDetail);
         formData.append('content', content);
-
-        if (user && user.id) {
-            formData.append('userId', user.id);  // 로그인 사용자 정보 전달
-        }
+        formData.append('firstName', selectedFirstName);
+        formData.append('secondName', selectedSecondName);
+        formData.append('oldStoryId', storyId);
 
         files.forEach(file => {
             if (file instanceof File) {
@@ -95,13 +119,14 @@ const MyStoryUpdateForm = () => {
         });
 
         try {
-            const response = await axios.post(`http://localhost:8080/my-story/update/${id}/${selectedFirstName}/${selectedSecondName}`, formData, {
+            const response = await axios.post('http://localhost:8080/my-story/update', formData, {
                 headers: {
+                    'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
             alert('스토리가 업데이트되었습니다!');
-            navigate(`/my-story/view/${id}?userId=${user.id}`);
+            navigate(`/my-story/view/${storyId}`);
         } catch (error) {
             console.error("스토리 업데이트 중 오류가 발생했습니다!", error);
         }
@@ -167,9 +192,11 @@ const MyStoryUpdateForm = () => {
             <div className="existing-photos">
                 {files.map((file, index) => (
                     <div key={index} className="photo">
-                        {/* Assuming 'file' has a 'path' property for the image URL */}
-
-                        <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path ? file.path : 'default.png'}`} alt={`Photo ${index + 1}`} />
+                        {file.preview ? (
+                            <img src={file.preview} alt={`New Photo ${index + 1}`} />
+                        ) : (
+                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path}`} alt={`Existing Photo ${index + 1}`} />
+                        )}
                         <span>{file.mainPhoto ? 'main' : ''}</span>
                     </div>
                 ))}
