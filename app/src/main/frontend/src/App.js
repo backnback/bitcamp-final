@@ -61,7 +61,8 @@ function App() {
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
           <Routes>
-            <Route path="/story/map" element={<StoryMap />} />
+            {user == null ? null : <Route path="/" element={<StoryMap />} />}
+
 
             <Route path="/form/test" element={<FormStyles />} />
             {/* 라우터 경로 설정 */}
