@@ -5,32 +5,41 @@ import axios from 'axios'; // axios를 import하여 API 요청 사용
 import { useUser } from '../UserContext';
 
 const ShareStoryList = () => {
-    const [storyList, setStoryList] = useState([]); // 변수 이름을 stories로 수정
+    const [storyList, setStoryList] = useState([]);
+    const [accessToken, setAccessToken] = useState(null); // accessToken 상태 추가
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const { user } = useUser();
 
-    const fetchList = async () => {
-        const token = localStorage.getItem('accessToken');
-        console.log("Fetched token from localStorage:", token);
-
-        try {
-            const response = await axios.get(`http://localhost:8080/share-story/list/${user.userId}`, {
-                headers: {
-                    'Authorization': `Bearer ${token}` // user에서 토큰 가져오기
-                }
-            });
-            setStoryList(response.data);
-        } catch (error) {
-            console.error("There was an error", error);
-        }
-    };
-
+    // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
-        console.log(user);
-        if (user && user.userId) {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.warn("Access token이 없습니다.");
+        }
+    }, []);
+
+
+    // accessToken이 설정된 경우에만 fetchList 호출
+    useEffect(() => {
+        if (accessToken) {
+            const fetchList = async () => {
+                try {
+                    const response = await axios.get('http://localhost:8080/share-story/list', {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                    setStoryList(response.data);
+                } catch (error) {
+                    console.error("공유 스토리 목록 가져오기 실패 !", error);
+                }
+            };
             fetchList();
         }
-    }, [user]);
+    }, [accessToken]);
+
 
     return (
         <div className="story-list">
@@ -51,7 +60,7 @@ const ShareStoryList = () => {
                         )}
                         <div className="story-info">
                             <div className="like-info">
-                                <button className="like-button">좋아요</button>
+                                <button className="like-button">{storyListDTO.likeStatus ? '좋아요함' : '좋아요안함'}</button>
                                 <span>{storyListDTO.likeCount}</span>
                             </div>
                             <Link to={`/share-story/view/${storyListDTO.storyId}`}>{storyListDTO.title}</Link>
