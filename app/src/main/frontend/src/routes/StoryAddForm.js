@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-// import './StoryAddForm.css'; // CSS 파일을 가져옵니다
-
+import '../assets/styles/css/_form.css'; // CSS 파일을 가져옵니다
+import { ButtonProvider } from '../components/ButtonProvider';
+import { InputProvider } from '../components/InputProvider';
 
 const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
@@ -90,7 +91,7 @@ const MyStoryAddForm = () => {
     };
 
     return (
-        <form onSubmit={handleSubmit} className="story-add-form">
+        <form onSubmit={handleSubmit} className="st ory-add-form form__item">
             <h2>스토리 추가</h2>
             <input
                 type="text"
@@ -130,18 +131,30 @@ const MyStoryAddForm = () => {
                 onChange={(e) => setLocationDetail(e.target.value)}
                 required
             />
-            <textarea
-                placeholder="내용"
-                value={content}
-                onChange={(e) => setContent(e.target.value)}
-                required
-            />
+
+            <InputProvider>
+                <textarea
+                    id='textarea01'
+                    placeholder='내용 입력'
+                    className={`form__textarea`}
+                    value={content}
+                    onChange={(e) => setContent(e.target.value)}
+                    required
+                ></textarea>
+            </InputProvider>
+
             <input
                 type="file"
                 multiple
                 onChange={handleFileChange}
             />
-            <button type="submit">추가</button>
+
+            <ButtonProvider>
+                <button type="button" className={`button button__primary`}>
+                    <span className={`button__text`}>등록</span>
+                </button>
+            </ButtonProvider>
+
         </form>
     );
 };

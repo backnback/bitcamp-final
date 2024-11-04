@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
-// import './StoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
+import StoryItem from '../components/StoryItem';
+import { StoryAddContext } from '../components/StoryItem';
 
 
 const MyStoryList = () => {
-    const [storyList, setStoryList] = useState([]); // 변수 이름을 stories로 수정
+    const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
 
@@ -50,37 +51,23 @@ const MyStoryList = () => {
         <div className="story-list">
             <h2>My 스토리</h2>
             <ul>
-                <li className="story-card add-story-card" onClick={handleAddStory}>
-                    <div className="add-story-icon">+</div> {/* 버튼 대신 아이콘을 div로 만듦 */}
+                <li onClick={handleAddStory}>
+                    <StoryAddContext />
                 </li>
                 {Array.isArray(storyList) && storyList.map((storyListDTO) => (
-                    <li key={storyListDTO.storyId} className="story-card">
-                        <div className="story-header">
-                            <p className="nickname">{storyListDTO.userNickname}</p>
-                            <button className="share-button">{storyListDTO.share ? '공유됨' : '공유하기'}</button>
-                        </div>
-                        {storyListDTO.mainPhoto && (
-                            <Link to={`/my-story/view/${storyListDTO.storyId}`}>
-                                <div className="image-container">
-                                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${storyListDTO.mainPhoto.path ? storyListDTO.mainPhoto.path : 'default.png'}`} />
-                                </div>
-                            </Link>
-                        )}
-                        <div className="story-info">
-                            <div className="like-info">
-                                <button className="like-button">{storyListDTO.likeStatus ? '좋아요함' : '좋아요안함'}</button>
-                                <span>{storyListDTO.likeCount}</span>
-                            </div>
-                            <Link to={`/my-story/view/${storyListDTO.storyId}`}>{storyListDTO.title}</Link>
-                            <Link to={`/my-story/view/${storyListDTO.storyId}`}>
-                                <p>{storyListDTO.content}</p>
-                            </Link>
-                            <div className="location-date">
-                                <p>{storyListDTO.locationFirstName} {storyListDTO.locationDetail}</p>
-                                <p>{storyListDTO.travelDate}</p>
-                            </div>
-                        </div>
-                    </li>
+                    <StoryItem
+                        key={storyListDTO.storyId}
+                        profileImg={storyListDTO.userPath || 'default.png'} // 프로필 이미지
+                        profileName={storyListDTO.userNickname} // 프로필 이름
+                        currentLock={!storyListDTO.share} // 공유 여부
+                        storyThum={storyListDTO.mainPhoto.path || 'default.png'} // 썸네일 이미지
+                        currentLike={storyListDTO.likeStatus} // 좋아요 상태
+                        currentLikeCount={storyListDTO.likeCount} // 좋아요 개수
+                        storyTitle={storyListDTO.title} // 스토리 제목
+                        storyContent={storyListDTO.content} // 스토리 내용
+                        storyLocation={`${storyListDTO.locationFirstName} ${storyListDTO.locationDetail}`} // 위치 정보
+                        storyDate={storyListDTO.travelDate} // 여행 날짜
+                    />
                 ))}
             </ul>
         </div>
