@@ -1,100 +1,120 @@
-import { useState, useEffect } from 'react';
+import {useState, useEffect} from 'react';
 import axios from 'axios';
-import { useNavigate, Link } from 'react-router-dom';
-import { jwtDecode } from 'jwt-decode';
-import { useUser } from '../UserContext';
+import {useNavigate, Link} from 'react-router-dom';
+import {jwtDecode} from 'jwt-decode';
+import {useUser} from '../UserContext';
+import {InputProvider} from "../components/InputProvider";
+import {ButtonProvider} from "../components/ButtonProvider";
+import styles from "../assets/styles/css/Login.module.css"
 
 function Login() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [saveId, setSaveId] = useState(false);
-  const navigate = useNavigate();
-  const { setUser } = useUser();
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [saveId, setSaveId] = useState(false);
+    const navigate = useNavigate();
+    const {setUser} = useUser();
 
-  // 페이지가 로드될 때 토큰을 확인하고 유저 정보를 설정
-  useEffect(() => {
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      const userInfo = jwtDecode(token);
-      console.log("Decoded userInfo:", userInfo);
-      setUser(userInfo); // UserContext에 유저 정보 설정
-    }
-  }, [setUser]);
+    // 페이지가 로드될 때 토큰을 확인하고 유저 정보를 설정
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            const userInfo = jwtDecode(token);
+            console.log("Decoded userInfo:", userInfo);
+            setUser(userInfo); // UserContext에 유저 정보 설정
+        }
+        document.body.classList.add(styles.loginBody)
+    }, [setUser]);
 
-  const handleLogin = async (e) => {
-    e.preventDefault();
+    const handleLogin = async (e) => {
+        e.preventDefault();
 
-    try {
-      const response = await axios.post('http://localhost:8080/sign/in', {
-        email: email,
-        password: password
-      }, {
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
+        try {
+            const response = await axios.post('http://localhost:8080/sign/in', {
+                email: email,
+                password: password
+            }, {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            });
 
-      if (response.data) {
-        const { accessToken } = response.data;
+            if (response.data) {
+                const {accessToken} = response.data;
 
-        // 토큰을 로컬 스토리지에 저장
-        localStorage.setItem('accessToken', accessToken);
+                // 토큰을 로컬 스토리지에 저장
+                localStorage.setItem('accessToken', accessToken);
 
-        // 토큰 디코딩하여 유저 정보 추출
-        const userInfo = jwtDecode(accessToken);
-        setUser(userInfo); // UserContext에 유저 정보 설정
-        navigate('/'); // 홈 페이지로 이동
-      } else {
-        alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
-      }
-    } catch (error) {
-      console.error("로그인 요청 중 오류 발생:", error);
-      alert("로그인 요청 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
-    }
-  };
+                // 토큰 디코딩하여 유저 정보 추출
+                const userInfo = jwtDecode(accessToken);
+                setUser(userInfo); // UserContext에 유저 정보 설정
+                navigate('/'); // 홈 페이지로 이동
+            } else {
+                alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
+            }
+        } catch (error) {
+            console.error("로그인 요청 중 오류 발생:", error);
+            alert("로그인 요청 중 오류가 발생했습니다. 나중에 다시 시도해주세요.");
+        }
+    };
 
-  return (
-    <div>
-      <section>
-        <h2>로그인</h2>
-        <form onSubmit={handleLogin}>
-          <div>
-            <label htmlFor="email">이메일: </label>
-            <input
-              type="email"
-              id="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="이메일을 입력해주세요."
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="user-password">비밀번호: </label>
-            <input
-              type="password"
-              id="user-password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="비밀번호를 입력해주세요."
-              required
-            />
-          </div>
-          <div className="area_label">
-            <input
-              type="checkbox"
-              id="save-id"
-              checked={saveId}
-              onChange={(e) => setSaveId(e.target.checked)}
-            />
-            <label htmlFor="save-id">아이디 저장</label>
-          </div>
-          <button type="submit">로그인</button>
-            <Link to="/signup"  >회원가입</Link>
-        </form>
-      </section>
-    </div>
-  );
+    return (
+        <div className={styles.container}>
+            <div className={styles.formContainer}>
+                <div className={styles.titleBox}>
+                    <div className={styles.titleLeft}><span>기억하</span></div>
+                    <div className={styles.titleRight}><span>길</span></div>
+                </div>
+
+                <div className={styles.subtitle}>💙💙 놓치지 마! 소중한 기억 💙💙</div>
+                <form onSubmit={handleLogin} className={styles.loginForm}>
+                        <InputProvider>
+                            <input
+                                type='email'
+                                className={`form__input`}
+                                id='email'
+                                name='이메일'
+                                onChange={(e) => setEmail(e.target.value)}
+                                required
+                                defaultValue={email}
+                                placeholder='이메일 입력'/>
+                        </InputProvider>
+                        <InputProvider>
+                            <input
+                                type='password'
+                                className={`form__input`}
+                                id='password'
+                                name='패스워드'
+                                placeholder='비밀번호 입력'
+                                onChange={(e) => setPassword(e.target.value)}
+                                required
+                            />
+                        </InputProvider>
+                    <div className={styles.saveCheckBox}>
+                        <InputProvider>
+                            <label htmlFor="save-id" className={`form__label form__label__checkbox`}>
+                                <input
+                                    type='checkbox'
+                                    className={`form__input`}
+                                    id='save-id'
+                                    name='체크체크'
+                                    onChange={(e) => setSaveId(e.target.checked)}
+                                />
+                                <span className={`.input__text`}> 자동 로그인</span>
+                            </label>
+                        </InputProvider>
+                    </div>
+                    <ButtonProvider className={styles.loginButton}>
+                        <button type="submit" className={`button button__black`}>
+                            <span className={`button__text`}>로그인</span>
+                        </button>
+                    </ButtonProvider>
+                    <div className={styles.userAccount}>
+                        <Link to="">아이디 찾기</Link> | <Link to="">비밀번호 찾기</Link> | <Link to="/signup">회원가입</Link>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
 }
 
 export default Login;

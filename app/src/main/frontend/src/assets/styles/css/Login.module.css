@@ -1,0 +1,71 @@
+.loginBody{
+    height: 100%;
+    margin: 0;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, var(--color-primary), #B1EDF8);
+    /*background: linear-gradient(to bottom, green, red);*/
+    color: white;
+}
+
+/* Container */
+.container {
+    align-content: center;
+    width: 1200px;
+    justify-items: right;
+    height: 100vh;
+}
+
+.formContainer {
+    justify-items: left;
+}
+
+/* Title */
+.titleBox {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.titleLeft {
+    font-size: 100px;
+    font-weight: bold;
+}
+
+.titleRight {
+    color: var(--color-black);
+    font-size: 100px;
+    font-weight: bold;
+}
+
+/* Subtitle */
+.subtitle {
+    font-size: var(--code-font-family);
+    margin-bottom: 30px;
+}
+
+.loginButton {
+    margin-bottom: 10px;
+    justify-items: left;
+}
+
+.saveCheckBox {
+    margin-left: 10px;
+    color: var(--color-black);
+}
+
+.userAccount {
+    letter-spacing: 2px;
+}
+
+.userAccount > a{
+    color: var(--color-white);
+}
+
+/* Login Form */
+.loginForm {
+    display: flex;
+    flex-direction: column;
+    width: 300px;
+}
