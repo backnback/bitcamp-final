@@ -1,0 +1,25 @@
+.list {
+    /* 전체 레이아웃 */
+    display: flex; /* Flexbox 사용 */
+    flex-direction: row; /* 아이템을 가로로 배치 */
+    justify-content: flex-start; /* 왼쪽 정렬 (필요에 따라 center로 변경 가능) */
+    padding: 50px 10px 30px; /* 주위 패딩 */
+    gap: 20px; /* 아이템 간의 간격 */
+
+    /* 위치 */
+    position: absolute;
+    width: 100%; /* 전체 너비를 사용 */
+    left: 360px; /* 왼쪽 위치 */
+    top: 0px; /* 상단 위치 */
+    border-radius: 0px;
+}
+
+.list__item {
+    /* 각 카드 스타일 */
+    margin-bottom: 20px; /* 아래쪽 여백 (필요시 조정) */
+    transition: transform 0.2s; /* 부드러운 변환 효과 */
+}
+
+.list__item:hover {
+    transform: scale(1.02); /* 마우스 오버 시 확대 효과 */
+}
