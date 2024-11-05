@@ -22,7 +22,7 @@ function Login() {
             console.log("Decoded userInfo:", userInfo);
             setUser(userInfo); // UserContext에 유저 정보 설정
         }
-        document.body.classList.add(styles.loginBody)
+        // document.body.classList.add(styles.loginBody)
     }, [setUser]);
 
     useEffect(() => {
