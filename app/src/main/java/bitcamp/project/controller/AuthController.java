@@ -94,7 +94,8 @@ public class AuthController {
 
     @PostMapping("verificationcode")
     public Boolean VerificationCode(@RequestBody EmailDTO emailDTO, HttpServletRequest request) throws Exception {
-        String authCode = emailDTO.getAuthNum();
+        String authCode = emailDTO.getAuthCode();
+        System.out.println(authCode);
         HttpSession session = request.getSession();
         String code = (String) session.getAttribute("authCode");
         if (code.equals(authCode)){
