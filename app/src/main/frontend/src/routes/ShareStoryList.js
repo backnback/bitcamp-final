@@ -3,7 +3,7 @@ import {Link, useNavigate} from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import {useUser} from '../UserContext';
-import StoryItem from "../components/StoryItem";
+import StoryItemList from "../components/StoryItemList";
 
 const ShareStoryList = () => {
     const [storyList, setStoryList] = useState([]);
@@ -52,26 +52,11 @@ const ShareStoryList = () => {
     return (
         <div className="story-list">
             <h2>공유 스토리</h2>
-            <ul>
-                {Array.isArray(storyList) && storyList.map((storyListDTO) => (
-                        <StoryItem
-                            key={storyListDTO.storyId}
-                            currentLike={storyListDTO.likeStatus}
-                            currentLock={!storyListDTO.share}
-                            currentLikeCount={storyListDTO.likeCount}
-                            profileName={storyListDTO.userNickname}
-                            storyContent={storyListDTO.content}
-                            storyDate={storyListDTO.travelDate}
-                            storyTitle={storyListDTO.title}
-                            storyLocation={storyListDTO.locationFirstName + storyListDTO.locationDetail}
-                            storyThum={storyListDTO.mainPhoto.path || 'default.png'}
-                            profileImg={storyListDTO.userPath || 'default.png'}
-                        />
-                ))}
-            </ul>
+            <StoryItemList
+                storyList={storyList}
+            />
         </div>
-    )
-        ;
+    );
 };
 
 export default ShareStoryList;
