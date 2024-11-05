@@ -2,6 +2,7 @@ package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.StoryListDTO;
+import bitcamp.project.dto.UpdateLikeRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
@@ -51,33 +52,19 @@ public class LikeController {
     }
   }
 
-
-  // 좋아요 등록
-  @GetMapping("add/{storyId}")
-  public ResponseEntity<String> add(
-      @PathVariable int storyId, @LoginUser User loginUser) {
+  // 좋아요 목록 배치 업데이트 (등록 및 삭제)
+  @PostMapping("batch-update")
+  public ResponseEntity<?> batchUpdate(
+      @RequestBody List<UpdateLikeRequestDTO> updateLikeRequestDTOs,
+      @LoginUser User loginUser) {
     try {
-      likeService.addLike(storyId, loginUser.getId());
-      return ResponseEntity.ok("좋아요 등록 완료!");
+      likeService.batchUpdateLikes(updateLikeRequestDTOs, loginUser.getId());
+      return ResponseEntity.ok("좋아요 목록 배치 처리 완료!");
 
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
   }
-
-  // 좋아요 취소
-  @DeleteMapping("delete/{storyId}")
-  public ResponseEntity<String> delete(
-      @PathVariable int storyId, @LoginUser User loginUser) {
-    try {
-      likeService.deleteLike(storyId, loginUser.getId());
-      return ResponseEntity.ok("좋아요 삭제 완료!");
-
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-  }
-
 
   // 스토리 알림 확인 시 목록에서 제거
   @GetMapping("confirm/{storyId}/{otherUserId}")

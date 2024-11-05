@@ -2,6 +2,7 @@ package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.LikeDao;
 import bitcamp.project.dao.StoryDao;
+import bitcamp.project.dto.UpdateLikeRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.vo.Like;
 
@@ -21,14 +22,25 @@ public class LikeServiceImpl implements LikeService {
   private final StoryDao storyDao;
 
 
-  @Override
-  public void addLike(int storyId, int userId) throws Exception {
-    Story story = storyDao.findByStoryId(storyId);
-    if (story == null) {
-      throw new Exception("없는 스토리입니다");
-    }
 
-    likeDao.insert(storyId, userId);
+  @Override
+  public void batchUpdateLikes(List<UpdateLikeRequestDTO> updateLikeRequestDTOs, int userId)
+      throws Exception {
+
+    for (UpdateLikeRequestDTO updateLikeRequestDTO : updateLikeRequestDTOs) {
+      int storyId = updateLikeRequestDTO.getStoryId();
+      Story story = storyDao.findByStoryId(storyId);
+      if (story == null) {
+        throw new Exception("없는 스토리입니다");
+      }
+
+      if (updateLikeRequestDTO.getAction().equals("add")) {
+        addLike(storyId, userId);
+
+      } else if (updateLikeRequestDTO.getAction().equals("delete")) {
+        deleteLike(storyId, userId);
+      }
+    }
   }
 
 
@@ -78,25 +90,30 @@ public class LikeServiceImpl implements LikeService {
 
 
   @Override
-  public void deleteLike(int storyId, int userId) throws Exception {
-
-    Story story = storyDao.findByStoryId(storyId);
-    if (story == null) {
-      throw new Exception("없는 스토리입니다");
-    }
-
-    Like like = likeDao.findBy(storyId, userId);
-    if (like == null) {
-      throw new Exception("접근 권한이 없습니다.");
-    }
-
-    likeDao.delete(storyId, userId);
+  public void deleteLikes(int storyId) throws Exception {
+    likeDao.deleteAllByStory(storyId);
   }
 
 
-  @Override
-  public void deleteLikes(int storyId) throws Exception {
-    likeDao.deleteAllByStory(storyId);
+  private void addLike(int storyId, int userId) throws Exception {
+    Like like = likeDao.findBy(storyId, userId);
+    if (like != null) {
+      System.out.printf("%d번 좋아요는 이미 처리된 좋아요 입니다!\n", storyId);
+      return;
+    }
+
+    likeDao.insert(storyId, userId);
+  }
+
+
+  private void deleteLike(int storyId, int userId) throws Exception {
+    Like like = likeDao.findBy(storyId, userId);
+    if (like == null) {
+      System.out.printf("%d번 좋아요는 존재하지 않아 삭제 불가 !\n", storyId);
+      return;
+    }
+
+    likeDao.delete(storyId, userId);
   }
 
 

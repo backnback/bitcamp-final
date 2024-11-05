@@ -20,10 +20,14 @@ export const StoryAddContext = () => {
     );
 }
 
-function StoryItem({ profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate }) {
+function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange }) {
     const [like, setLike] = useState(currentLike);
     const likeClick = () => {
-        setLike((current) => current = !current);
+        setLike((current) => {
+            const newLike = !current;
+            onLikeChange(storyId, newLike ? 'add' : 'remove');
+            return newLike;
+        });
     }
 
     useEffect(() => {
