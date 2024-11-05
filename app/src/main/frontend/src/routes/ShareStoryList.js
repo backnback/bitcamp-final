@@ -2,14 +2,13 @@ import React, {useEffect, useState} from 'react';
 import {Link, useNavigate} from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
-import {useUser} from '../UserContext';
 import StoryItemList from "../components/StoryItemList";
 
 const ShareStoryList = () => {
     const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // accessToken 상태 추가
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
-    const {user} = useUser();
+    const {token} = localStorage.getItem('accessToken');
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {

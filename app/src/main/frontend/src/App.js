@@ -15,7 +15,6 @@ import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import FormStyles from "./routes/FormStyles";
-import { UserProvider, useUser } from './UserContext'; // UserContext import
 
 import MapSeoul from "./components/map/MapSeoul";
 import MapBusan from "./components/map/MapBusan";
@@ -35,11 +34,12 @@ import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
 import Map from "./components/Map";
+import { jwtDecode } from "jwt-decode";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
-  const { user, logout, setUser } = useUser();
   const [users, setUsers] = useState([]); // 사용자 목록 상태
+  const user = jwtDecode(localStorage.getItem('accessToken'));
 
   // 사용자 목록 가져오기 함수
   const fetchUsers = async () => {
@@ -106,11 +106,9 @@ function App() {
 // UserProvider로 App 컴포넌트 감싸기
 function UserWrapper() {
   return (
-    <UserProvider>
       <Router>
         <App />
       </Router>
-    </UserProvider>
   );
 }
 

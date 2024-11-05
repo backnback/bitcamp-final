@@ -1,14 +1,14 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import styles from '../assets/styles/css/Header.module.css';
-import { useUser } from '../UserContext'; // UserContext import
+import {jwtDecode} from 'jwt-decode';
 
 function Header() {
-    const { user, setUser } = useUser(); // useUser를 컴포넌트 내부로 이동하고, setUser도 함께 구조 분해할당
+    const user = jwtDecode(localStorage.getItem('accessToken'));
 
     const handleLogout = () => {
         // 로그아웃 처리
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
-        setUser(null); // UserContext에서 유저 정보 초기화
+        navigator('/');
     };
 
     return (

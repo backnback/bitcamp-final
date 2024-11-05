@@ -2,7 +2,6 @@ import {useState, useEffect} from 'react';
 import axios from 'axios';
 import {useNavigate, Link} from 'react-router-dom';
 import {jwtDecode} from 'jwt-decode';
-import {useUser} from '../UserContext';
 import {InputProvider} from "../components/InputProvider";
 import {ButtonProvider} from "../components/ButtonProvider";
 import styles from "../assets/styles/css/Login.module.css"
@@ -12,7 +11,6 @@ function Login() {
     const [password, setPassword] = useState('');
     const [saveId, setSaveId] = useState(false);
     const navigate = useNavigate();
-    const {setUser} = useUser();
 
     // 페이지가 로드될 때 토큰을 확인하고 유저 정보를 설정
     useEffect(() => {
@@ -20,10 +18,9 @@ function Login() {
         if (token) {
             const userInfo = jwtDecode(token);
             console.log("Decoded userInfo:", userInfo);
-            setUser(userInfo); // UserContext에 유저 정보 설정
         }
         // document.body.classList.add(styles.loginBody)
-    }, [setUser]);
+    });
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -43,10 +40,6 @@ function Login() {
 
                 // 토큰을 로컬 스토리지에 저장
                 localStorage.setItem('accessToken', accessToken);
-
-                // 토큰 디코딩하여 유저 정보 추출
-                const userInfo = jwtDecode(accessToken);
-                setUser(userInfo); // UserContext에 유저 정보 설정
                 navigate('/'); // 홈 페이지로 이동
             } else {
                 alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
