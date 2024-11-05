@@ -1,0 +1,100 @@
+.signupContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: var(--color-skyblue-ff); /* 연한 배경색 */
+}
+
+
+.signupBox {
+  background-color: var(--color-white-90);
+  padding: var(--padding-xy);
+  width: 350px;
+  border-radius: var(--border-radius);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.signupBox h2 {
+  font-size: var(--font-size-text);
+  margin-bottom: 1.5rem;
+}
+
+.inputGroup {
+  color: var(--color-black);
+  margin-bottom: 1rem;
+  text-align: left;
+}
+
+.inputGroup label {
+  font-weight: 600;
+}
+
+.required {
+  color: var(--color-red);
+  margin-left: 4px;
+}
+
+.inputWrapper {
+  display: flex;
+  align-items: center;
+}
+
+.inputWrapper input {
+  flex: 1;
+  padding: var(--padding-rl);
+  border: 1px solid var(--color-white-90);
+  border-radius: 4px;
+  outline: none;
+}
+
+.authButton {
+  margin-left: 8px;
+  background-color: var(--color-primary-button-hover);
+  color: var(--color-white-90);
+  border: none;
+  padding: var(--padding-rl);
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.authButton:hover {
+  background-color: var(--color-blue-83-button-hover);
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"] {
+  width: 100%;
+  padding: var(--padding-rl);
+  border: 1px solid var(--color-white-90);
+  border-radius: 4px;
+  outline: none;
+}
+
+input[type="checkbox"] {
+  margin-right: 8px;
+}
+
+.checkboxGroup {
+  text-align: left;
+  font-size: var(--font-size);
+  margin-bottom: 1rem;
+}
+
+.submitButton {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: var(--color-blue-1a);
+  color: var(--color-white-90);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: var(--font-size);
+  margin-top: 1rem;
+}
+
+.submitButton:hover {
+  background-color: var(--color-blue-83-button-hover);
+}
