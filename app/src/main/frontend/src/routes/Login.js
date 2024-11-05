@@ -116,7 +116,7 @@ function Login() {
                                     checked={rememberEmail}
                                     onChange={() => setRememberEmail(!rememberEmail)}
                                 />
-                                <span className={`.input__text`}> 자동 로그인</span>
+                                <span className={`.input__text`}> 이메일 저장</span>
                             </label>
                         </InputProvider>
                     </div>
