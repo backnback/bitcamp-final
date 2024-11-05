@@ -45,8 +45,9 @@ public class LikeServiceImpl implements LikeService {
 
 
   @Override
-  public int countLikes(int storyId) throws Exception {
-    return likeDao.findAllByStory(storyId).size();
+  public int countLikes(int storyId, boolean likeStatus) throws Exception {
+    int likeCount = likeDao.findAllByStory(storyId).size();
+    return likeStatus ? likeCount - 1 : likeCount;
   }
 
 
