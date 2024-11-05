@@ -23,6 +23,13 @@
         VALUES (#{title}, #{content})
     </insert>
 
+    <update id="update" parameterType="bitcamp.project.vo.Faq">
+        UPDATE faq
+        SET title = #{title},
+        content = #{content}
+        WHERE faq_id = #{id}
+    </update>
+
     <delete id="delete" parameterType="int">
         DELETE FROM faq WHERE faq_id=#{id}
     </delete>

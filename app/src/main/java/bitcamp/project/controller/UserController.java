@@ -5,6 +5,7 @@ import bitcamp.project.service.UserService;
 import bitcamp.project.service.impl.FileServiceImpl;
 import bitcamp.project.vo.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -33,7 +34,6 @@ public class UserController {
     @GetMapping("list")
     public List<User> list() throws Exception{
         List<User> users =  userService.list();
-
         return users;
     }
 
@@ -69,16 +69,14 @@ public class UserController {
 
         // 사용자 정보 업데이트
         old.setNickname(nickname);
-        old.setPassword(password);
-
+        if (password != null) {
+            old.setPassword(userService.encodePassword(password));
+        }
         return userService.update(id, old);
     }
 
     @DeleteMapping("delete/{id}")
     public boolean delete(@PathVariable int id) throws Exception{
-//        FileServiceImpl fileService = new FileServiceImpl();
-//        User user = userService.findUser(id);
-//        fileService.deleteFile(user.getPath());
         User old = userService.findUser(id);
         if (userService.delete(id)) {
             storageService.delete(folderName + old.getPath());
@@ -87,4 +85,6 @@ public class UserController {
             return false;
         }
     }
+
+
 }

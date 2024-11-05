@@ -3,16 +3,42 @@
  */
 package bitcamp.project;
 
+import bitcamp.project.annotation.LoginUserArgumentResolver;
+import bitcamp.project.interceptor.AuthInterceptor;
+import lombok.RequiredArgsConstructor;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.web.method.support.HandlerMethodArgumentResolver;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+
+import java.util.List;
 
 @SpringBootApplication
 @MapperScan("bitcamp.project.dao")
 @PropertySource("file:${user.home}/config/final.properties")
-public class App {
+@EnableTransactionManagement
+@RequiredArgsConstructor
+public class App implements WebMvcConfigurer {
+
+    private final AuthInterceptor authInterceptor;
+
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
+    }
+
+
+    @Override
+    public void addInterceptors(InterceptorRegistry registry) {
+        registry.addInterceptor(authInterceptor)
+            .addPathPatterns("/**");
+    }
+
+    @Override
+    public void addArgumentResolvers(List<HandlerMethodArgumentResolver> resolvers) {
+        resolvers.add(new LoginUserArgumentResolver());
     }
 }

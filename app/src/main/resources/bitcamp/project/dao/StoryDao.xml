@@ -28,12 +28,12 @@
         </association>
     </resultMap>
 
-    <resultMap id="PhotoMap" type="photo">
-        <id column="photo_id" property="id"/>
-        <result column="story_id" property="storyId"/>
-        <result column="main_photo" property="mainPhoto"/>
-        <result column="path" property="path"/>
-    </resultMap>
+
+    <insert id="insert" parameterType="story"
+            useGeneratedKeys="true" keyColumn="story_id" keyProperty="id">
+        INSERT INTO story(user_id, location_id, title, travel_date, location_detail, content, share)
+        VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{locationDetail}, #{content}, #{share})
+    </insert>
 
 
     <select id="findAll" resultMap="StoryMap">
@@ -59,6 +59,7 @@
         ORDER BY
             s.story_id desc
     </select>
+
 
     <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">
         SELECT
@@ -86,7 +87,36 @@
             s.story_id desc
     </select>
 
-    <select id="findBy" resultMap="StoryMap" parameterType="int">
+
+    <select id="findAllByMyLike" resultMap="StoryMap" parameterType="int">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+            inner join story_like k on k.story_id=s.story_id
+        WHERE
+            k.user_id=#{userId}
+        ORDER BY
+            k.like_date desc
+    </select>
+
+
+    <select id="findByStoryId" resultMap="StoryMap" parameterType="int">
         SELECT
             s.story_id,
             s.title,
@@ -110,11 +140,6 @@
             story_id = #{id}
     </select>
 
-    <insert id="insert" parameterType="story"
-            useGeneratedKeys="true" keyColumn="story_id" keyProperty="id">
-        INSERT INTO story(user_id, location_id, title, travel_date, location_detail, content, share)
-        VALUES (#{user.id}, #{location.id}, #{title}, #{travelDate}, #{locationDetail}, #{content}, #{share})
-    </insert>
 
     <update id="update" parameterType="story">
         update story set
@@ -127,42 +152,10 @@
         where story_id=#{id}
     </update>
 
+
     <delete id="delete" parameterType="int">
         DELETE FROM story WHERE story_id=#{id}
     </delete>
 
-    <delete id="deleteLikes" parameterType="int">
-        delete from story_like
-        where story_id = #{id}
-    </delete>
-
-    <delete id="deletePhotos" parameterType="int">
-        delete from story_photo
-        where story_id = #{id}
-    </delete>
-
-    <insert id="insertPhoto" parameterType="photo"
-            useGeneratedKeys="true" keyColumn="photo_id" keyProperty="id">
-        INSERT INTO story_photo(story_id, main_photo, path)
-        VALUES (#{storyId}, #{mainPhoto}, #{path})
-    </insert>
-
-    <select id="getPhoto" resultMap="PhotoMap">
-        SELECT * FROM story_photo
-        WHERE photo_id = #{id}
-    </select>
-
-    <delete id="deletePhoto" parameterType="int">
-        delete from story_photo
-        where photo_id = #{id}
-    </delete>
-
-    <select id="getPhotos" resultMap="PhotoMap">
-        SELECT *
-        FROM
-            story_photo
-        WHERE
-            story_id=#{id}
-    </select>
 
 </mapper>

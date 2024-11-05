@@ -1,61 +1,77 @@
-import React, { useEffect, useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
+import React, {useEffect, useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
+import {useUser} from '../UserContext';
+import StoryItem from "../components/StoryItem";
 
 const ShareStoryList = () => {
-    const [responseList, setResponseList] = useState([]); // 변수 이름을 stories로 수정
+    const [storyList, setStoryList] = useState([]);
+    const [accessToken, setAccessToken] = useState(null); // accessToken 상태 추가
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
+    const {user} = useUser();
 
-    const fetchList = async () => {
-        try {
-            const response = await axios.get('http://localhost:8080/share-story/list'); // API 요청
-            setResponseList(response.data);
-        } catch (error) {
-            console.error("There was an error", error);
-        }
-    };
-
+    // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
-        fetchList();
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.warn("Access token이 없습니다.");
+        }
     }, []);
+
+
+    // accessToken이 설정된 경우에만 fetchList 호출
+    useEffect(() => {
+        if (accessToken) {
+            const fetchList = async () => {
+                try {
+                    const response = await axios.get('http://localhost:8080/share-story/list', {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+                    response.data.map((story, index) => {
+                        if(story.mainPhoto.path == null){
+                            console.log("test")
+                        }
+                        console.log(`Content: ${story.mainPhoto.path}`);
+                    })
+                    console.log(response.data)
+                    setStoryList(response.data);
+                } catch (error) {
+                    console.error("공유 스토리 목록 가져오기 실패 !", error);
+                }
+            };
+            fetchList();
+        }
+    }, [accessToken]);
+
 
     return (
         <div className="story-list">
             <h2>공유 스토리</h2>
             <ul>
-                {Array.isArray(responseList) && responseList.map((map) => (
-                    <li key={map.story.id} className="story-card">
-                        <div className="story-header">
-                            <p className="nickname">{map.story.user ? map.story.user.nickname : '익명'}</p>
-                            <button className="share-button">{map.story.share ? '공유됨' : '공유하기'}</button>
-                        </div>
-                        {map.mainPhoto && (
-                            <Link to={`/share-story/view/${map.story.id}`}>
-                                <div className="image-container">
-                                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${map.mainPhoto.path ? map.mainPhoto.path : 'default.png'}`} />
-                                </div>
-                            </Link>
-                        )}
-                        <div className="story-info">
-                            <div className="like-info">
-                                <button className="like-button">좋아요</button>
-                                <span>{map.likeCount}</span>
-                            </div>
-                            <Link to={`/share-story/view/${map.story.id}`}>{map.story.title}</Link>
-                            <Link to={`/share-story/view/${map.story.id}`}>
-                                <p>{map.story.content}</p>
-                            </Link>
-                            <div className="location-date">
-                                <p>{map.story.location.firstName} {map.story.locationDetail}</p>
-                                <p>{map.story.travelDate}</p>
-                            </div>
-                        </div>
-                    </li>
+                {Array.isArray(storyList) && storyList.map((storyListDTO) => (
+                        <StoryItem
+                            key={storyListDTO.storyId}
+                            currentLike={storyListDTO.likeStatus}
+                            currentLock={!storyListDTO.share}
+                            currentLikeCount={storyListDTO.likeCount}
+                            profileName={storyListDTO.userNickname}
+                            storyContent={storyListDTO.content}
+                            storyDate={storyListDTO.travelDate}
+                            storyTitle={storyListDTO.title}
+                            storyLocation={storyListDTO.locationFirstName + storyListDTO.locationDetail}
+                            storyThum={storyListDTO.mainPhoto.path || 'default.png'}
+                            profileImg={storyListDTO.userPath || 'default.png'}
+                        />
                 ))}
             </ul>
         </div>
-    );
+    )
+        ;
 };
 
 export default ShareStoryList;

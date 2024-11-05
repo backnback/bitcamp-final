@@ -10,6 +10,7 @@
         <result column="password" property="password"/>
         <result column="nickname" property="nickname"/>
         <result column="path" property="path"/>
+        <result column="role" property="role"/>
     </resultMap>
 
     <resultMap id="UserInfo" type="bitcamp.project.vo.User">
@@ -22,8 +23,8 @@
     </select>
 
     <insert id="add" parameterType="bitcamp.project.vo.User" useGeneratedKeys="true">
-        INSERT INTO user(email, password, nickname, path)
-        VALUES (#{email}, sha1(#{password}), #{nickname}, #{path})
+        INSERT INTO user(email, password, nickname, path, role)
+        VALUES (#{email}, #{password}, #{nickname}, #{path}, #{role})x`
     </insert>
 
     <select id="findUser" resultMap="UserMap" parameterType="int">
@@ -32,7 +33,7 @@
 
     <update id="update" parameterType="map">
         UPDATE user
-        SET password=sha1(#{user.password}), nickname=#{user.nickname}, path=#{user.path}
+        SET password=#{user.password}, nickname=#{user.nickname}, path=#{user.path}
         WHERE user_id=#{id}
     </update>
 
@@ -41,6 +42,6 @@
     </delete>
 
     <select id="findByEmailAndPassword" resultMap="UserMap">
-        SELECT user_id, nickname FROM user WHERE email=#{email} AND password=sha1(#{password})
+        SELECT * FROM user WHERE email = #{email}
     </select>
 </mapper>

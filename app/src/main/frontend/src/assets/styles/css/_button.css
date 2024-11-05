@@ -1,0 +1,94 @@
+.button__item {
+    max-width: 270px;
+    margin: 5px;
+}
+
+.button__item__130 {
+    max-width: 130px;
+}
+
+.button__item__icon {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    max-width: unset;
+}
+
+.button {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 12px;
+    width: 100%;
+    min-height: 38px;
+    border: 1px solid var(--color-white);
+    border-radius: var(--border-radius);
+    cursor: pointer;
+}
+
+.button__icon {
+    padding: 0;
+    width: auto;
+    min-height: unset;
+    height: auto;
+    background-color: transparent;
+    border-color: transparent;
+}
+
+.button__text {
+    font-weight: 600;
+    font-size: var(--font-button);
+}
+
+.button__primary {
+    background: var(--color-primary);
+    border: 1px solid var(--color-primary);
+}
+
+.button__primary:hover {
+    background-color: var(--color-primary-button-hover);
+}
+
+.button__primary .button__text {
+    color: var(--color-gray-f5);
+}
+
+.button[class^=button__white]:hover {
+    background-color: var(--color-gray-cc-20);
+}
+
+.button__black {
+    background: var(--color-black);
+    border: 1px solid var(--color-black);
+}
+
+.button__black:hover {
+    background-color: var(--color-primary-button-hover);
+}
+
+.button__black .button__text {
+    color: var(--color-white);
+}
+
+.button__whiteRed {
+    background: var(--color-white);
+    border: 1px solid var(--color-red);
+}
+
+.button__whiteRed .button__text {
+    color: var(--color-red);
+}
+
+.button__whiteRed:hover {
+    background-color: var(--color-gray-cc-20);
+}
+
+.button__whitePrimary {
+    background: var(--color-white);
+    border: 1px solid var(--color-primary);
+}
+
+.button__whitePrimary .button__text {
+    color: var(--color-primary);
+}

@@ -20,6 +20,7 @@ public class FaqServiceImpl implements FaqService {
         faqDao.add(faq);
     }
 
+
     @Override
     public List<Faq> list() throws Exception {
         return faqDao.findAll();
@@ -28,6 +29,12 @@ public class FaqServiceImpl implements FaqService {
     @Override
     public Faq get(int id) throws Exception {
         return faqDao.findBy(id);
+    }
+
+    @Transactional
+    @Override
+    public boolean update(Faq faq) throws Exception {
+        return faqDao.update(faq);
     }
 
     @Transactional

@@ -1,7 +1,10 @@
 /* Header.module.css */
 
 .header {
-    width: 209px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--header-width);
     height: 100%;
     background: var(--color-primaryGradient);
 }
@@ -82,13 +85,21 @@
     max-width: 100%;
 }
 
+.nav__profile__img__wrap {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+}
+
+.nav__profile__img {
+    max-height: 100%;
+    border-radius: 100%;
+}
+
 .nav__profile__name {
     flex: 1;
-    overflow: hidden;
     font-size: var(--font-size-h4);
-
-    white-space: nowrap;
-    text-overflow: ellipsis;
 }
 
 .nav__aside__list {

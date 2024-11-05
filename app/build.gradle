@@ -52,6 +52,22 @@ dependencies {
 
     implementation 'org.springdoc:springdoc-openapi-ui:1.6.15'
 
+    // MapStruct 라이브러리 (DTO 관련)
+    implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
+
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // JWT (JJWT 라이브러리)
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.2'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.2' // JSON 파싱에 jackson 사용
+
+    //이메일 인증번호 보내기
+    implementation 'com.sun.mail:jakarta.mail:1.6.7'
+    // Spring Context Support
+    implementation 'org.springframework:spring-context-support:5.3.18'
 }
 
 tasks.named('test') {
