@@ -93,7 +93,7 @@ const MyStoryList = () => {
         setBatchedLocks(newBatchedLocks);
     };
 
-    // 페이지 이동이나 새로고침 시, 서버에 좋아요 변경 사항 전송
+    // 페이지 이동이나 새로고침 시, 서버에 공유 변경 사항 전송
     const handleSubmitLocks = async () => {
         if (batchedLocks.length === 0) return;
 
