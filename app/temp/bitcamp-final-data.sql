@@ -1,7 +1,8 @@
 INSERT INTO user (user_id, email, password, nickname, path)
 VALUES 
 (1, 'hong@example.com', sha1('pass1234'), '홍길동', '/images/hong.jpg'),
-(2, 'kim@example.com', sha1('kim4321'), '김철수', '/images/kim.jpg'),
+(2, 'kim@example.com', sha1('k
+im4321'), '김철수', '/images/kim.jpg'),
 (3, 'park@example.com', sha1('park5678'), '박영희', '/images/park.jpg'),
 (4, 'lee@example.com', sha1('lee8765'), '이민수', '/images/lee.jpg'),
 (5, 'choi@example.com', sha1('choi9876'), '최은정', '/images/choi.jpg');

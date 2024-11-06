@@ -6,6 +6,7 @@ import StoryItemList from "../components/StoryItemList";
 import AlarmCardList from "../components/AlarmCardList";
 
 
+
 const MyPage = () => {
     const [storyList, setStoryList] = useState([]); // 변수 이름을 stories로 수정
     const [userList, setUserList] = useState([]);
@@ -151,7 +152,6 @@ const MyPage = () => {
                 onBatchedLocksChange={handleBatchedLocksChange}
            />
 
-           <p>-----------------------------------------------------------------------</p>
            <h2>알림</h2>
            <AlarmCardList userList={userList} />
        </div>

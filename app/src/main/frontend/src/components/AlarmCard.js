@@ -1,13 +1,12 @@
-// AlarmCard.js
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import styles from "../assets/styles/css/AlarmCard.module.css";
+import Bin from "../components/Bin";
 
 const AlarmCard = ({ userImg, userName, content }) => {
     const [liked, setLiked] = useState(false);
 
-    const toggleLike = () => {
-        setLiked(!liked);
+    const toggleBin = () => {
     };
 
     return (
@@ -15,7 +14,6 @@ const AlarmCard = ({ userImg, userName, content }) => {
             <div className={styles.img}>
                 <img 
                     src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${userImg}`}
-                    alt={`${userName}`}
                     style={{ width: '100%', height: '100%', borderRadius: '10px' }}
                 />
             </div>
@@ -25,10 +23,7 @@ const AlarmCard = ({ userImg, userName, content }) => {
                 </div>
                 <p className={styles.p}>{content}</p>
             </div>
-            <button type="button" className="button button__icon" onClick={toggleLike}>
-                <span className="blind">좋아요</span>
-                <i className={`icon ${liked ? `icon__heart__full` : `icon__heart`}`}></i>
-            </button>
+            <Bin onClick={toggleBin} />
         </div>
     );
 };
