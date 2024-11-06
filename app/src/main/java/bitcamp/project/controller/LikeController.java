@@ -2,7 +2,7 @@ package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.StoryListDTO;
-import bitcamp.project.dto.UpdateLikeRequestDTO;
+import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
@@ -55,10 +55,10 @@ public class LikeController {
   // 좋아요 목록 배치 업데이트 (등록 및 삭제)
   @PostMapping("batch-update")
   public ResponseEntity<?> batchUpdate(
-      @RequestBody List<UpdateLikeRequestDTO> updateLikeRequestDTOs,
+      @RequestBody List<BatchUpdateRequestDTO> batchUpdateRequestDTOS,
       @LoginUser User loginUser) {
     try {
-      likeService.batchUpdateLikes(updateLikeRequestDTOs, loginUser.getId());
+      likeService.batchUpdateLikes(batchUpdateRequestDTOS, loginUser.getId());
       return ResponseEntity.ok("좋아요 목록 배치 처리 완료!");
 
     } catch (Exception e) {

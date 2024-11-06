@@ -355,6 +355,30 @@ public class StoryServiceImpl implements StoryService {
     }
 
 
+    @Override
+    public void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId)
+        throws Exception {
+
+        for (BatchUpdateRequestDTO batchUpdateRequestDTO : batchUpdateRequestDTOs) {
+
+            Story story = storyDao.findByStoryId(batchUpdateRequestDTO.getStoryId());
+            if (story == null) {
+                throw new Exception("없는 스토리입니다");
+            } else if (story.getUser().getId() != userId) {
+                throw new Exception("수정 권한이 없습니다");
+            }
+
+            if (batchUpdateRequestDTO.getAction().equals("add")) {
+                enableShare(story);
+
+            } else if (batchUpdateRequestDTO.getAction().equals("delete")) {
+                disableShare(story);
+            }
+        }
+
+    }
+
+
     private StoryListDTO convertToStoryListDTO(Story story, int userId) throws Exception {
         StoryListDTO storyListDTO = storyMapper.toStoryListDTO(story);
 
@@ -374,5 +398,28 @@ public class StoryServiceImpl implements StoryService {
 
         return storyListDTO;
     }
+
+
+    private void enableShare(Story story) throws Exception {
+        if (story.isShare()) {
+            System.out.printf("%d번은 이미 활성화되었습니다!\n", story.getId());
+            return;
+        }
+
+        story.setShare(true);
+        storyDao.update(story);
+    }
+
+
+    private void disableShare(Story story) throws Exception {
+        if (!story.isShare()) {
+            System.out.printf("%d번은 이미 비활성화되었습니다!\n", story.getId());
+            return;
+        }
+
+        story.setShare(false);
+        storyDao.update(story);
+    }
+
 
 }

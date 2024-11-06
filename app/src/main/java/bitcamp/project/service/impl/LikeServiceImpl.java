@@ -2,7 +2,7 @@ package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.LikeDao;
 import bitcamp.project.dao.StoryDao;
-import bitcamp.project.dto.UpdateLikeRequestDTO;
+import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.vo.Like;
 
@@ -24,20 +24,20 @@ public class LikeServiceImpl implements LikeService {
 
 
   @Override
-  public void batchUpdateLikes(List<UpdateLikeRequestDTO> updateLikeRequestDTOs, int userId)
+  public void batchUpdateLikes(List<BatchUpdateRequestDTO> batchUpdateRequestDTOS, int userId)
       throws Exception {
 
-    for (UpdateLikeRequestDTO updateLikeRequestDTO : updateLikeRequestDTOs) {
-      int storyId = updateLikeRequestDTO.getStoryId();
+    for (BatchUpdateRequestDTO batchUpdateRequestDTO : batchUpdateRequestDTOS) {
+      int storyId = batchUpdateRequestDTO.getStoryId();
       Story story = storyDao.findByStoryId(storyId);
       if (story == null) {
         throw new Exception("없는 스토리입니다");
       }
 
-      if (updateLikeRequestDTO.getAction().equals("add")) {
+      if (batchUpdateRequestDTO.getAction().equals("add")) {
         addLike(storyId, userId);
 
-      } else if (updateLikeRequestDTO.getAction().equals("delete")) {
+      } else if (batchUpdateRequestDTO.getAction().equals("delete")) {
         deleteLike(storyId, userId);
       }
     }
