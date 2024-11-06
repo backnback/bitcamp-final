@@ -5,7 +5,22 @@ import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
 
 
-function StoryItemList({ storyList, onAddStory }) {
+function StoryItemList({ storyList, onAddStory, onBatchedLikesChange }) {
+    const [batchedLikes, setBatchedLikes] = useState([]);
+
+    const handleLikeChange = (storyId, action) => {
+        console.log(`Story ID: ${storyId}, Action: ${action}`);
+        setBatchedLikes((prev) => [...prev, { storyId, action }]);
+        onBatchedLikesChange(batchedLikes);  // 즉시 변경 사항 전달
+        return batchedLikes;
+    };
+
+    useEffect(() => {
+        if (batchedLikes.length > 0) {
+            onBatchedLikesChange(batchedLikes);
+        }
+    }, [batchedLikes]);
+
     return (
         <div className={styles.list}>
             <ul className={styles.list__ul}>
@@ -19,6 +34,7 @@ function StoryItemList({ storyList, onAddStory }) {
                 {Array.isArray(storyList) && storyList.map((storyListDTO) => (
                     <li className={styles.list__item} key={storyListDTO.storyId}>
                         <StoryItem
+                            storyId={storyListDTO.storyId}
                             profileImg={storyListDTO.userPath || 'default.png'} // 프로필 이미지
                             profileName={storyListDTO.userNickname} // 프로필 이름
                             currentLock={!storyListDTO.share} // 공유 여부
@@ -29,6 +45,7 @@ function StoryItemList({ storyList, onAddStory }) {
                             storyContent={storyListDTO.content} // 스토리 내용
                             storyLocation={`${storyListDTO.locationFirstName} ${storyListDTO.locationDetail}`} // 위치 정보
                             storyDate={storyListDTO.travelDate} // 여행 날짜
+                            onLikeChange={handleLikeChange}  // 좋아요 변경 시 호출할 함수 전달
                         />
                     </li>
                 ))}

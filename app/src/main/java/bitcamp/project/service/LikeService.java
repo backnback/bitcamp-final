@@ -1,5 +1,6 @@
 package bitcamp.project.service;
 
+import bitcamp.project.dto.UpdateLikeRequestDTO;
 import bitcamp.project.vo.Like;
 import bitcamp.project.vo.User;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 public interface LikeService {
 
-  void addLike(int storyId, int userId) throws Exception;
+  void batchUpdateLikes(List<UpdateLikeRequestDTO> updateLikeRequestDTOs, int userId) throws Exception;
 
   Like get(int storyId, int userId) throws Exception;
 
@@ -18,8 +19,6 @@ public interface LikeService {
   boolean getStatus(int storyId, int userId) throws Exception;
 
   void confirmLikeView(int storyId, int userId, int loginUserId) throws Exception;
-
-  void deleteLike(int storyId, int userId) throws Exception;
 
   void deleteLikes(int storyId) throws Exception;
 }
