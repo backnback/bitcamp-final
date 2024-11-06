@@ -10,6 +10,8 @@ const ShareStoryList = () => {
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const {token} = localStorage.getItem('accessToken');
     const [batchedLikes, setBatchedLikes] = useState([]);
+    const [batchedLocks, setBatchedLocks] = useState([]);
+
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
@@ -86,12 +88,51 @@ const ShareStoryList = () => {
     }, [batchedLikes]);
 
 
+    // StoryItemList에서 모아둔 Lock 변경 사항을 저장하는 함수
+    const handleBatchedLocksChange = (newBatchedLocks) => {
+        setBatchedLocks(newBatchedLocks);
+    };
+
+    // 페이지 이동이나 새로고침 시, 서버에 공유 변경 사항 전송
+    const handleSubmitLocks = async () => {
+        if (batchedLocks.length === 0) return;
+
+        try {
+            console.log(batchedLocks);
+            await axios.post('http://localhost:8080/story/batch-update', batchedLocks, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            setBatchedLocks([]); // 전송 후 초기화
+        } catch (error) {
+            console.error("공유 변경 사항 전송 중 에러 발생", error);
+        }
+    };
+
+    useEffect(() => {
+        // 페이지 새로고침 시 전송
+        window.addEventListener('beforeunload', handleSubmitLocks);
+
+        // 페이지 이동 시 전송
+        const unlisten = navigate((location) => {
+            handleSubmitLocks();
+        });
+        return () => {
+            window.removeEventListener('beforeunload', handleSubmitLocks);
+            handleSubmitLocks(); // 컴포넌트 언마운트 시에도 전송
+        };
+    }, [batchedLocks]);
+
+
+
     return (
         <div className="story-list">
             <h2>공유 스토리</h2>
             <StoryItemList
                 storyList={storyList}
                 onBatchedLikesChange={handleBatchedLikesChange}
+                onBatchedLocksChange={handleBatchedLocksChange}
             />
         </div>
     );
