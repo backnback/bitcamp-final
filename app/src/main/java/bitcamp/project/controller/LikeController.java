@@ -2,7 +2,7 @@ package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.StoryListDTO;
-import bitcamp.project.dto.UpdateLikeRequestDTO;
+import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
@@ -32,6 +32,7 @@ public class LikeController {
   @GetMapping("list/users")
   public ResponseEntity<?> findAllToMe(@LoginUser User loginUser) {
     try {
+      System.out.println(loginUser.getId());
       List<User> users = likeService.findAllToMe(loginUser.getId());
       return ResponseEntity.ok(users);
 
@@ -52,13 +53,28 @@ public class LikeController {
     }
   }
 
+  // 로그인한 사용자 정보 조회
+  @GetMapping("login")
+  public ResponseEntity<?> findUser(@LoginUser User loginUser) {
+    try {
+      System.out.println("일단 여기까진 성공1");
+      // 로그인한 사용자의 ID를 이용해 User 정보를 가져옴
+      System.out.println(loginUser.getId());
+      System.out.println("일단 여기까진 성공2");
+      User user = userService.findUser(loginUser.getId());
+      return ResponseEntity.ok(user);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그인한 사용자 정보를 불러오는 데 실패했습니다.");
+    }
+  }
+
   // 좋아요 목록 배치 업데이트 (등록 및 삭제)
   @PostMapping("batch-update")
   public ResponseEntity<?> batchUpdate(
-      @RequestBody List<UpdateLikeRequestDTO> updateLikeRequestDTOs,
+      @RequestBody List<BatchUpdateRequestDTO> batchUpdateRequestDTOS,
       @LoginUser User loginUser) {
     try {
-      likeService.batchUpdateLikes(updateLikeRequestDTOs, loginUser.getId());
+      likeService.batchUpdateLikes(batchUpdateRequestDTOS, loginUser.getId());
       return ResponseEntity.ok("좋아요 목록 배치 처리 완료!");
 
     } catch (Exception e) {

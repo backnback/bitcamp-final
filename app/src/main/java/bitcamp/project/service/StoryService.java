@@ -1,9 +1,6 @@
 package bitcamp.project.service;
 
-import bitcamp.project.dto.AddStoryRequestDTO;
-import bitcamp.project.dto.StoryListDTO;
-import bitcamp.project.dto.StoryViewDTO;
-import bitcamp.project.dto.UpdateStoryRequestDTO;
+import bitcamp.project.dto.*;
 import bitcamp.project.vo.AttachedFile;
 import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
@@ -34,4 +31,6 @@ public interface StoryService {
     List<StoryListDTO> listAllMyLikeStories(int userId) throws Exception;
 
     Story changeShare(int storyId, int userId) throws Exception;
+
+    void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId) throws Exception;
 }

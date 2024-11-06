@@ -1,0 +1,59 @@
+.card * {
+  box-sizing: border-box;
+}
+
+.card {
+  --bc: #e6f4fa;
+  --bc1: #66b9fd;
+  --clr: gray;
+  --clr1: white;
+  background-color: var(--bc);
+  color: var(--clr);
+  padding: 2rem 2.5rem;
+  border-radius: 0.75rem;
+  outline: 2px solid var(--bc);
+  outline-offset: 4px;
+  max-width: 1000px;
+  max-height: 300px;
+  transition: 0.3s ease-in-out;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 2rem;
+  line-height: 2;
+  margin: 40px;
+}
+
+.card:hover {
+  background-color: var(--bc1);
+  color: var(--clr1);
+}
+
+.img {
+  width: 100px; /* 원하는 크기로 설정 */
+  height: 100px;
+  aspect-ratio: 1/1;
+  border-radius: 50%;
+  outline: 2px solid var(--clr1);
+  outline-offset: 4px;
+}
+
+.text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.text > *:not(:last-child) {
+  margin-bottom: 15px;
+}
+
+.heading {
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.info {
+  font-size: 1.5rem;
+  font-weight: 600;
+}

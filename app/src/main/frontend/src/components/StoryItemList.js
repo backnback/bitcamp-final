@@ -5,8 +5,10 @@ import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
 
 
-function StoryItemList({ storyList, onAddStory, onBatchedLikesChange }) {
+function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange }) {
     const [batchedLikes, setBatchedLikes] = useState([]);
+    const [batchedLocks, setBatchedLocks] = useState([]);
+
 
     const handleLikeChange = (storyId, action) => {
         console.log(`Story ID: ${storyId}, Action: ${action}`);
@@ -20,6 +22,22 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange }) {
             onBatchedLikesChange(batchedLikes);
         }
     }, [batchedLikes]);
+
+
+    const handleLockChange = (storyId, action) => {
+        console.log(`Story ID: ${storyId}, Action: ${action}`);
+        setBatchedLocks((prev) => [...prev, { storyId, action }]);
+        onBatchedLocksChange(batchedLocks);  // 즉시 변경 사항 전달
+        return batchedLocks;
+    };
+
+    useEffect(() => {
+        if (batchedLocks.length > 0) {
+            onBatchedLocksChange(batchedLocks);
+        }
+    }, [batchedLocks]);
+
+
 
     return (
         <div className={styles.list}>
@@ -46,6 +64,7 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange }) {
                             storyLocation={`${storyListDTO.locationFirstName} ${storyListDTO.locationDetail}`} // 위치 정보
                             storyDate={storyListDTO.travelDate} // 여행 날짜
                             onLikeChange={handleLikeChange}  // 좋아요 변경 시 호출할 함수 전달
+                            onLockChange={handleLockChange}
                         />
                     </li>
                 ))}

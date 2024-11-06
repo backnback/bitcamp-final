@@ -17,8 +17,18 @@ export const StoryAddContext = ({ children }) => {
     );
 }
 
-function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange }) {
+function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange, onLockChange }) {
     const [like, setLike] = useState(currentLike);
+    const [lock, setLock] = useState(currentLock);
+
+    const lockClick = () => {
+        const newLock = !lock;
+        if (newLock !== lock) {
+            onLockChange(storyId, newLock ? 'delete' : 'add');
+            setLock(newLock);
+        }
+    }
+
     const likeClick = () => {
         const newLike = !like;
         if (newLike !== like) {
@@ -43,10 +53,18 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
                         <span className={`${styles.profile__name} line1`}>{profileName}</span>
                     </Link>
                 </div>
+                {/*
                 <div className={`${styles.right}`}>
                     <span className="blind">{currentLock ? `비공개` : `공개`}</span>
                     <i className={`icon ${currentLock ? `icon__lock__black` : `icon__unlock`}`}></i>
                 </div>
+                */}
+                <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
+                    <button type="button" className={`button button__icon`} onClick={lockClick}>
+                        <span className={`blind`}>공개</span>
+                        <i className={`icon ${lock ? `icon__lock__black` : `icon__heart__full`}`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
+                    </button>
+                </ButtonProvider>
             </div>
             <div className={styles.middle}>
                 {/* <img src={"/images/sample.jpg"} alt={'story image'} className={`${styles.thumnail}`} /> */}
