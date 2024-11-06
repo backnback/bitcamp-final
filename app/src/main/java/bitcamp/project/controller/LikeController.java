@@ -32,6 +32,7 @@ public class LikeController {
   @GetMapping("list/users")
   public ResponseEntity<?> findAllToMe(@LoginUser User loginUser) {
     try {
+      System.out.println(loginUser.getId());
       List<User> users = likeService.findAllToMe(loginUser.getId());
       return ResponseEntity.ok(users);
 
@@ -49,6 +50,21 @@ public class LikeController {
       return ResponseEntity.ok(storyListDTOs);
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("내가 좋아요한 스토리 목록을 불러오는 데 실패했습니다.");
+    }
+  }
+
+  // 로그인한 사용자 정보 조회
+  @GetMapping("login")
+  public ResponseEntity<?> findUser(@LoginUser User loginUser) {
+    try {
+      System.out.println("일단 여기까진 성공1");
+      // 로그인한 사용자의 ID를 이용해 User 정보를 가져옴
+      System.out.println(loginUser.getId());
+      System.out.println("일단 여기까진 성공2");
+      User user = userService.findUser(loginUser.getId());
+      return ResponseEntity.ok(user);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그인한 사용자 정보를 불러오는 데 실패했습니다.");
     }
   }
 

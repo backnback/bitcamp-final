@@ -49,6 +49,26 @@ const MyPage = () => {
     }, [accessToken]);
 
 
+        // 로그인한 사용자 정보를 불러올수도 있고 아닐수도 있고 그럴수도 있고
+        useEffect(() => {
+            if (accessToken) {
+                const fetchUser = async () => {
+                    try {
+                        const response = await axios.get('http://localhost:8080/like/login', {
+                            headers: {
+                                'Authorization': `Bearer ${accessToken}`
+                            }
+                        }); // API 요청
+                        setUser(response.data);
+                    } catch (error) {
+                        console.error("사용자 정보 불러오기 실패", error);
+                    }
+                };
+                fetchUser();
+            }
+        }, [accessToken]);
+
+    // 로그인한 사용자의 스토리에 좋아요를 누른 유저의 리스트 불러오기
     useEffect(() => {
         if (accessToken) {
             const fetchUserList = async () => {
@@ -146,7 +166,7 @@ const MyPage = () => {
     return (
        <>
            <h1>프로필</h1>
-            <Profile />
+            <Profile loginUser={user} />
            <h2>좋아요한 스토리</h2>
             <StoryItemList
                 storyList={storyList}
