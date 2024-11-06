@@ -3,8 +3,28 @@ import { InputProvider } from '../components/InputProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
 import { SelectProvider } from '../components/SelectProvider';
 import StoryItem, { StoryAddContext } from "../components/StoryItem";
+import useModals from '../useModals';
+import { modals } from '../components/Modals';
 
 function FormStyles() {
+    const { openModal } = useModals();
+
+    const handleClick = () => {
+        openModal(modals.storyEditModal, {
+            onSubmit: () => {
+                console.log('비지니스 로직 처리...2');
+            },
+        });
+    };
+
+    const handleClick2 = () => {
+        openModal(modals.myModal, {
+            onSubmit: () => {
+                console.log('비지니스 로직 처리...2');
+            },
+        });
+    };
+
     return (
         <>
 
@@ -122,6 +142,18 @@ function FormStyles() {
                 </button>
             </ButtonProvider>
 
+            <ButtonProvider width={'130'}>
+                <button type="button" className={`button button__whitePrimary`} onClick={handleClick}>
+                    <span className={`button__text`}>모달열기</span>
+                </button>
+            </ButtonProvider>
+
+            <ButtonProvider width={'130'}>
+                <button type="button" className={`button button__whitePrimary`} onClick={handleClick2}>
+                    <span className={`button__text`}>모달열기2</span>
+                </button>
+            </ButtonProvider>
+
             <SelectProvider>
                 <select id="select01" name="selectName" className={`form__select`}>
                     <option value={'0'}>선택해라</option>
@@ -160,7 +192,12 @@ function FormStyles() {
 
             <StoryItem profileImg='data' profileName='data' currentLock='data' storyThum='data' currentLike='data' currentLikeCount='data' storyTitle='data' storyContent='data' storyLocation='data' storyDate />
 
-            <StoryAddContext />
+            <StoryAddContext>
+                <button type="button" className={`button button__story__add`} onClick={handleClick}>
+                    <span className={`blind`}>스토리 등록</span>
+                    <i className={`icon icon__plus__white`}></i>
+                </button>
+            </StoryAddContext>
         </>
     )
 }

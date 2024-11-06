@@ -84,4 +84,8 @@
 
     /* content */
     --content-width: 906px;
+
+    /* sidebar */
+    --sidebar-width: 590px;
+
 }

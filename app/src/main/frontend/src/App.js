@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -41,6 +41,8 @@ function App() {
   const [users, setUsers] = useState([]); // 사용자 목록 상태
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
+  const currentLocation = useLocation();
+
   // 사용자 목록 가져오기 함수
   const fetchUsers = async () => {
     try {
@@ -52,6 +54,13 @@ function App() {
   };
 
   useEffect(() => {
+    // console.log('page changed to:', currentLocation.pathname)
+
+    // body class
+    const locationNames = currentLocation.pathname.split('/');
+    const [firstName, secondName] = [locationNames[1] && `body__${locationNames[1]}`, locationNames[2] != null & locationNames[2] != '' && `body__${locationNames[1]}__${locationNames[2]}`];
+    document.body.className = `body ${firstName} ${secondName || ''}`;
+
     fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
     const token = localStorage.getItem('accessToken');
     if (token) {
@@ -60,7 +69,7 @@ function App() {
     } else {
       console.log("토큰이 없습니다");
     }
-  }, []);
+  }, [currentLocation]);
 
   return (
     <div className={`layout__wrapper layout__wrapper__header`}>

@@ -1,0 +1,14 @@
+.modal-overlay {
+    position: fixed;
+    inset: 0px;
+    background-color: transparent;
+}
+
+.modal-right {
+    overflow: auto;
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: 100%;
+    max-width: 590px;
+    background-color: var(--color-white);
+}

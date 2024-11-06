@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Children, useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { ButtonProvider } from "./ButtonProvider";
 import styles from "../assets/styles/css/StoryItem.module.css";
@@ -9,13 +9,10 @@ const StoryAdd = createContext();
 
 export const useStoryAddContext = () => useContext(StoryAdd);
 
-export const StoryAddContext = () => {
+export const StoryAddContext = ({ children }) => {
     return (
         <div className={`${styles.item} ${styles.add}`}>
-            <button type="button" className={`button ${styles.add__button}`}>
-                <span className={`blind`}>스토리 등록</span>
-                <i className={`icon icon__plus__white`}></i>
-            </button>
+            {children}
         </div>
     );
 }
