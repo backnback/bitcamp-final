@@ -1,6 +1,6 @@
-import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import FaqStyles from '../assets/styles/css/Faq.module.css'; // 스타일 파일 임포트
+import React, {useEffect, useState} from 'react';
+import {useNavigate} from 'react-router-dom';
+import styles from '../assets/styles/css/Faq.module.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 
 const FaqBoard = () => {
@@ -51,25 +51,48 @@ const FaqBoard = () => {
     };
 
     return (
-        <div className={FaqStyles.faq__list__container}>
-            <h1 className={FaqStyles.faq__title}>자주 묻는 질문</h1>
-            <button className={FaqStyles.edit__faq__button} onClick={goToEditFaq}>💾</button> {/* 펜슬 버튼 */}
-            <ul className={FaqStyles.faq__list}>
-                {faqs.map((faq, index) => (
-                    <li key={faq.id} className={`${FaqStyles.faq__item} ${openIndex === index ? 'open' : ''}`}>
-                        <div className={FaqStyles.faq__header} onClick={() => toggleFaq(index)}>
-                            <span className={FaqStyles.faq__number}>{index + 1}. </span>
-                            <span className={FaqStyles.faq__question}>{faq.title}</span>
-                            <span className={FaqStyles.faq__toggle}>{openIndex === index ? '⋀' : '⋁'}</span>
-                        </div>
-                        {openIndex === index && (
-                            <div className={FaqStyles.faq__content}>
-                                <p>{faq.content}</p>
+        <div className={styles.faq__container}>
+            <div className={styles.faq__header__container}>
+                <p className={styles.faq__header__title}>자주 묻는 질문</p>
+
+                <div className={styles.faq__header__text}>
+                    <p>자주 묻는 질문들을 간단하게 공지합니다. </p>
+                    <p>고객분들이 빠르게 해결하실 수 있습니다.</p>
+                    <p>언제나, 편안하고, 최선을 다하는 기억하길이 되도록 정성을 다하겠습니다.</p>
+                </div>
+
+
+                <p className={styles.faq__header__tel}>1588-8282</p>
+                <p className={styles.faq__header__time}>MON-FRI AM 10:00-PM:5:00 / LUNCH PH 1:00-2:00 / SAT, SUN,
+                    HOLIDAY CLOSE</p>
+            </div>
+            {/*<button className={styles.edit__faq__button} onClick={goToEditFaq}>💾</button>*/}
+            {/* 펜슬 버튼 */}
+            <div>
+                <div className={styles.faq__list__header}>
+                    <p className={styles.faq__list__header__no}>NO</p>
+                    <p className={styles.faq__list__header__title}>TITLE</p>
+                </div>
+                <ul className={styles.faq__list}>
+                    {faqs.map((faq, index) => (
+                        <li key={faq.id}
+                            className={`${styles.faq__list__item} ${openIndex === index ? 'open' : ''}`}>
+                            <div className={styles.faq__list__title} onClick={() => toggleFaq(index)}>
+                                <span className={styles.faq__list__number}>{index + 1} </span>
+                                <span className={styles.faq__list__question}>Q. {faq.title}</span>
+                                {openIndex === index ?
+                                    <i className={`icon icon__drop__up`}> </i> :
+                                    <i className={`icon icon__drop__down`}></i>}
                             </div>
-                        )}
-                    </li>
-                ))}
-            </ul>
+                            {openIndex === index && (
+                                <div className={styles.faq__list__contentBox}>
+                                    <p className={styles.faq__list__contentText}>A. {faq.content}</p>
+                                </div>
+                            )}
+                        </li>
+                    ))}
+                </ul>
+            </div>
         </div>
     );
 };
