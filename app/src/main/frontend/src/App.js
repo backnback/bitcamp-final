@@ -15,6 +15,9 @@ import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
 import FormStyles from "./routes/FormStyles";
+import FindEmail from "./routes/FindEmail";
+import FindPassword from "./routes/FindPassword";
+import NewPassword from "./routes/NewPassword";
 
 import MapSeoul from "./components/map/MapSeoul";
 import MapBusan from "./components/map/MapBusan";
@@ -112,6 +115,9 @@ function App() {
             <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
             <Route path="/my-story/form/update/:storyId" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
             <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}
+            <Route path="/find-email" element={<FindEmail />} /> {/* 이메일 찾기 페이지 */}
+            <Route path="/find-password" element={<FindPassword />} /> {/* 비번 찾기 페이지 */}
+            <Route path="/newPassword" element={<NewPassword />} /> {/* 비번 재생성 페이지 */}
           </Routes>
         </div>
       </div>

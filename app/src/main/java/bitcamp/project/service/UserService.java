@@ -16,4 +16,5 @@ public interface UserService {
     JwtToken makeToken(String email, String password) throws Exception;
     String encodePassword(String password)throws Exception;
     User decodeToken(String token)throws Exception;
+    boolean updatePassword(String email, String password)throws Exception;
 }

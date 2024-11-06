@@ -15,7 +15,7 @@ function SignUp() {
   const [profileImage, setProfileImage] = useState(null);
   const [agree, setAgree] = useState(false);
   const [authCode, setAuthCode] = useState('');
-  const flag = false;
+  const [isVerified, setIsVerified] = useState(false); // 이메일 인증 상태 변수
 
   const handleFileChange = (e) => {
     setProfileImage(e.target.files[0]);
@@ -24,7 +24,7 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    if (!flag) {
+    if (!isVerified) { // flag 대신 isVerified 사용
       alert("인증이 완료되지 않은 이메일입니다");
       return;
     }
@@ -72,7 +72,6 @@ function SignUp() {
       });
       if (response.data) {
         alert("인증번호가 이메일로 발송되었습니다.");
-        flag = true;
 
       } else {
         alert("인증번호 발송에 실패했습니다.");
@@ -101,6 +100,7 @@ function SignUp() {
       });
       if(response.data){
         alert("정상적으로 처리 되었습니다");
+        setIsVerified(true); 
       }else{
         alert("인증코드가 알맞지 않습니다 다시입력해 주세요");
       }
@@ -187,8 +187,8 @@ function SignUp() {
           </div>
           <div className={styles.inputGroup}>
             <label>프로필 사진</label>
+            {profileImage && <span>{ "(" + profileImage.name+ ")"}</span>}
             <div className={styles.inputWrapper}>
-              {profileImage && <span>{profileImage.name}</span>}
               <InputProvider>
                 <label htmlFor="file01" className="form__label form__label__file">
                   <input type="file" className="blind" id="file01" onChange={handleFileChange} />

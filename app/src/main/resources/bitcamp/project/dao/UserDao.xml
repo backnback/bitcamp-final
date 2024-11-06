@@ -24,7 +24,7 @@
 
     <insert id="add" parameterType="bitcamp.project.vo.User" useGeneratedKeys="true">
         INSERT INTO user(email, password, nickname, path, role)
-        VALUES (#{email}, #{password}, #{nickname}, #{path}, #{role})x`
+        VALUES (#{email}, #{password}, #{nickname}, #{path}, #{role})
     </insert>
 
     <select id="findUser" resultMap="UserMap" parameterType="int">
@@ -44,4 +44,10 @@
     <select id="findByEmailAndPassword" resultMap="UserMap">
         SELECT * FROM user WHERE email = #{email}
     </select>
+
+    <update id="updatePassword" parameterType="map">
+        UPDATE user
+        SET password=#{password}
+        WHERE email=#{email}
+    </update>
 </mapper>
