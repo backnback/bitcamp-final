@@ -1,0 +1,30 @@
+.list {
+    /* 전체 레이아웃 */
+    justify-content: center; /* 전체 목록 중앙 정렬 */
+    padding: 30px 10px 30px; /* 주위 패딩 */
+
+    /* 위치 */
+    position: relative;
+    width: 100%;
+    top: 0px;
+    border-radius: 0px;
+}
+
+.list__ul {
+    /* Flexbox 설정 */
+    flex-wrap: wrap; /* 아이템이 넘치면 다음 줄로 넘어가도록 설정 */
+    gap: 30px; /* 아이템 간의 간격 */
+
+    padding-left: 30px;
+    margin: 0;
+    width: 100%;
+    justify-content: flex-start; /* 왼쪽 정렬 (원할 경우 center로 변경 가능) */
+}
+
+.list__item:hover {
+    transform: scale(1.02); /* 마우스 오버 시 확대 효과 */
+}
+
+.list__add:hover {
+    transform: scale(1.02); /* 마우스 오버 시 확대 효과 */
+}

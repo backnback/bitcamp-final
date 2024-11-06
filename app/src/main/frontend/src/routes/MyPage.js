@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
+import StoryItemList from "../components/StoryItemList";
+import AlarmCardList from "../components/AlarmCardList";
 
 
 const MyPage = () => {
@@ -34,7 +36,7 @@ const MyPage = () => {
                     }); // API 요청
                     setStoryList(response.data);
                 } catch (error) {
-                    console.error("There was an error", error);
+                    console.error("좋아요한 스토리 불러오기 실패!", error);
                 }
             };
             fetchStoryList();
@@ -63,58 +65,14 @@ const MyPage = () => {
 
 
     return (
-        <div className="story-list">
-            <h2>좋아요한 스토리</h2>
-            <ul>
-                {Array.isArray(storyList) && storyList.map((storyListDTO) => (
-                    <li key={storyListDTO.storyId} className="story-card">
-                        <div className="story-header">
-                            <p className="nickname">{storyListDTO.userNickname}</p>
-                            <button className="share-button">{storyListDTO.share ? '공유됨' : '공유하기'}</button>
-                        </div>
-                        {storyListDTO.mainPhoto && (
-                            <Link to={`/share-story/view/${storyListDTO.storyId}`}>
-                                <div className="image-container">
-                                    <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${storyListDTO.mainPhoto.path ? storyListDTO.mainPhoto.path : 'default.png'}`} />
-                                </div>
-                            </Link>
-                        )}
-                        <div className="story-info">
-                            <div className="like-info">
-                                <button className="like-button">{storyListDTO.likeStatus ? '좋아요함' : '좋아요안함'}</button>
-                                <span>{storyListDTO.likeCount}</span>
-                            </div>
-                            <Link to={`/share-story/view/${storyListDTO.storyId}`}>{storyListDTO.title}</Link>
-                            <Link to={`/share-story/view/${storyListDTO.storyId}`}>
-                                <p>{storyListDTO.content}</p>
-                            </Link>
-                            <div className="location-date">
-                                <p>{storyListDTO.locationFirstName} {storyListDTO.locationDetail}</p>
-                                <p>{storyListDTO.travelDate}</p>
-                            </div>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-            <p>-----------------------------------------------------------------------</p>
-            <h2>알림</h2>
-                    <ul>
-                        {Array.isArray(userList) && userList.map((user) => (
-                            <li key={user.id} className="story-card">
-                                <div className="story-header">
-                                    <p className="nickname">{user.nickname}</p>
-                                    <p> 회원님의 스토리를 좋아합니다</p>
-                                </div>
-                                <img
-                                    src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${user.path ? user.path : 'default.png'}`}
-                                    alt="프로필 이미지"
-                                    style={{ width: '150px', height: '150px' }}
-                                />
+       <div className="story-list">
+               <h1>좋아요한 스토리</h1>
+               <StoryItemList storyList={storyList} />
 
-                            </li>
-                        ))}
-                    </ul>
-                </div>
+               <p>-----------------------------------------------------------------------</p>
+               <h2>알림</h2>
+               <AlarmCardList userList={userList} />
+           </div>
     );
 };
 
