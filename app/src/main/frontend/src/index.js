@@ -1,14 +1,21 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import ReactModal from 'react-modal';
 import './assets/styles/css/reset.css';
 import './assets/styles/css/commons.css';
 import App from './App';
+import ModalsProvider from './components/ModalProvider';
 // import reportWebVitals from './reportWebVitals';
 
+ReactModal.setAppElement('#root');
+
 const root = ReactDOM.createRoot(document.getElementById('root'));
+
 root.render(
   <React.StrictMode>
-    <App />
+    <ModalsProvider>
+      <App />
+    </ModalsProvider>
   </React.StrictMode>
 );
 

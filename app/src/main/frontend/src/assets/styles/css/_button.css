@@ -79,3 +79,13 @@
 .button__whitePrimary .button__text {
     color: var(--color-primary);
 }
+
+.button__story__add {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-blue-83);
+    border-color: var(--color-blue-83);
+}

@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -35,10 +35,12 @@ import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
 
+
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
   const { user, logout, setUser } = useUser();
   const [users, setUsers] = useState([]); // 사용자 목록 상태
+  const currentLocation = useLocation();
 
   // 사용자 목록 가져오기 함수
   const fetchUsers = async () => {
@@ -51,13 +53,19 @@ function App() {
   };
 
   useEffect(() => {
+    // console.log('page changed to:', currentLocation.pathname)
+
+    // body class 
+    const locationNames = currentLocation.pathname.split('/');
+    const [firstName, secondName] = [locationNames[1] && `body__${locationNames[1]}`, locationNames[2] != null & locationNames[2] != '' && `body__${locationNames[1]}__${locationNames[2]}`];
+    document.body.className = `body ${firstName} ${secondName || ''}`;
+
     fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
-  }, []);
+  }, [currentLocation]);
 
   return (
     <div className={`layout__wrapper layout__wrapper__header`}>
       {user == null ? <Login /> : <Header />}
-
 
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
