@@ -368,8 +368,9 @@ public class StoryServiceImpl implements StoryService {
             storyListDTO.setMainPhoto(storyMapper.toPhotoDTO(mainPhoto));
         }
 
-        storyListDTO.setLikeCount(likeService.countLikes(story.getId()));
-        storyListDTO.setLikeStatus(likeService.getStatus(story.getId(), userId));
+        boolean likeStatus = likeService.getStatus(story.getId(), userId);
+        storyListDTO.setLikeStatus(likeStatus);
+        storyListDTO.setLikeCount(likeService.countLikes(story.getId(), likeStatus));
 
         return storyListDTO;
     }

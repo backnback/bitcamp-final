@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 import axios from 'axios'; // axios를 import하여 API 요청 사용
-import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
+import StoryItemList from '../components/StoryItemList';
 
 
 const MyStoryList = () => {
@@ -50,26 +50,10 @@ const MyStoryList = () => {
     return (
         <div className="story-list">
             <h2>My 스토리</h2>
-            <ul>
-                <li onClick={handleAddStory}>
-                    <StoryAddContext />
-                </li>
-                {Array.isArray(storyList) && storyList.map((storyListDTO) => (
-                    <StoryItem
-                        key={storyListDTO.storyId}
-                        profileImg={storyListDTO.userPath || 'default.png'} // 프로필 이미지
-                        profileName={storyListDTO.userNickname} // 프로필 이름
-                        currentLock={!storyListDTO.share} // 공유 여부
-                        storyThum={storyListDTO.mainPhoto.path || 'default.png'} // 썸네일 이미지
-                        currentLike={storyListDTO.likeStatus} // 좋아요 상태
-                        currentLikeCount={storyListDTO.likeCount} // 좋아요 개수
-                        storyTitle={storyListDTO.title} // 스토리 제목
-                        storyContent={storyListDTO.content} // 스토리 내용
-                        storyLocation={`${storyListDTO.locationFirstName} ${storyListDTO.locationDetail}`} // 위치 정보
-                        storyDate={storyListDTO.travelDate} // 여행 날짜
-                    />
-                ))}
-            </ul>
+            <StoryItemList
+                storyList={storyList}
+                onAddStory={handleAddStory}
+            />
         </div>
     );
 };

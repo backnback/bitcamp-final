@@ -34,6 +34,7 @@ import MapSouthChungcheong from "./components/map/MapSouthChungcheong";
 import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
+import Map from "./components/Map";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
@@ -56,12 +57,12 @@ function App() {
 
   return (
     <div className={`layout__wrapper layout__wrapper__header`}>
-      {user == null ? <Login /> : <Header />}
+      {user == null ? null : <Header />}
 
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
           <Routes>
-            {user == null ? null : <Route path="/" element={<StoryMap />} />}
+            <Route path="/" element={user == null ? <Login /> : <Map />} />
 
 
             <Route path="/form/test" element={<FormStyles />} />
