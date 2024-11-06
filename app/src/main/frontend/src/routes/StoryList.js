@@ -72,7 +72,13 @@ const MyStoryList = () => {
     };
 
     useEffect(() => {
+        // 페이지 새로고침 시 전송
         window.addEventListener('beforeunload', handleSubmitLikes);
+
+        // 페이지 이동 시 전송
+        const unlisten = navigate((location) => {
+            handleSubmitLikes();
+        });
         return () => {
             window.removeEventListener('beforeunload', handleSubmitLikes);
             handleSubmitLikes(); // 컴포넌트 언마운트 시에도 전송

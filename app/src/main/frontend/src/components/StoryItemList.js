@@ -11,11 +11,15 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange }) {
     const handleLikeChange = (storyId, action) => {
         console.log(`Story ID: ${storyId}, Action: ${action}`);
         setBatchedLikes((prev) => [...prev, { storyId, action }]);
+        onBatchedLikesChange(batchedLikes);  // 즉시 변경 사항 전달
+        return batchedLikes;
     };
 
     useEffect(() => {
-        onBatchedLikesChange(batchedLikes);
-    }, [batchedLikes, onBatchedLikesChange]);
+        if (batchedLikes.length > 0) {
+            onBatchedLikesChange(batchedLikes);
+        }
+    }, [batchedLikes]);
 
     return (
         <div className={styles.list}>

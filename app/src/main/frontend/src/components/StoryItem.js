@@ -23,11 +23,11 @@ export const StoryAddContext = () => {
 function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange }) {
     const [like, setLike] = useState(currentLike);
     const likeClick = () => {
-        setLike((current) => {
-            const newLike = !current;
-            onLikeChange(storyId, newLike ? 'add' : 'remove');
-            return newLike;
-        });
+        const newLike = !like;
+        if (newLike !== like) {
+            onLikeChange(storyId, newLike ? 'add' : 'delete');
+            setLike(newLike);
+        }
     }
 
     useEffect(() => {
