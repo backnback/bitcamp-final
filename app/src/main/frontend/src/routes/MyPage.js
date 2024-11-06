@@ -8,7 +8,8 @@ import AlarmCardList from "../components/AlarmCardList";
 
 const MyPage = () => {
     const [storyList, setStoryList] = useState([]); // 변수 이름을 stories로 수정
-    const [userList, setUserList] = useState([]); // 테스트용
+    const [userList, setUserList] = useState([]);
+    const [user, setUser] = useState([]);
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
