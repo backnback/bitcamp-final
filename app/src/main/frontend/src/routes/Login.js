@@ -9,18 +9,27 @@ import styles from "../assets/styles/css/Login.module.css"
 function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
-    const [saveId, setSaveId] = useState(false);
+    const [rememberEmail, setRememberEmail] = useState(false);
     const navigate = useNavigate();
 
     // 페이지가 로드될 때 토큰을 확인하고 유저 정보를 설정
+    // useEffect(() => {
+    //     const token = localStorage.getItem('accessToken');
+    //     if (token) {
+    //         const userInfo = jwtDecode(token);
+    //         console.log("Decoded userInfo:", userInfo);
+    //     }
+    //     // document.body.classList.add(styles.loginBody)
+    // });
+
     useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            const userInfo = jwtDecode(token);
-            console.log("Decoded userInfo:", userInfo);
+        // 로컬 스토리지에서 이메일 가져오기 (저장된 경우에만)
+        const savedEmail = localStorage.getItem('lastLoginEmail');
+        if (savedEmail) {
+            setEmail(savedEmail);
+            setRememberEmail(true); // 저장된 이메일이 있으면 체크박스도 활성화
         }
-        // document.body.classList.add(styles.loginBody)
-    });
+    }, []);
 
     const handleLogin = async (e) => {
         e.preventDefault();
@@ -40,7 +49,17 @@ function Login() {
 
                 // 토큰을 로컬 스토리지에 저장
                 localStorage.setItem('accessToken', accessToken);
-                navigate('/'); // 홈 페이지로 이동
+
+                // 토큰 디코딩하여 유저 정보 추출
+                const userInfo = jwtDecode(accessToken);
+
+                if (rememberEmail) {
+                    localStorage.setItem('lastLoginEmail', email);
+                } else {
+                    localStorage.removeItem('lastLoginEmail'); // 체크 해제 시 이메일 삭제
+                }
+                navigate('/');
+                window.location.reload(); 
             } else {
                 alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
             }
@@ -90,9 +109,10 @@ function Login() {
                                     className={`form__input`}
                                     id='save-id'
                                     name='체크체크'
-                                    onChange={(e) => setSaveId(e.target.checked)}
+                                    checked={rememberEmail}
+                                    onChange={() => setRememberEmail(!rememberEmail)}
                                 />
-                                <span className={`.input__text`}> 자동 로그인</span>
+                                <span className={`.input__text`}> 이메일 저장</span>
                             </label>
                         </InputProvider>
                     </div>

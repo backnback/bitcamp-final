@@ -1,15 +1,30 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import styles from '../assets/styles/css/Header.module.css';
 import {jwtDecode} from 'jwt-decode';
+import { useEffect, useState } from "react";
 
-function Header() {
-    const user = jwtDecode(localStorage.getItem('accessToken'));
+function Header() {  
+    const [accessToken, setAccessToken] = useState(null);
+    const [user, setUser] = useState(null);
+    const navigate = useNavigate();
 
     const handleLogout = () => {
         // 로그아웃 처리
         localStorage.removeItem('accessToken'); // 로컬 스토리지에서 토큰 제거
-        navigator('/');
+        navigate('/');
+        window.location.reload(); 
     };
+
+    useEffect(() => {
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+          setAccessToken(token);
+          setUser(jwtDecode(token));
+        } else {
+          console.log("토큰이 없습니다");
+        }
+      }, []);
 
     return (
         <header className={styles.header}>

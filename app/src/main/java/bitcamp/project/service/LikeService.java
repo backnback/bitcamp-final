@@ -13,7 +13,7 @@ public interface LikeService {
 
   List<User> findAllToMe(int userId) throws Exception;
 
-  int countLikes(int storyId) throws Exception;
+  int countLikes(int storyId, boolean likeStatus) throws Exception;
 
   boolean getStatus(int storyId, int userId) throws Exception;
 

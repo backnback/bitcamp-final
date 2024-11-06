@@ -39,8 +39,8 @@ import { jwtDecode } from "jwt-decode";
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
   const [users, setUsers] = useState([]); // 사용자 목록 상태
-  const user = jwtDecode(localStorage.getItem('accessToken'));
-
+  const [accessToken, setAccessToken] = useState(null);
+  const [user, setUser] = useState(null);
   // 사용자 목록 가져오기 함수
   const fetchUsers = async () => {
     try {
@@ -53,6 +53,13 @@ function App() {
 
   useEffect(() => {
     fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
+    const token = localStorage.getItem('accessToken');
+    if (token) {
+      setAccessToken(token);
+      setUser(jwtDecode(token));
+    } else {
+      console.log("토큰이 없습니다");
+    }
   }, []);
 
   return (
