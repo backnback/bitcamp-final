@@ -2,14 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
 import axios from 'axios';
 // import './ShareStoryView.css';
-import { useUser } from '../UserContext';
 
 const ShareStoryView = () => {
     const { storyId } = useParams(); // URL에서 ID 파라미터를 가져옴
     const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [accessToken, setAccessToken] = useState(null);
     const [storyViewDTO, setStoryViewDTO] = useState(null);
-    const { user } = useUser();
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
