@@ -11,7 +11,7 @@ function AlarmCardList({userList}) {
                 {Array.isArray(userList) && userList.map((user) => (
                        <li key={user.id} className={styles.list__item}>
                            <AlarmCard
-                                userImg={'default.png'} // 프로필 이미지
+                                userImg={user.path || 'default.png'} // 프로필 이미지
                                 userName={user.nickname} // 프로필 이름
                                 content={"회원님이 스토리를 좋아합니다"} // 스토리 내용
                            />
