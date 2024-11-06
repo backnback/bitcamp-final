@@ -14,5 +14,6 @@ public interface UserDao {
     boolean update(int id, User user);
     boolean delete(int id);
     User findByEmailAndPassword(@Param("email") String email);
+    boolean updatePassword(String email, String password);
 
 }

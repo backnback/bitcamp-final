@@ -67,16 +67,13 @@ public class AuthController {
     }
 
     @PostMapping("findemail")
-    public String findEmail(@RequestBody User user) throws Exception {
-        String email = user.getEmail();
-        email = String.valueOf(userService.findByEmailAndPassword(email));
-        if (email != null){
-            int atIndex = email.indexOf("@");
-            String localPart = email.substring(0, atIndex);
-            String domainPart = email.substring(atIndex);
-            return localPart.charAt(0) + "*".repeat(localPart.length() - 1) + domainPart;
-        }else {
-            return "해당 이메일을 찾을 수 가 없습니다. 다시 입력해 주세요!";
+    public Boolean findEmail(@RequestBody User user) throws Exception {
+        User finduser = userService.findByEmailAndPassword(user.getEmail());
+        if (finduser != null) {
+            System.out.println(user.getEmail());
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -102,6 +99,12 @@ public class AuthController {
             return  true;
         }
         return false;
+    }
+
+    @PostMapping("newpassword")
+    public Boolean newPassword(@RequestBody User user) throws Exception {
+        user.setPassword(userService.encodePassword(user.getPassword()));
+        return userService.updatePassword(user.getEmail(), user.getPassword());
     }
 
 }

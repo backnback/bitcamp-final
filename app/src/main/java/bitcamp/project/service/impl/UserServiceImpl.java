@@ -137,4 +137,9 @@ public class UserServiceImpl implements UserService {
             throw e; // 예외를 다시 던져 호출자에게 알림
         }
     }
+
+    @Override
+    public boolean updatePassword(String email, String password) throws Exception {
+        return userDao.updatePassword(email, password);
+    }
 }
