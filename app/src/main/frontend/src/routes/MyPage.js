@@ -4,7 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추�
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import StoryItemList from "../components/StoryItemList";
 import AlarmCardList from "../components/AlarmCardList";
-
+import Profile from "../components/Profile";
 
 
 const MyPage = () => {
@@ -144,17 +144,19 @@ const MyPage = () => {
 
 
     return (
-       <div className="story-list">
-           <h1>좋아요한 스토리</h1>
-           <StoryItemList
+       <>
+           <h1>프로필</h1>
+            <Profile />
+           <h2>좋아요한 스토리</h2>
+            <StoryItemList
                 storyList={storyList}
                 onBatchedLikesChange={handleBatchedLikesChange}
                 onBatchedLocksChange={handleBatchedLocksChange}
-           />
+            />
 
-           <h2>알림</h2>
-           <AlarmCardList userList={userList} />
-       </div>
+           <h3>알림</h3>
+            <AlarmCardList userList={userList} />
+       </>
     );
 };
 
