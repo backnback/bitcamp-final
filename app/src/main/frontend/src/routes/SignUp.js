@@ -15,6 +15,7 @@ function SignUp() {
   const [profileImage, setProfileImage] = useState(null);
   const [agree, setAgree] = useState(false);
   const [authCode, setAuthCode] = useState('');
+  const [duplication, setDuplication] = useState('');
   const [isVerified, setIsVerified] = useState(false); // 이메일 인증 상태 변수
 
   const handleFileChange = (e) => {
@@ -63,23 +64,43 @@ function SignUp() {
       return;
     }
   
+    //이메일 중복 인증
     try {
-      const response = await axios.post('http://localhost:8080/sign/emailverification', { email }, {
+      const response = await axios.post('http://localhost:8080/sign/findemail', { email }, {
         headers: {
           'Content-Type': 'application/json',
         },
         withCredentials: true,
       });
-      if (response.data) {
-        alert("인증번호가 이메일로 발송되었습니다.");
-
+      
+      if (!response.data) {
+        setDuplication("사용가능한 이메일 입니다");
+  
+        // 이메일 중복이 아니라면 인증 코드 발송
+        try {
+          const authResponse = await axios.post('http://localhost:8080/sign/emailverification', { email }, {
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            withCredentials: true,
+          });
+  
+          if (authResponse.data) {
+            alert("인증번호가 이메일로 발송되었습니다.");
+          } else {
+            alert("인증번호 발송에 실패했습니다.");
+          }
+        } catch (authError) {
+          console.error("인증번호 요청 중 오류 발생:", authError);
+        }
       } else {
-        alert("인증번호 발송에 실패했습니다.");
+        setDuplication("중복된 이메일 입니다");
       }
     } catch (error) {
-      console.error("인증번호 요청 중 오류 발생:", error);
+      console.error("이메일 중복 확인 중 오류 발생:", error);
     }
   };
+  
   
 
   
@@ -117,6 +138,9 @@ function SignUp() {
         <form onSubmit={handleSubmit}>
           <div className={styles.inputGroup}>
             <label>이메일 <span className={styles.required}>*</span></label>
+            <span className={duplication.includes("사용가능한 이메일") ? styles.success : styles.error}>
+            {`${duplication}`}
+            </span>
             <div className={styles.inputWrapper}>
               <InputProvider>
                 <input
