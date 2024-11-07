@@ -73,6 +73,14 @@
     background-image: url("../../../../public/images/icon/icon-lock.png");
 }
 
+.icon__unlock {
+    width: 24px;
+    height: 24px;
+    background-size: 24px;
+    background-position: center;
+    background-image: url("../../../../public/images/icon/icon-unlock.png");
+}
+
 [class*=icon__heart] {
     width: 25px;
     height: 25px;
