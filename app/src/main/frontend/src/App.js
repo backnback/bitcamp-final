@@ -36,7 +36,6 @@ import MapSouthChungcheong from "./components/map/MapSouthChungcheong";
 import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
-import Map from "./components/Map";
 import { jwtDecode } from "jwt-decode";
 
 function App() {
@@ -81,8 +80,7 @@ function App() {
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
           <Routes>
-            <Route path="/" element={user == null ? <Login /> : <Map />} />
-
+            <Route path={user == null ? "/" : "/map"} element={user == null ? <Login /> : <StoryMap />} />
 
             <Route path="/form/test" element={<FormStyles />} />
             {/* 라우터 경로 설정 */}

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bitcamp.project.dao.MapDao">
+
+    <resultMap id="ProvinceDTO" type="ProvinceDTO">
+        <result column="first_name" property="province"/>
+        <collection property="stories" ofType="Story">
+            <id column="story_id" property="id"/>
+
+        </collection>
+    </resultMap>
+
+    <select id="findAllProvinceAndCount" resultMap="ProvinceDTO" parameterType="int">
+        SELECT l.first_name, count(l.first_name) as count
+        FROM location l inner join story s on l.location_id=s.location_id
+        WHERE s.user_id=#{id}
+        GROUP BY first_name
+    </select>
+</mapper>
