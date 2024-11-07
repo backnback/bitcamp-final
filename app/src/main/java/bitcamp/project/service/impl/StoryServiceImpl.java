@@ -99,7 +99,7 @@ public class StoryServiceImpl implements StoryService {
         }
 
 
-        if (oldStory.getUser().getId() != updateStoryRequestDTO.getLoginUser().getId()) {
+        if (oldStory.getUser() == null || oldStory.getUser().getId() != updateStoryRequestDTO.getLoginUser().getId()) {
             throw new Exception("접근 권한이 없습니다.");
         }
 
@@ -114,7 +114,7 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("스토리에 최소 한 개의 사진이 필요합니다.");
         }
 
-        if (files != null && Arrays.stream(files).allMatch(file -> file.getSize() == 0) && oldPhotos.isEmpty()) {
+        if (files != null && Arrays.stream(files).allMatch(file -> file == null || file.getSize() == 0) && oldPhotos.isEmpty()) {
             throw new Exception("유효하지 않는 파일입니다.");
         }
 
@@ -133,26 +133,26 @@ public class StoryServiceImpl implements StoryService {
         // Photo 정보
         List<Photo> photos = new ArrayList<>();
 
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {
-                continue;
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file == null || file.getSize() == 0) {
+                    continue; // null 파일 또는 크기가 0인 파일은 건너뜀
+                }
+
+                // 첨부파일 저장
+                String filename = UUID.randomUUID().toString();
+
+                HashMap<String, Object> options = new HashMap<>();
+                options.put(StorageService.CONTENT_TYPE, file.getContentType());
+                storageService.upload(folderName + filename, file.getInputStream(), options);
+
+                Photo photo = new Photo();
+                photo.setStoryId(story.getId());
+                photo.setMainPhoto(false);
+                photo.setPath(filename);
+
+                photos.add(photo);
             }
-
-            // 첨부파일 저장
-            String filename = UUID.randomUUID().toString();
-
-            HashMap<String, Object> options = new HashMap<>();
-            options.put(StorageService.CONTENT_TYPE, file.getContentType());
-            storageService.upload(folderName + filename,
-                file.getInputStream(),
-                options);
-
-            Photo photo = new Photo();
-            photo.setStoryId(story.getId());
-            photo.setMainPhoto(false);
-            photo.setPath(filename);
-
-            photos.add(photo);
         }
 
         // Photo DB 처리
@@ -164,6 +164,7 @@ public class StoryServiceImpl implements StoryService {
 
         return ResponseEntity.ok(response);
     }
+
 
 
     @Override
