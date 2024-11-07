@@ -15,6 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 
 import javax.servlet.http.HttpSession;
 import java.util.*;
@@ -24,6 +27,7 @@ import java.util.*;
 @RequestMapping("/my-story")
 public class MyStoryController {
 
+    private static final Logger logger = LoggerFactory.getLogger(MyStoryController.class);
     private final StoryService storyService;
 
     @GetMapping("list")
@@ -100,6 +104,9 @@ public class MyStoryController {
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {
+            // 예외 로그를 기록
+            e.printStackTrace();  // 콘솔에 오류 출력
+            logger.error("스토리 업데이트 중 오류 발생: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }

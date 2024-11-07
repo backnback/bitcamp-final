@@ -6,6 +6,7 @@ import { InputProvider } from '../components/InputProvider';
 import { SelectProvider } from '../components/SelectProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
 import styles from "../assets/styles/css/StoryItem.module.css";
+import Swal from 'sweetalert2';
 
 
 const MyStoryUpdateForm = () => {
@@ -104,19 +105,42 @@ const MyStoryUpdateForm = () => {
     }, [selectedYear, selectedMonth, selectedDay]);
 
 
+    // 파일 추가 로직을 변경하여 File 객체만 유지
     const handleFileChange = (event) => {
         const newFiles = Array.from(event.target.files);
-        const previewFiles = newFiles.map(file => ({
-            file,
-            preview: URL.createObjectURL(file),  // 미리보기 URL 생성
-            mainPhoto: false,  // 기본적으로 mainPhoto는 false로 설정
-        }));
-        setFiles([...files, ...previewFiles]);  // 기존 파일과 새로운 파일을 결합
+        setFiles([...files, ...newFiles]); // File 객체만 추가
     };
+
+
+    useEffect(() => {
+        console.log("Current States:", {
+            title,
+            travelDate,
+            content,
+            locationDetail,
+            selectedFirstName,
+            selectedSecondName,
+            selectedYear,
+            selectedMonth,
+            selectedDay,
+            files
+        });
+    }, [title, travelDate, content, locationDetail, selectedFirstName, selectedSecondName, selectedYear, selectedMonth, selectedDay, files]);
 
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+
+        // 유효성 검사
+        if (!title || !travelDate || !content || !locationDetail) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "모든 필수 항목을 입력해주세요!",
+                footer: '<a href="#">왜 이 문제가 발생했나요?</a>'
+            });
+            return;
+        }
 
         const formData = new FormData();
         formData.append('title', title);
@@ -126,6 +150,7 @@ const MyStoryUpdateForm = () => {
         formData.append('firstName', selectedFirstName);
         formData.append('secondName', selectedSecondName);
         formData.append('oldStoryId', storyId);
+        formData.append('share', false);
 
         files.forEach(file => {
             if (file instanceof File) {
@@ -134,14 +159,26 @@ const MyStoryUpdateForm = () => {
         });
 
         try {
+            console.log(formData);
             const response = await axios.post('http://localhost:8080/my-story/update', formData, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            alert('스토리가 업데이트되었습니다!');
-            navigate(`/my-story/view/${storyId}`);
+
+            console.log(formData.getAll('files'));
+
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: "스토리가 업데이트되었습니다!",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              // 3초 후 페이지 이동
+              navigate(`/my-story/view/${storyId}`);
+            });
         } catch (error) {
             console.error("스토리 업데이트 중 오류가 발생했습니다!", error);
         }
@@ -265,16 +302,20 @@ const MyStoryUpdateForm = () => {
             />
             <h3>현재 사진들:</h3>
             <div className="existing-photos">
-                {files.map((file, index) => (
-                    <div key={index} className={styles.middle}>
-                        {file.preview ? (
-                            <img src={file.preview} alt={`New Photo ${index + 1}`} alt={'story image'} className={`${styles.thumnail}`}/>
-                        ) : (
-                            <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path}`} alt={`Existing Photo ${index + 1}`} />
-                        )}
-                        <span>{file.mainPhoto ? 'main' : ''}</span>
-                    </div>
-                ))}
+                {Array.isArray(files) && files.length > 0 ? (
+                    files.map((file, index) => (
+                        <div key={index} className={styles.middle}>
+                            {file.preview ? (
+                                <img src={file.preview} alt={`New Photo ${index + 1}`} className={styles.thumnail} />
+                            ) : (
+                                <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${file.path}`} alt={`Existing Photo ${index + 1}`} />
+                            )}
+                            <span>{file.mainPhoto ? 'main' : ''}</span>
+                        </div>
+                    ))
+                ) : (
+                    <p>사진이 없습니다.</p> // 사진이 없을 경우 메시지
+                )}
             </div>
 
             <ButtonProvider>

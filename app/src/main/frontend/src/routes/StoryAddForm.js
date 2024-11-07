@@ -4,6 +4,8 @@ import { ButtonProvider } from '../components/ButtonProvider';
 import { InputProvider } from '../components/InputProvider';
 import { SelectProvider } from '../components/SelectProvider';
 import FormFileIcon from "../components/FormFileIcon";
+import Swal from 'sweetalert2';
+
 
 const MyStoryAddForm = () => {
     const [title, setTitle] = useState('');
@@ -75,6 +77,17 @@ const MyStoryAddForm = () => {
     const handleSubmit = async (event) => {
         event.preventDefault();
 
+        // 유효성 검사
+        if (!title || !travelDate || !content || !locationDetail) {
+            Swal.fire({
+                icon: "error",
+                title: "Oops...",
+                text: "모든 필수 항목을 입력해주세요!",
+                footer: '<a href="#">왜 이 문제가 발생했나요?</a>'
+            });
+            return;
+        }
+
         const formData = new FormData();
         formData.append('title', title);
         formData.append('travelDate', travelDate);
@@ -94,8 +107,16 @@ const MyStoryAddForm = () => {
                     'Content-Type': 'multipart/form-data',
                 },
             });
-            alert('스토리가 추가되었습니다!');
-            window.location.href = '/my-story/list';  // My 스토리의 list 페이지로 이동
+            Swal.fire({
+              position: "top",
+              icon: "success",
+              title: "스토리가 추가되었습니다!",
+              showConfirmButton: false,
+              timer: 1500
+            }).then(() => {
+              // 3초 후 페이지 이동
+              window.location.href = '/my-story/list';
+            });
         } catch (error) {
             console.error("스토리 추가 중 오류가 발생했습니다!", error);
         }
