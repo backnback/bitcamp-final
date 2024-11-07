@@ -98,3 +98,11 @@ input[type="checkbox"] {
 .submitButton:hover {
   background-color: var(--color-blue-83-button-hover);
 }
+
+.success {
+  color: var(--color-green);
+}
+
+.error {
+  color: var(--color-red);
+}
