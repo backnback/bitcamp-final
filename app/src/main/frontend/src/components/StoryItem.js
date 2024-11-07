@@ -62,7 +62,7 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
                 <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
                     <button type="button" className={`button button__icon`} onClick={lockClick}>
                         <span className={`blind`}>공개</span>
-                        <i className={`icon ${lock ? `icon__lock__black` : `icon__heart__full`}`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
+                        <i className={`icon ${lock ? `icon__lock__black` : `icon__unlock`}`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
                     </button>
                 </ButtonProvider>
             </div>
