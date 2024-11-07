@@ -21,21 +21,32 @@
 
 .faq__header__text {
     font-size: var(--body-font-size);
-    justify-items: center;
     margin-top: 40px;
     margin-bottom: 40px;
+}
+
+.faq__header__text p {
+    line-height: 1.4; /* 원하는 줄 간격 값 */
 }
 
 .faq__header__tel {
     font-size: 36px;
     color: var(--color-black-60);
-    margin-bottom: 3px;
+    margin-bottom: 5px;
 }
 
 .faq__header__time {
     font-size: 16px;
     color: var(--color-black-60);
     margin-bottom: 63px;
+}
+
+.faq__header__container,
+.faq__header__title,
+.faq__header__text,
+.faq__header__tel,
+.faq__header__time {
+    text-align: center;
 }
 
 .faq__list__header {

@@ -43,14 +43,13 @@ public class UserController {
     }
 
     @GetMapping("finduser")
-    public ResponseEntity<?> getUser(@LoginUser User loginUser) throws Exception{
-        System.out.println(loginUser.getId());
-        System.out.println(loginUser.getNickname());
-        User user = userService.findUser(loginUser.getId());
-        if (user != null){
+    public ResponseEntity<?> getUser(@LoginUser User loginUser) throws Exception {
+        try {
+            User user = userService.findUser(loginUser.getId());
             return ResponseEntity.ok(user);
+        } catch (Exception e) {
+            return ResponseEntity.ok("유저 정보를 가지고오는데 문제가 생겼습니다");
         }
-        return ResponseEntity.ok("유저 정보를 가지고오는데 문제가 생겼습니다");
     }
 
     @PostMapping("update")
