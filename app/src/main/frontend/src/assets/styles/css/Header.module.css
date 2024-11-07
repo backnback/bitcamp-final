@@ -89,11 +89,12 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border-radius: 100%;
+    width: 50px;
+    height: 50px;
 }
 
 .nav__profile__img {
-    max-height: 100%;
+    aspect-ratio: 1/1;
     border-radius: 100%;
 }
 
