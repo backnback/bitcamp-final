@@ -59,7 +59,7 @@ function Header() {
                 <div className={styles.header__bottom}>
                     <nav className={styles.nav__aside}>
                         <div className={styles.nav__profile}>
-                            <Link to="/viewuser/" className={styles.nav__profile__link}>
+                            <Link to="/my-page" className={styles.nav__profile__link}>
                                 <span className={styles.nav__profile__img__wrap}>
                                     <img className={styles.nav__profile__img}
                                         src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${userPath}`}
