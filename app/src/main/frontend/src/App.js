@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation} from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -45,16 +45,40 @@ function App() {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const currentLocation = useLocation();
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
-  // 사용자 목록 가져오기 함수
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/user/list');
-      setUsers(response.data); // 사용자 목록 상태 업데이트
-    } catch (error) {
-      console.error("There was an error fetching the user!", error);
+
+  useEffect(() => {
+    let token = null;
+    const checkTokenExpiration = () => {
+      token = localStorage.getItem('accessToken');
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const expirationTime = decodedToken.exp * 1000; // 초 단위의 만료 시간을 밀리초로 변환
+  
+        if (Date.now() >= expirationTime) {
+          alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+          localStorage.removeItem('accessToken');
+          setAccessToken(null);
+          setUser(null);
+          window.location.reload();        
+        } else {
+          setAccessToken(token);
+          setUser(decodedToken);
+        }
+      }
+    };
+  
+    checkTokenExpiration();
+  
+    if(token != null){
+    // 1초마다 currentTime 업데이트
+    const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
+    console.log(interval);
+    return () => clearInterval(interval);
     }
-  };
+  }, [currentTime]); 
+
 
   useEffect(() => {
     // console.log('page changed to:', currentLocation.pathname)
@@ -64,14 +88,7 @@ function App() {
     const [firstName, secondName] = [locationNames[1] && `body__${locationNames[1]}`, locationNames[2] != null & locationNames[2] != '' && `body__${locationNames[1]}__${locationNames[2]}`];
     document.body.className = `body ${firstName} ${secondName || ''}`;
 
-    fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAccessToken(token);
-      setUser(jwtDecode(token));
-    } else {
-      console.log("토큰이 없습니다");
-    }
+    //fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
   }, [currentLocation]);
 
   return (
