@@ -54,7 +54,7 @@ const MyPage = () => {
             if (accessToken) {
                 const fetchUser = async () => {
                     try {
-                        const response = await axios.get('http://localhost:8080/like/login', {
+                        const response = await axios.get('http://localhost:8080/user/finduser', {
                             headers: {
                                 'Authorization': `Bearer ${accessToken}`
                             }
