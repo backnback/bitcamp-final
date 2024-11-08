@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link, useLocation} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -38,6 +38,7 @@ import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
 import Map from "./components/Map";
 import { jwtDecode } from "jwt-decode";
+import MapLocation from "./routes/MapLocation";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
@@ -55,29 +56,29 @@ function App() {
       if (token) {
         const decodedToken = jwtDecode(token);
         const expirationTime = decodedToken.exp * 1000; // 초 단위의 만료 시간을 밀리초로 변환
-  
+
         if (Date.now() >= expirationTime) {
           alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
           localStorage.removeItem('accessToken');
           setAccessToken(null);
           setUser(null);
-          window.location.reload();        
+          window.location.reload();
         } else {
           setAccessToken(token);
           setUser(decodedToken);
         }
       }
     };
-  
+
     checkTokenExpiration();
-  
-    if(token != null){
-    // 1초마다 currentTime 업데이트
-    const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
-    console.log(interval);
-    return () => clearInterval(interval);
+
+    if (token != null) {
+      // 1초마다 currentTime 업데이트
+      const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
+      console.log(interval);
+      return () => clearInterval(interval);
     }
-  }, [currentTime]); 
+  }, [currentTime]);
 
 
   useEffect(() => {
@@ -98,11 +99,12 @@ function App() {
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
           <Routes>
-            <Route path="/" element={user == null ? <Login /> : <Map />} />
+            <Route path="/" element={user == null ? <Login /> : <StoryMap />} />
 
 
             <Route path="/form/test" element={<FormStyles />} />
             {/* 라우터 경로 설정 */}
+            <Route path="map/story/:locationId" element={<MapLocation />} />
             <Route path="/story/map/seoul" element={<MapSeoul />} />
             <Route path="/story/map/busan" element={<MapBusan />} />
             <Route path="/story/map/daegu" element={<MapDaegu />} />
@@ -145,9 +147,9 @@ function App() {
 // UserProvider로 App 컴포넌트 감싸기
 function UserWrapper() {
   return (
-      <Router>
-        <App />
-      </Router>
+    <Router>
+      <App />
+    </Router>
   );
 }
 
