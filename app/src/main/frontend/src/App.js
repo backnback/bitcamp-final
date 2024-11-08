@@ -28,7 +28,7 @@ import MapGwangwon from "./components/map/MapGwangwon";
 import MapGyeonggi from "./components/map/MapGyeonggi";
 import MapIncheon from "./components/map/MapIncheon";
 import MapJeju from "./components/map/MapJeju";
-import MapNorthChungcheoung from "./components/map/MapNorthChungcheoung";
+import MapNorthChungcheoung from "./components/map/MapNorthChungcheoungTest";
 import MapNorthGyeongsang from "./components/map/MapNorthGyeongsang";
 import MapNorthJeolla from "./components/map/MapNorthJeolla";
 import MapSejong from "./components/map/MapSejong";
