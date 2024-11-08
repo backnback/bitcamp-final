@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import { StoryAddContext } from '../components/StoryItem';
 import StoryItemList from '../components/StoryItemList';
+import { ModalsDispatchContext } from '../components/ModalContext';
+import ModalSidebarRight from '../components/ModalSidebarRight';
+import StoryViewModal from './StoryViewModal.js';
 
 
 const MyStoryList = () => {
@@ -11,6 +14,7 @@ const MyStoryList = () => {
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
+    const { open, close } = useContext(ModalsDispatchContext);
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -125,6 +129,24 @@ const MyStoryList = () => {
     }, [batchedLocks]);
 
 
+    // 모달 열기
+    const openModal = (storyId) => {
+        const modalContent = <StoryViewModal storyId={storyId} onRequestClose={close} />;
+        open(ModalSidebarRight, {
+            storyId,
+            modalContent,
+            onSubmit: () => {
+                // onSubmit 클릭 시의 처리 (예시)
+                console.log('확인 클릭');
+            },
+            onClose: () => {
+                // onClose 클릭 시의 처리 (예시)
+                console.log('취소 클릭');
+            }
+        });
+    };
+
+
 
 
     return (
@@ -135,6 +157,7 @@ const MyStoryList = () => {
                 onAddStory={handleAddStory}
                 onBatchedLikesChange={handleBatchedLikesChange}
                 onBatchedLocksChange={handleBatchedLocksChange}
+                handleModal={openModal}
             />
         </div>
     );

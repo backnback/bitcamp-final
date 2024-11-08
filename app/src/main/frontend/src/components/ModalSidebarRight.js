@@ -1,6 +1,7 @@
 import ReactModal from 'react-modal';
+import StoryView from '../routes/StoryView.js';
 
-const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
+const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true, storyId, modalContent }) => {
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -16,7 +17,9 @@ const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true
             shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
             className="modal modal-right"
             overlayClassName="modal-overlay">
-            <div>모달 입니다.</div>
+            <div>
+                {modalContent}
+            </div>
             <div>
                 <button onClick={handleClickSubmit}>확인</button>
                 <button type='button' onClick={handleClickCancel}>취소</button>

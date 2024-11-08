@@ -125,13 +125,4 @@ function App() {
   );
 }
 
-// UserProvider로 App 컴포넌트 감싸기
-function UserWrapper() {
-  return (
-      <Router>
-        <App />
-      </Router>
-  );
-}
-
-export default UserWrapper;
+export default App;
