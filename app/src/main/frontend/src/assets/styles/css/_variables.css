@@ -41,6 +41,7 @@
     --color-gray-2c-34: rgba(44, 44, 44, 0.341);
 
     --color-red: #FF0000;
+    --color-green: #00ff22;
 
     --color-primaryGradient: linear-gradient(180deg, #4DA7FF 0%, #B1EDF8 100%);
 
@@ -87,5 +88,4 @@
 
     /* sidebar */
     --sidebar-width: 590px;
-
 }

@@ -1,6 +1,6 @@
 import ReactModal from 'react-modal';
 
-const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
+const ModalSidebarRight = ({ onSubmit, onClose }) => {
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -13,7 +13,6 @@ const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true
         <ReactModal
             isOpen
             onRequestClose={onClose}
-            shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
             className="modal modal-right"
             overlayClassName="modal-overlay">
             <div>모달 입니다.</div>

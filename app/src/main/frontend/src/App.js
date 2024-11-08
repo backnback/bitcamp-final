@@ -28,7 +28,7 @@ import MapGwangwon from "./components/map/MapGwangwon";
 import MapGyeonggi from "./components/map/MapGyeonggi";
 import MapIncheon from "./components/map/MapIncheon";
 import MapJeju from "./components/map/MapJeju";
-import MapNorthChungcheoung from "./components/map/MapNorthChungcheoung";
+import MapNorthChungcheoung from "./components/map/MapNorthChungcheoungTest";
 import MapNorthGyeongsang from "./components/map/MapNorthGyeongsang";
 import MapNorthJeolla from "./components/map/MapNorthJeolla";
 import MapSejong from "./components/map/MapSejong";
@@ -36,7 +36,9 @@ import MapSouthChungcheong from "./components/map/MapSouthChungcheong";
 import MapSouthGyeongsan from "./components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
+import Map from "./components/Map";
 import { jwtDecode } from "jwt-decode";
+import MapLocation from "./routes/MapLocation";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
@@ -44,16 +46,40 @@ function App() {
   const [accessToken, setAccessToken] = useState(null);
   const [user, setUser] = useState(null);
   const currentLocation = useLocation();
+  const [currentTime, setCurrentTime] = useState(Date.now());
 
-  // 사용자 목록 가져오기 함수
-  const fetchUsers = async () => {
-    try {
-      const response = await axios.get('http://localhost:8080/user/list');
-      setUsers(response.data); // 사용자 목록 상태 업데이트
-    } catch (error) {
-      console.error("There was an error fetching the user!", error);
+
+  useEffect(() => {
+    let token = null;
+    const checkTokenExpiration = () => {
+      token = localStorage.getItem('accessToken');
+      if (token) {
+        const decodedToken = jwtDecode(token);
+        const expirationTime = decodedToken.exp * 1000; // 초 단위의 만료 시간을 밀리초로 변환
+
+        if (Date.now() >= expirationTime) {
+          alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
+          localStorage.removeItem('accessToken');
+          setAccessToken(null);
+          setUser(null);
+          window.location.reload();
+        } else {
+          setAccessToken(token);
+          setUser(decodedToken);
+        }
+      }
+    };
+
+    checkTokenExpiration();
+
+    if (token != null) {
+      // 1초마다 currentTime 업데이트
+      const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
+      console.log(interval);
+      return () => clearInterval(interval);
     }
-  };
+  }, [currentTime]);
+
 
   useEffect(() => {
     // console.log('page changed to:', currentLocation.pathname)
@@ -63,14 +89,7 @@ function App() {
     const [firstName, secondName] = [locationNames[1] && `body__${locationNames[1]}`, locationNames[2] != null & locationNames[2] != '' && `body__${locationNames[1]}__${locationNames[2]}`];
     document.body.className = `body ${firstName} ${secondName || ''}`;
 
-    fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
-    const token = localStorage.getItem('accessToken');
-    if (token) {
-      setAccessToken(token);
-      setUser(jwtDecode(token));
-    } else {
-      console.log("토큰이 없습니다");
-    }
+    //fetchUsers(); // 컴포넌트가 처음 로드될 때 사용자 목록을 가져옴
   }, [currentLocation]);
 
   return (
@@ -82,8 +101,10 @@ function App() {
           <Routes>
             <Route path={user == null ? "/" : "/map"} element={user == null ? <Login /> : <StoryMap />} />
 
+
             <Route path="/form/test" element={<FormStyles />} />
             {/* 라우터 경로 설정 */}
+            <Route path="map/story/:locationId" element={<MapLocation />} />
             <Route path="/story/map/seoul" element={<MapSeoul />} />
             <Route path="/story/map/busan" element={<MapBusan />} />
             <Route path="/story/map/daegu" element={<MapDaegu />} />
@@ -126,9 +147,9 @@ function App() {
 // UserProvider로 App 컴포넌트 감싸기
 function UserWrapper() {
   return (
-      <Router>
-        <App />
-      </Router>
+    <Router>
+      <App />
+    </Router>
   );
 }
 
