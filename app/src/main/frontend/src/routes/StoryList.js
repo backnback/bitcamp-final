@@ -1,8 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import { StoryAddContext } from '../components/StoryItem';
 import StoryItemList from '../components/StoryItemList';
+import StoryAddForm from './StoryAddForm';
+import StoryEditModal from '../components/StoryEditModal';
+import { ModalsDispatchContext } from '../components/ModalContext';
+import ModalSidebarRight from '../components/ModalSidebarRight';
+import StoryView from './StoryView.js';
 
 
 const MyStoryList = () => {
@@ -11,6 +16,8 @@ const MyStoryList = () => {
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
+    const { open, close } = useContext(ModalsDispatchContext);
+
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -42,12 +49,6 @@ const MyStoryList = () => {
             fetchStoryList();
         }
     }, [accessToken]);
-
-
-    // 스토리 추가 버튼 클릭 시 MyStoryAddForm으로 이동하는 함수
-    const handleAddStory = () => {
-        navigate('/my-story/form/add'); // MyStoryAddForm 페이지로 이동
-    };
 
 
      // StoryItemList에서 모아둔 like 변경 사항을 저장하는 함수
@@ -125,6 +126,36 @@ const MyStoryList = () => {
     }, [batchedLocks]);
 
 
+    // 스토리 조회 모달
+    const openStoryModal = (storyId) => {
+        const content = <StoryView storyId={storyId} />
+        open(ModalSidebarRight, {
+            onSubmit: () => {
+                console.log('확인 클릭');
+            },
+            onClose: () => {
+               console.log('취소 클릭이야 클릭');
+            },
+            content
+        });
+    };
+
+
+    // 스토리 추가 모달
+    const openAddModal = () => {
+        const content = <StoryAddForm />
+        open(StoryEditModal, {
+            onSubmit: () => {
+                console.log('확인 클릭');
+            },
+            onClose: () => {
+               console.log('취소 클릭이야 클릭');
+            },
+            content
+        });
+        //navigate("/my-story/form/add");
+    };
+
 
 
     return (
@@ -132,12 +163,13 @@ const MyStoryList = () => {
             <h2>My 스토리</h2>
             <StoryItemList
                 storyList={storyList}
-                onAddStory={handleAddStory}
+                onAddStory={openAddModal}
                 onBatchedLikesChange={handleBatchedLikesChange}
                 onBatchedLocksChange={handleBatchedLocksChange}
+                handleModal={openStoryModal}
             />
         </div>
+
     );
 };
-
 export default MyStoryList;

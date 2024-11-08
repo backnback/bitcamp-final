@@ -5,7 +5,7 @@ import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
 
 
-function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange }) {
+function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange, handleModal }) {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
 
@@ -37,6 +37,10 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
         }
     }, [batchedLocks]);
 
+
+    const handleModalWithStoryId = (storyId) => {
+        handleModal(storyId);
+    };
 
 
     return (
@@ -70,6 +74,7 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
                             storyDate={storyListDTO.travelDate} // 여행 날짜
                             onLikeChange={handleLikeChange}  // 좋아요 변경 시 호출할 함수 전달
                             onLockChange={handleLockChange}
+                            onClick={() => handleModalWithStoryId(storyListDTO.storyId)}
                         />
                     </li>
                 ))}
