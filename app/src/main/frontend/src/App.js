@@ -8,9 +8,7 @@ import Login from "./routes/Login"; // Login 컴포넌트 import
 import StoryMap from "./routes/StoryMap";
 import StoryList from "./routes/StoryList"; // StoryList 컴포넌트 import
 import ShareStoryList from "./routes/ShareStoryList"; // ShareStoryList 컴포넌트 import
-import StoryView from "./routes/StoryView";
 import MyPage from "./routes/MyPage";
-import ShareStoryView from "./routes/ShareStoryView";
 import FaqBoard from "./routes/FaqBoard";
 import StoryAddForm from "./routes/StoryAddForm";
 import StoryUpdateForm from "./routes/StoryUpdateForm";
@@ -75,7 +73,7 @@ function App() {
     if (token != null) {
       // 1초마다 currentTime 업데이트
       const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
-      console.log(interval);
+      // console.log(interval);
       return () => clearInterval(interval);
     }
   }, [currentTime]);
@@ -129,8 +127,6 @@ function App() {
             <Route path="/share-story/list" element={<ShareStoryList />} /> {/* 스토리 목록 페이지 */}
             <Route path="/my-story/list" element={<StoryList />} /> {/* 스토리 목록 페이지 */}
             <Route path="/my-page" element={<MyPage />} /> {/* 마이 페이지 */}
-            <Route path="/share-story/view/:storyId" element={<ShareStoryView />} /> {/* 특정 스토리 보기 */}
-            <Route path="/my-story/view/:storyId" element={<StoryView />} /> {/* 특정 스토리 보기 */}
             <Route path="/my-story/form/add" element={<StoryAddForm />} /> {/* 스토리 추가 */}
             <Route path="/my-story/form/update/:storyId" element={<StoryUpdateForm />} /> {/* 스토리 수정 */}
             <Route path="/faqs" element={<FaqBoard />} /> {/* FAQ 목록 페이지 */}

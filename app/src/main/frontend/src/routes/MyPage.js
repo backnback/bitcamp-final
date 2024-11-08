@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import StoryItemList from "../components/StoryItemList";
 import AlarmCardList from "../components/AlarmCardList";
 import Profile from "../components/Profile";
+import { ModalsDispatchContext } from '../components/ModalContext';
+import ModalSidebarRight from '../components/ModalSidebarRight';
+import ShareStoryView from './ShareStoryView.js';
 
 
 const MyPage = () => {
@@ -15,7 +18,7 @@ const MyPage = () => {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
-
+    const { open } = useContext(ModalsDispatchContext);
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -161,6 +164,19 @@ const MyPage = () => {
     }, [batchedLocks]);
 
 
+    // 스토리 조회 모달
+    const openStoryModal = (storyId) => {
+        const content = <ShareStoryView storyId={storyId} />
+        open(ModalSidebarRight, {
+            onSubmit: () => {
+                console.log('확인 클릭');
+            },
+            onClose: () => {
+               console.log('취소 클릭이야 클릭');
+            },
+            content
+        });
+    };
 
 
     return (
@@ -172,6 +188,7 @@ const MyPage = () => {
                 storyList={storyList}
                 onBatchedLikesChange={handleBatchedLikesChange}
                 onBatchedLocksChange={handleBatchedLocksChange}
+                handleModal={openStoryModal}
             />
 
            <h3>알림</h3>
