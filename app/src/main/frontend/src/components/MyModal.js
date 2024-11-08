@@ -1,6 +1,6 @@
 import ReactModal from 'react-modal';
 
-const MyModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
+const MyModal = ({ onSubmit, onClose }) => {
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -12,8 +12,7 @@ const MyModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
     return (
         <ReactModal
             isOpen
-            onRequestClose={onClose}
-            shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}>
+            onRequestClose={onClose}>
             <div>모달 입니다.</div>
             <div>
                 <button onClick={handleClickSubmit}>확인</button>

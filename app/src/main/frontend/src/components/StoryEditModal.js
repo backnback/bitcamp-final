@@ -2,7 +2,7 @@ import ReactModal from 'react-modal';
 import { StoryAddEditContext } from './StoryEdit';
 import { ButtonProvider } from './ButtonProvider';
 
-const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
+const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick }) => {
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -17,7 +17,7 @@ const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true })
             onRequestClose={onClose}
             shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
             className="modal modal-right"
-            overlayClassName="modal-overlay">
+            overlayClassName="modal-overlay" >
 
             <div className='modal__hedader'>
 
@@ -41,7 +41,7 @@ const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true })
                 </ButtonProvider>
             </div>
 
-        </ReactModal>
+        </ReactModal >
     );
 };
 

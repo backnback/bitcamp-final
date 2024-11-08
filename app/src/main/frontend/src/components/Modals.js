@@ -37,7 +37,8 @@ function Modals() {
             key={index}
             onClose={onClose}
             onSubmit={handleSubmit}
-            shouldCloseOnOverlayClick={true} />
+            isOpen={restProps.isOpen}
+            shouldCloseOnOverlayClick={restProps.shouldCloseOnOverlayClick} />
     });
 }
 
