@@ -6,17 +6,26 @@
 <mapper namespace="bitcamp.project.dao.MapDao">
 
     <resultMap id="ProvinceDTO" type="ProvinceDTO">
+        <id column="location_id" property="id"/>
         <result column="first_name" property="province"/>
-        <collection property="stories" ofType="Story">
-            <id column="story_id" property="id"/>
+        <result column="count" property="count" />
+    </resultMap>
+
+    <resultMap id="ProvinceDTO" type="ProvinceDTO">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="province"/>
+        <collection property="stories" ofType="">
 
         </collection>
     </resultMap>
 
     <select id="findAllProvinceAndCount" resultMap="ProvinceDTO" parameterType="int">
-        SELECT l.first_name, count(l.first_name) as count
+        SELECT l.location_id l.first_name, count(l.first_name) as count
         FROM location l inner join story s on l.location_id=s.location_id
         WHERE s.user_id=#{id}
-        GROUP BY first_name
+    </select>
+
+    <select id="findCityAndStory" resultMap="" parameterType="">
+
     </select>
 </mapper>

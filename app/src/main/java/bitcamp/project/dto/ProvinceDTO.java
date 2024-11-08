@@ -8,6 +8,7 @@ import java.util.List;
 
 @Data
 public class ProvinceDTO {
+    private int id;
     private String province;
-    private List<Story> stories;
+    private int count;
 }
