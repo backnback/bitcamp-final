@@ -25,7 +25,7 @@ import MapGwangwon from "./components/map/MapGwangwon";
 import MapGyeonggi from "./components/map/MapGyeonggi";
 import MapIncheon from "./components/map/MapIncheon";
 import MapJeju from "./components/map/MapJeju";
-import MapNorthChungcheoung from "./components/map/MapNorthChungcheoung";
+import MapNorthChungcheoung from "./components/map/MapNorthChungcheoungTest";
 import MapNorthGyeongsang from "./components/map/MapNorthGyeongsang";
 import MapNorthJeolla from "./components/map/MapNorthJeolla";
 import MapSejong from "./components/map/MapSejong";
@@ -35,6 +35,7 @@ import MapSouthJeolla from "./components/map/MapSouthJeolla";
 import MapUlsan from "./components/map/MapUlsan";
 import Map from "./components/Map";
 import { jwtDecode } from "jwt-decode";
+import MapLocation from "./routes/MapLocation";
 
 function App() {
   // UserProvider 내부에서 useUser 훅을 호출하여 사용자 정보 가져오기
@@ -78,11 +79,12 @@ function App() {
       <div className={`layout__content__wrapper`}>
         <div className={`layout__contents`}>
           <Routes>
-            <Route path="/" element={user == null ? <Login /> : <Map />} />
+            <Route path="/" element={user == null ? <Login /> : <StoryMap />} />
 
 
             <Route path="/form/test" element={<FormStyles />} />
             {/* 라우터 경로 설정 */}
+            <Route path="map/story/:locationId" element={<MapLocation />} />
             <Route path="/story/map/seoul" element={<MapSeoul />} />
             <Route path="/story/map/busan" element={<MapBusan />} />
             <Route path="/story/map/daegu" element={<MapDaegu />} />
@@ -122,9 +124,9 @@ function App() {
 // UserProvider로 App 컴포넌트 감싸기
 function UserWrapper() {
   return (
-      <Router>
-        <App />
-      </Router>
+    <Router>
+      <App />
+    </Router>
   );
 }
 
