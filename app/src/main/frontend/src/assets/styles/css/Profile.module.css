@@ -3,6 +3,7 @@
 }
 
 .card {
+  position: relative;
   --bc: #e6f4fa;
   --bc1: #66b9fd;
   --clr: gray;
@@ -23,6 +24,41 @@
   line-height: 2;
   margin: 40px;
 }
+
+/* Plus sign */
+.sign {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px; /* Fixed width */
+  transition: transform 0.7s ease-in-out;
+}
+
+.sign svg {
+  width: 30px;
+}
+
+.sign svg path {
+  fill: white;
+}
+
+.btn {
+  position: absolute;
+  cursor: pointer;
+  transition: width 0.7s ease-in-out, transform 0.2s ease;
+  top: 10px; /* 카드 상단에서 10px 떨어진 위치 */
+  right: 10px; /* 카드 오른쪽에서 10px 떨어진 위치 */
+  z-index: 10; /* 다른 요소 위에 나타나도록 설정 */
+}
+
+.btn:hover {
+  transform: translateY(-2px); /* Expanded width on hover */
+}
+
+.btn:active {
+ transform: translateY(2px);
+}
+
 
 .card:hover {
   background-color: var(--bc1);
@@ -57,3 +93,4 @@
   font-size: 1.5rem;
   font-weight: 600;
 }
+

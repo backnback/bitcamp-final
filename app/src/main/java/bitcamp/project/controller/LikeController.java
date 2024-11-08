@@ -53,20 +53,6 @@ public class LikeController {
     }
   }
 
-  // 로그인한 사용자 정보 조회
-  @GetMapping("login")
-  public ResponseEntity<?> findUser(@LoginUser User loginUser) {
-    try {
-      System.out.println("일단 여기까진 성공1");
-      // 로그인한 사용자의 ID를 이용해 User 정보를 가져옴
-      System.out.println(loginUser.getId());
-      System.out.println("일단 여기까진 성공2");
-      User user = userService.findUser(loginUser.getId());
-      return ResponseEntity.ok(user);
-    } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("로그인한 사용자 정보를 불러오는 데 실패했습니다.");
-    }
-  }
 
   // 좋아요 목록 배치 업데이트 (등록 및 삭제)
   @PostMapping("batch-update")

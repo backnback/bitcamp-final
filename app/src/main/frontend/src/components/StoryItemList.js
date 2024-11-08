@@ -49,7 +49,12 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
                 {/* 스토리 추가 버튼 */}
                 {onAddStory && (
                     <li className={styles.list__add} onClick={onAddStory}>
-                        <StoryAddContext />
+                        <StoryAddContext>
+                            <button type="button" className={`button button__story__add`}>
+                                <span className={`blind`}>스토리 등록</span>
+                                <i className={`icon icon__plus__white`}></i>
+                            </button>
+                        </StoryAddContext>
                     </li>
                 )}
                 {/* 스토리 아이템 목록 */}

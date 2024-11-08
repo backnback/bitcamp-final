@@ -1,7 +1,7 @@
 import ReactModal from 'react-modal';
 import StoryView from '../routes/StoryView.js';
 
-const ModalSidebarRight = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true, storyId, modalContent }) => {
+const ModalSidebarRight = ({ onSubmit, onClose, storyId, modalContent }) => {
     const handleClickSubmit = () => {
         onSubmit();
     };

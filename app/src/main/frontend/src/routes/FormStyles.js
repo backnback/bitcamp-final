@@ -5,12 +5,14 @@ import { SelectProvider } from '../components/SelectProvider';
 import StoryItem, { StoryAddContext } from "../components/StoryItem";
 import useModals from '../useModals';
 import { modals } from '../components/Modals';
+import { useEffect, useState } from "react";
 
 function FormStyles() {
     const { openModal } = useModals();
 
     const handleClick = () => {
         openModal(modals.storyEditModal, {
+            shouldCloseOnOverlayClick: true, // 모달 밖 클릭 시 닫힘.
             onSubmit: () => {
                 console.log('비지니스 로직 처리...2');
             },

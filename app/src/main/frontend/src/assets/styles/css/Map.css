@@ -1,0 +1,48 @@
+.map__container {
+    padding: 95px 46px 95px 270px;
+}
+
+.map__list {
+    fill: var(--color-gray-cc);
+    stroke: var(--color-white);
+    stroke-width: 3px;
+    max-width: 100%;
+}
+
+.city a {
+    transition: .2s;
+}
+
+.city a:hover {
+    filter: invert(5%);
+}
+
+[data-count] {
+    fill: var(--color-blue-1a);
+}
+
+[data-count='1'] {
+    fill-opacity: 0.2;
+}
+
+[data-count='2'] {
+    fill-opacity: 0.4;
+}
+
+[data-count='3'] {
+    fill-opacity: 0.6;
+}
+
+[data-count='4'] {
+    fill-opacity: 0.8;
+}
+
+[data-count='5'] {
+    fill-opacity: 1;
+}
+
+.city__wrap {}
+
+.city__list {
+    max-width: 100%;
+}
