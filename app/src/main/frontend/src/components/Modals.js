@@ -6,6 +6,7 @@ export const modals = {
     myModal: loadable(() => import('./MyModal')),
     modalSidebarRight: loadable(() => import('./ModalSidebarRight')),
     storyEditModal: loadable(() => import('./StoryEditModal')),
+    reauthenticateModal: loadable(() => import('./ReauthenticateModal')),
 };
 
 function Modals() {
