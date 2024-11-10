@@ -1,6 +1,7 @@
 package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.MapDao;
+import bitcamp.project.dto.CityDTO;
 import bitcamp.project.dto.ProvinceDTO;
 import bitcamp.project.service.MapService;
 import lombok.RequiredArgsConstructor;
@@ -15,5 +16,10 @@ public class MapServiceImpl implements MapService {
 
     public List<ProvinceDTO> getProvincesList(int id) {
         return mapDao.findAllProvinceAndCount(id);
+    }
+
+    public List<CityDTO> getCitiesList(int userId, int locationId) {
+//        mapDao.findAllCityByLocationId(locationId);
+        return null;
     }
 }

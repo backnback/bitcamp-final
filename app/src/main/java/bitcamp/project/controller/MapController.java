@@ -1,6 +1,7 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
+import bitcamp.project.dto.CityDTO;
 import bitcamp.project.dto.ProvinceDTO;
 import bitcamp.project.service.MapService;
 import bitcamp.project.vo.User;
@@ -8,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,5 +29,11 @@ public class MapController {
         } catch (Exception e){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
+    }
+
+    @GetMapping("story/{locationId}")
+    public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable int locationId) {
+//        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), locationId);
+        return null;
     }
 }

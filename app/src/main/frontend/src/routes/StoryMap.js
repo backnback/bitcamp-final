@@ -1,6 +1,5 @@
 import Map from '../components/Map';
 import styles from '../assets/styles/css/Map.css';
-import { useEffect } from 'react';
 import {useEffect, useState} from "react";
 import axios from "axios";
 

@@ -75,7 +75,7 @@ function App() {
     if (token != null) {
       // 1초마다 currentTime 업데이트
       const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
-      console.log(interval);
+      // console.log(interval);
       return () => clearInterval(interval);
     }
   }, [currentTime]);
