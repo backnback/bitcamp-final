@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { ModalsDispatchContext, ModalsStateContext } from './ModalContext';
 import Modals from './Modals';
 
@@ -19,7 +19,13 @@ const ModalsProvider = ({ children }) => {
         });
     };
 
+
     const dispatch = useMemo(() => ({ open, close }), []);
+
+    useEffect(() => {
+        console.log("openedModals 상태 변경:", openedModals);
+    }, [openedModals]);
+
     return (
         <ModalsStateContext.Provider value={openedModals}>
             <ModalsDispatchContext.Provider value={dispatch}>

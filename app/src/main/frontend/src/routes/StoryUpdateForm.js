@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 // import './StoryUpdateForm.css';
-import { useParams, useNavigate } from 'react-router-dom';
 import { InputProvider } from '../components/InputProvider';
 import { SelectProvider } from '../components/SelectProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
@@ -9,9 +8,7 @@ import styles from "../assets/styles/css/StoryItem.module.css";
 import Swal from 'sweetalert2';
 
 
-const MyStoryUpdateForm = () => {
-    const { storyId } = useParams();
-    const navigate = useNavigate();
+const MyStoryUpdateForm = ( { storyId } ) => {
     const [accessToken, setAccessToken] = useState(null);
 
     const [title, setTitle] = useState('');
@@ -177,7 +174,7 @@ const MyStoryUpdateForm = () => {
               timer: 1500
             }).then(() => {
               // 3초 후 페이지 이동
-              navigate(`/my-story/view/${storyId}`);
+              window.location.href = '/my-story/list';
             });
         } catch (error) {
             console.error("스토리 업데이트 중 오류가 발생했습니다!", error);
