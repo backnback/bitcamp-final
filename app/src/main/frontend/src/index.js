@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import ReactModal from 'react-modal';
 import './assets/styles/css/reset.css';
+// import styles
+import "@egjs/flicking/dist/flicking.css"; // Supports IE10+, using CSS flex
 import './assets/styles/css/commons.css';
 import App from './App';
 import ModalsProvider from './components/ModalProvider';

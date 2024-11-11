@@ -42,7 +42,7 @@ function FormStyles() {
                         defaultChecked='checked'
                         id='checkbox01'
                         name='체크체크' />
-                    <span className={`.input__text`}>체크해라</span>
+                    <span className={`input__text`}>체크해라</span>
                 </label>
             </InputProvider>
 
@@ -53,7 +53,7 @@ function FormStyles() {
                         className={`form__input`}
                         id='checkbox02'
                         name='체크체크' />
-                    <span className={`.input__text`}>체크하지마러라</span>
+                    <span className={`input__text`}>체크하지마러라</span>
                 </label>
             </InputProvider>
 
@@ -66,7 +66,7 @@ function FormStyles() {
                         defaultChecked='checked'
                         id='radio01'
                         name='라디오' />
-                    <span className={`.input__text`}>라디오버튼이여</span>
+                    <span className={`input__text`}>라디오버튼이여</span>
 
                 </label>
             </InputProvider>
@@ -78,7 +78,7 @@ function FormStyles() {
                         className={`form__input`}
                         id='radio02'
                         name='라디오' />
-                    <span className={`.input__text`}>라디오버튼이여</span>
+                    <span className={`input__text`}>라디오버튼이여</span>
                 </label>
             </InputProvider>
 

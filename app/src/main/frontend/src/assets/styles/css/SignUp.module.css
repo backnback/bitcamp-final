@@ -3,7 +3,8 @@
   justify-content: center;
   align-items: center;
   height: 100vh;
-  background-color: var(--color-skyblue-ff); /* 연한 배경색 */
+  background-color: var(--color-skyblue-ff);
+  /* 연한 배경색 */
 }
 
 
@@ -61,20 +62,6 @@
 
 .authButton:hover {
   background-color: var(--color-blue-83-button-hover);
-}
-
-input[type="text"],
-input[type="email"],
-input[type="password"] {
-  width: 100%;
-  padding: var(--padding-rl);
-  border: 1px solid var(--color-white-90);
-  border-radius: 4px;
-  outline: none;
-}
-
-input[type="checkbox"] {
-  margin-right: 8px;
 }
 
 .checkboxGroup {
