@@ -3,6 +3,7 @@ package bitcamp.project.controller;
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.CityDTO;
 import bitcamp.project.dto.ProvinceDTO;
+import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.service.MapService;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
@@ -31,9 +32,15 @@ public class MapController {
         }
     }
 
-    @GetMapping("story/{locationId}")
-    public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable String locationId) {
-        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), Integer.parseInt(locationId));
+    @GetMapping("story/{provinceId}")
+    public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable String provinceId) throws Exception {
+        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), Integer.parseInt(provinceId));
         return ResponseEntity.ok(cityDTOS);
+    }
+
+    @GetMapping("story/{provinceId}/{cityId}")
+    public ResponseEntity<?> getStoryList(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
+        List<StoryListDTO> storyListDTOS = mapService.storyListByLocationId(loginUser.getId(), provinceId, cityId);
+        return ResponseEntity.ok(storyListDTOS);
     }
 }

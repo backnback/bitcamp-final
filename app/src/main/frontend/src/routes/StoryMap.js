@@ -18,7 +18,6 @@ function StoryMap() {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     }); // API 요청
-                    // setStoryList(response.data);
                     console.log(response.data)
                 } catch (error) {
                     console.error("There was an error", error);

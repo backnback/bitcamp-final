@@ -21,15 +21,18 @@ import java.util.List;
 @MapperScan("bitcamp.project.dao")
 @PropertySource("file:${user.home}/config/final.properties")
 @EnableTransactionManagement
-@RequiredArgsConstructor
 public class App implements WebMvcConfigurer {
 
     private final AuthInterceptor authInterceptor;
 
+    public App(AuthInterceptor authInterceptor) {
+        this.authInterceptor = authInterceptor;
+        System.getProperties().setProperty("aws.java.v1.disableDeprecationAnnouncement", "true");
+    }
+
     public static void main(String[] args) {
         SpringApplication.run(App.class, args);
     }
-
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
