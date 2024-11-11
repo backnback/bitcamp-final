@@ -23,8 +23,6 @@ function MapLocation() {
     const { locationId } = useParams(); // URL에서 ID 파라미터를 가져옴
     // const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [accessToken, setAccessToken] = useState(null);
-    const [storyViewDTO, setStoryViewDTO] = useState(null);
-
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
@@ -42,19 +40,19 @@ function MapLocation() {
         if (accessToken) {
             const fetchStoryViewDTO = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/my-story/list/${locationId}`, {
+                    const response = await axios.get(`http://localhost:8080/map/story/${locationId}`, {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     });
-                    setStoryViewDTO(response.data);
+                    console.log(response.data)
                 } catch (error) {
                     console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
                 }
             };
             fetchStoryViewDTO();
         }
-    }, [accessToken, locationId]);
+    }, [accessToken]);
 
 
     // 삭제 버튼 처리

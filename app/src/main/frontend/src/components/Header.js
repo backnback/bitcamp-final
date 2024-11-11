@@ -41,7 +41,7 @@ function Header() {
                     <nav className={styles.nav__gnb}>
                         <ul className={styles.nav__gnb__list}>
                             <li className={styles.nav__gnb__item}>
-                                <Link to="/" className={styles.nav__gnb__link}>지도</Link>
+                                <Link to="/map" className={styles.nav__gnb__link}>지도</Link>
                             </li>
                             <li className={styles.nav__gnb__item}>
                                 <Link to="/my-story/list" className={styles.nav__gnb__link}>내 스토리</Link>

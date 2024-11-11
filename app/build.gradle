@@ -38,6 +38,7 @@ dependencies {
     testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:2.3.2'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
+    implementation 'org.apache.poi:poi-ooxml:5.2.3'
 
     // Tomcat Embedded Server용 JSP 엔진 라이브러리
     implementation 'org.apache.tomcat.embed:tomcat-embed-jasper:9.0.83'

@@ -115,6 +115,7 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("이메일 또는 비밀번호가 올바르지 않습니다."); // 적절한 예외 클래스를 사용해야 할 수도 있습니다.
         } catch (Exception e) {
             // 다른 예외 처리
+            e.printStackTrace();
             throw new RuntimeException("인증 중 오류가 발생했습니다."); // 적절한 예외 클래스를 사용해야 할 수도 있습니다.
         }
     }

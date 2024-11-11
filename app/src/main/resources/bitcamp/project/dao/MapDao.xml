@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="bitcamp.project.dao.MapDao">
+
+    <resultMap id="ProvinceDTO" type="ProvinceDTO">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="province"/>
+        <result column="count" property="count"/>
+    </resultMap>
+
+    <resultMap id="CityDTO" type="CityDTO">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="province"/>
+        <result column="second_name" property="city"/>
+        <result column="story_id" property="storyId"/>
+        <result column="path" property="mainPhotoPath"/>
+    </resultMap>
+
+    <resultMap id="StoryMap" type="story">
+        <id column="story_id" property="id"/>
+        <result column="title" property="title"/>
+        <result column="travel_date" property="travelDate"/>
+        <result column="create_date" property="createDate"/>
+        <result column="location_detail" property="locationDetail"/>
+        <result column="content" property="content"/>
+        <result column="share" property="share"/>
+
+        <association property="location" javaType="location">
+            <id column="location_id" property="id"/>
+            <result column="first_name" property="firstName"/>
+            <result column="second_name" property="secondName"/>
+        </association>
+
+        <association property="user" javaType="user">
+            <id column="user_id" property="id"/>
+            <result column="email" property="email"/>
+            <result column="password" property="password"/>
+            <result column="nickname" property="nickname"/>
+            <result column="path" property="path"/>
+        </association>
+    </resultMap>
+
+    <select id="findAllProvinceAndCount" resultMap="ProvinceDTO" parameterType="int">
+        SELECT l.location_id, l.first_name,
+               COUNT(CASE WHEN LEFT(l.location_id, 2) = LEFT(s.location_id, 2) THEN 1 END) AS count
+        FROM location l
+            LEFT JOIN story s ON l.location_id=s.location_id AND s.user_id=#{userId}
+        GROUP BY l.first_name;
+    </select>
+
+    <select id="findCityPhotoByLocationId" resultMap="CityDTO" parameterType="map">
+        SELECT l.location_id, l.first_name, l.second_name, s.story_id, p.path
+        FROM location l
+                 LEFT JOIN (SELECT story_id,
+                                   location_id,
+                                   create_date,
+                                   ROW_NUMBER() OVER(PARTITION BY location_id ORDER BY create_date DESC) AS rn
+                            FROM story
+                            WHERE user_id = #{userId}) s ON l.location_id = s.location_id AND s.rn = 1
+                 LEFT JOIN story_photo p ON s.story_id=p.story_id AND main_photo=1
+        WHERE LEFT(l.location_id, 2) = #{locationId}
+    </select>
+
+    <select id="storyListByLocationId" resultMap="StoryMap" parameterType="map">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s inner join user u on s.user_id=u.user_id
+                    inner join location l on s.location_id=l.location_id
+        WHERE
+            s.location_id=#{locationId} AND s.user_id=#{userId}
+    </select>
+</mapper>
