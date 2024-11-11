@@ -293,6 +293,18 @@ public class StoryServiceImpl implements StoryService {
 
 
     @Override
+    public List<StoryListDTO> listAllMyStoriesByTitle(int userId, String title) throws Exception {
+        List<StoryListDTO> storyListDTOs = new ArrayList<>();
+
+        for (Story story : storyDao.findAllByUserIdAndTitle(userId, title)) {
+            storyListDTOs.add(convertToStoryListDTO(story, userId));
+        }
+
+        return storyListDTOs;
+    }
+
+
+    @Override
     public StoryViewDTO viewMyStory(int storyId, int userId) throws Exception {
 
         Story story = storyDao.findByStoryId(storyId);

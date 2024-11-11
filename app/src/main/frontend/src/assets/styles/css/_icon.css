@@ -89,6 +89,16 @@
     background-image: url("../../../../public/images/icon/icon-unlock.png");
 }
 
+.icon__search {
+    width: 24px;
+    height: 24px;
+    background-size: 24px;
+    background-position: center;
+    background-color: blue;
+    background-image: url("../../../../public/images/icon/icon-search.png");
+}
+
+
 [class*=icon__heart] {
     width: 25px;
     height: 25px;

@@ -31,11 +31,16 @@ public class MyStoryController {
     private final StoryService storyService;
 
     @GetMapping("list")
-    public ResponseEntity<?> list(@LoginUser User loginUser) {
+    public ResponseEntity<?> list(
+        @LoginUser User loginUser, @RequestParam(value = "title", required = false) String title) {
         try {
-            List<StoryListDTO> storyListDTOs = storyService.listAllMyStories(loginUser.getId());
+            List<StoryListDTO> storyListDTOs;
+            if (title != null && !title.isEmpty()) {
+                storyListDTOs = storyService.listAllMyStoriesByTitle(loginUser.getId(), title);
+            } else {
+                storyListDTOs = storyService.listAllMyStories(loginUser.getId());
+            }
             return ResponseEntity.ok(storyListDTOs);
-
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

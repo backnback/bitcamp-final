@@ -26,6 +26,8 @@ public interface StoryService {
 
     List<StoryListDTO> listAllMyStories(int userId) throws Exception;
 
+    List<StoryListDTO> listAllMyStoriesByTitle(int userId, String title) throws Exception;
+
     StoryViewDTO viewMyStory(int storyId, int userId) throws Exception;
 
     List<StoryListDTO> listAllMyLikeStories(int userId) throws Exception;
@@ -33,4 +35,5 @@ public interface StoryService {
     Story changeShare(int storyId, int userId) throws Exception;
 
     void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId) throws Exception;
+
 }
