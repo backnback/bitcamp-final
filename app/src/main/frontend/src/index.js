@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom'
 import ReactModal from 'react-modal';
 import './assets/styles/css/reset.css';
 // import styles
@@ -15,9 +16,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <React.StrictMode>
-    <ModalsProvider>
-      <App />
-    </ModalsProvider>
+    <BrowserRouter>
+        <ModalsProvider>
+          <App />
+        </ModalsProvider>
+    </BrowserRouter>
   </React.StrictMode>
 );
 

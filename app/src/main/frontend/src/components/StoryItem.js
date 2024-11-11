@@ -17,7 +17,7 @@ export const StoryAddContext = ({ children }) => {
     );
 }
 
-function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange, onLockChange }) {
+function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange, onLockChange, onClick }) {
     const [like, setLike] = useState(currentLike);
     const [lock, setLock] = useState(currentLock);
 
@@ -69,7 +69,8 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
             <div className={styles.middle}>
                 {/* <img src={"/images/sample.jpg"} alt={'story image'} className={`${styles.thumnail}`} /> */}
                 <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${storyThum}`}
-                    alt={'story image'} className={`${styles.thumnail}`} />
+                    alt={'story image'} className={`${styles.thumnail}`}
+                    onClick={onClick} />
             </div>
             <div className={styles.bottom}>
                 <div className={styles.bottom__header}>

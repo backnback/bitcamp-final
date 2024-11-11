@@ -18,10 +18,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -93,6 +90,13 @@ public class UserController {
         }else {
             return false;
         }
+    }
+
+    @PostMapping("userauthentication")
+    public Boolean userAuthentication(@LoginUser User loginUser, @RequestBody Map<String, String> getPassword)throws Exception{
+        String password = getPassword.get("password");
+
+        return userService.userAuthentication(loginUser.getId(), password);
     }
 
 

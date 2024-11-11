@@ -1,0 +1,91 @@
+.photo__photos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* 사진들이 중앙에 정렬되도록 설정 */
+}
+
+/* viewMode가 false일 때 메인 사진을 숨기는 스타일 */
+.photo__photos__noMain {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 작은 사진들이 나열되는 레이아웃 */
+}
+
+/* custom layout 스타일을 위한 클래스 */
+.photo__layout {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center; /* 중앙 정렬 */
+}
+
+/* layout이 custom일 경우 */
+.photo__layout__custom {
+    flex-direction: row;
+    justify-content: center;
+}
+
+/* 사진 아이템의 기본 스타일 */
+.photo__photoItem {
+    width: 158px;
+    height: 175px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+/* custom 스타일을 적용했을 때 사진 아이템 스타일 */
+.photo__photoItem__custom {
+    width: 200px; /* custom 스타일 적용 시 크기 조정 */
+}
+
+/* 사진 이미지 기본 스타일 */
+.story-photo {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+/* main photo일 때 표시되는 스타일 */
+.main-photo {
+    border: 2px solid #ff5c5c; /* 메인 사진을 강조 */
+}
+
+/* 'main' 텍스트 레이블 스타일 */
+.main-label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    font-size: 12px;
+    padding: 2px 5px;
+    border-radius: 3px;
+}
+
+/* 사진이 없을 때 표시되는 메시지 */
+p {
+    font-size: 16px;
+    color: #888;
+    text-align: center;
+}
+
+/* 추가적인 커스터마이징을 위한 클래스 */
+.photo__photos.custom-class {
+    padding: 20px;
+    background-color: #f4f4f4;
+}
+
+/* photo__mainPhoto를 두 개의 사진 크기만큼 크게 하고, 가운데 정렬 */
+.photo__mainPhoto {
+    width: 530px;
+    height: 342px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* 가운데 정렬 */
+    margin-bottom: 20px;
+}
