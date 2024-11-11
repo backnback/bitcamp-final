@@ -50,4 +50,8 @@
         SET password=#{password}
         WHERE email=#{email}
     </update>
+
+    <select id="checkPassword" resultMap="UserMap" parameterType="int">
+        SELECT * FROM user WHERE user_id = #{no}
+    </select>
 </mapper>
