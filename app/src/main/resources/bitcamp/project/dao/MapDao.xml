@@ -43,6 +43,12 @@
         </association>
     </resultMap>
 
+    <resultMap id="LocationMap" type="location">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="firstName"/>
+        <result column="second_name" property="secondName"/>
+    </resultMap>
+
     <select id="findAllProvinceAndCount" resultMap="ProvinceDTO" parameterType="int">
         SELECT l.location_id, l.first_name,
                COUNT(CASE WHEN LEFT(l.location_id, 2) = LEFT(s.location_id, 2) THEN 1 END) AS count
@@ -86,5 +92,11 @@
                     inner join location l on s.location_id=l.location_id
         WHERE
             s.location_id=#{locationId} AND s.user_id=#{userId}
+    </select>
+
+    <select id="getLocationById" resultMap="LocationMap" parameterType="int">
+        SELECT location_id, first_name, second_name
+        FROM location
+        WHERE location_id=#{locationId}
     </select>
 </mapper>
