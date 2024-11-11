@@ -1,6 +1,7 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
+import bitcamp.project.dto.AlarmListDTO;
 import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.service.LikeService;
@@ -33,8 +34,8 @@ public class LikeController {
   public ResponseEntity<?> findAllToMe(@LoginUser User loginUser) {
     try {
       System.out.println(loginUser.getId());
-      List<User> users = likeService.findAllToMe(loginUser.getId());
-      return ResponseEntity.ok(users);
+      List<AlarmListDTO> AlarmListDTOs = likeService.findAllToMe(loginUser.getId());
+      return ResponseEntity.ok(AlarmListDTOs);
 
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("나를 좋아요한 유저 목록을 불러오는 데 실패했습니다.");

@@ -12,7 +12,7 @@ import { modals } from '../components/Modals';
 
 const MyPage = () => {
     const [storyList, setStoryList] = useState([]); // 변수 이름을 stories로 수정
-    const [userList, setUserList] = useState([]);
+    const [alarmListDTOs, setAlarmListDTOs] = useState([]);
     const [user, setUser] = useState([]);
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const [batchedLikes, setBatchedLikes] = useState([]);
@@ -75,19 +75,19 @@ const MyPage = () => {
     // 로그인한 사용자의 스토리에 좋아요를 누른 유저의 리스트 불러오기
     useEffect(() => {
         if (accessToken) {
-            const fetchUserList = async () => {
+            const fetchAlarmListDTOs = async () => {
                 try {
                     const response2 = await axios.get('http://localhost:8080/like/list/users', {
                                 headers: {
                                     'Authorization': `Bearer ${accessToken}`
                                 }
                     });
-                    setUserList(response2.data);
+                    setAlarmListDTOs(response2.data);
                 } catch (error) {
                     console.error("오류가 발생했습니다!", error);
                 }
             };
-            fetchUserList();
+            fetchAlarmListDTOs();
         }
     }, [accessToken]);
 
@@ -165,6 +165,28 @@ const MyPage = () => {
     }, [batchedLocks]);
 
 
+    const confirmView = async (storyId, otherUserId) => {
+        try {
+            // storyId와 otherUserId를 URL 파라미터로 포함하여 GET 요청
+            await axios.get(`http://localhost:8080/like/confirm/${storyId}/${otherUserId}`, {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+
+            // 알림 목록을 다시 불러옵니다.
+            const response = await axios.get('http://localhost:8080/like/list/users', {
+                headers: {
+                    'Authorization': `Bearer ${accessToken}`
+                }
+            });
+            setAlarmListDTOs(response.data);  // 알림 목록 상태 업데이트
+        } catch (error) {
+            console.error("알림 확인 중 에러 발생", error);
+        }
+    };
+
+
     // 스토리 조회 모달
     const openStoryModal = (storyId) => {
         const content = <ShareStoryView storyId={storyId} />
@@ -175,7 +197,6 @@ const MyPage = () => {
             content
         });
     };
-
 
 
     return (
@@ -191,7 +212,10 @@ const MyPage = () => {
             />
 
            <h3>알림</h3>
-            <AlarmCardList userList={userList} />
+            <AlarmCardList
+                alarmListDTOs={alarmListDTOs}
+                confirmView={confirmView}
+            />
        </>
     );
 };
