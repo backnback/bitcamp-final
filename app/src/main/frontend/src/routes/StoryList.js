@@ -54,7 +54,7 @@ const MyStoryList = () => {
         if (accessToken) {
             fetchStoryList(accessToken, searchQuery, setStoryList);
         }
-    }, [accessToken, searchQuery]);
+    }, [accessToken]);
 
 
     // 검색 값 변경
