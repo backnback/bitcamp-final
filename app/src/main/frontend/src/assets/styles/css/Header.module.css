@@ -7,6 +7,7 @@
     width: var(--header-width);
     height: 100%;
     background: var(--color-primaryGradient);
+    z-index: 9;
 }
 
 .header__wrapper {
@@ -92,6 +93,12 @@
     align-items: center;
     width: 50px;
     height: 50px;
+    border-radius: 100%;
+    text-align: center;
+}
+
+.nav__profile__img__name__wrap {
+    background-color: var(--color-primary);
 }
 
 .nav__profile__img {
@@ -99,9 +106,14 @@
     border-radius: 100%;
 }
 
+.nav__profile__img__name {
+    color: var(--color-white);
+    font-size: var(--font-size-text);
+}
+
 .nav__profile__name {
     flex: 1;
-    font-size: var(--font-size-h4);
+    font-size: var(--font-size-h5);
 }
 
 .nav__aside__list {

@@ -4,7 +4,11 @@
     word-break: break-all;
 }
 
-.form__label {}
+.form__label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
 
 .form__input,
 .form__select,
@@ -28,12 +32,6 @@
     padding: 12px 16px;
 }
 
-.form__label[type=checkbox] .form__label[type=radio] {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
 .form__input[type=checkbox],
 .form__input[type=radio] {
     width: 16px;
@@ -46,7 +44,7 @@
     border-color: red;
 }
 
-.form__input__text {
+.input__text {
     flex: 1 100%;
     word-break: break-all;
 }
@@ -76,5 +74,3 @@
     color: var(--color-gray-bd);
     text-align: center;
 }
-
-

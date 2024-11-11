@@ -25,6 +25,7 @@
     border: 1px solid var(--color-white);
     border-radius: var(--border-radius);
     cursor: pointer;
+    transition: 0.2s;
 }
 
 .button__icon {
@@ -38,7 +39,7 @@
 
 .button__text {
     font-weight: 600;
-    font-size: var(--font-button);
+    font-size: var(--font-size-button);
 }
 
 .button__primary {
@@ -65,6 +66,7 @@
 
 .button__black:hover {
     background-color: var(--color-primary-button-hover);
+    border-color: var(--color-primary-button-hover);
 }
 
 .button__black .button__text {
