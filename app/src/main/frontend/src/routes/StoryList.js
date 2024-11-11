@@ -8,6 +8,24 @@ import StoryEditModal from '../components/StoryEditModal';
 import StoryView from './StoryView.js';
 import useModals from '../useModals';
 import { modals } from '../components/Modals';
+import { InputProvider } from '../components/InputProvider';
+import { ButtonProvider } from '../components/ButtonProvider';
+import styles from "../assets/styles/css/StoryItem.module.css";
+
+
+const fetchStoryList = async (accessToken, searchQuery, setStoryList) => {
+    try {
+        const response = await axios.get('http://localhost:8080/my-story/list', {
+            params: { title: searchQuery },
+            headers: {
+                'Authorization': `Bearer ${accessToken}`
+            }
+        });
+        setStoryList(response.data);
+    } catch (error) {
+        console.error("There was an error", error);
+    }
+};
 
 
 const MyStoryList = () => {
@@ -17,6 +35,7 @@ const MyStoryList = () => {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
     const { openModal } = useModals();
+    const [searchQuery, setSearchQuery] = useState("");
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -33,21 +52,23 @@ const MyStoryList = () => {
     // accessToken이 설정된 경우에만 fetchList 호출
     useEffect(() => {
         if (accessToken) {
-            const fetchStoryList = async () => {
-                try {
-                    const response = await axios.get('http://localhost:8080/my-story/list', {
-                        headers: {
-                            'Authorization': `Bearer ${accessToken}`
-                        }
-                    }); // API 요청
-                    setStoryList(response.data);
-                } catch (error) {
-                    console.error("There was an error", error);
-                }
-            };
-            fetchStoryList();
+            fetchStoryList(accessToken, searchQuery, setStoryList);
         }
-    }, [accessToken]);
+    }, [accessToken, searchQuery]);
+
+
+    // 검색 값 변경
+    const handleSearchChange = (event) => {
+        setSearchQuery(event.target.value);
+    };
+
+
+    // 검색 제출 버튼
+    const handleSearchSubmit = () => {
+        if (accessToken) {
+            fetchStoryList(accessToken, searchQuery, setStoryList);
+        }
+    };
 
 
      // StoryItemList에서 모아둔 like 변경 사항을 저장하는 함수
@@ -152,17 +173,39 @@ const MyStoryList = () => {
 
 
     return (
-        <div className="story-list">
-            <h2>My 스토리</h2>
-            <StoryItemList
-                storyList={storyList}
-                onAddStory={openAddModal}
-                onBatchedLikesChange={handleBatchedLikesChange}
-                onBatchedLocksChange={handleBatchedLocksChange}
-                handleModal={openStoryModal}
-            />
-        </div>
+        <div>
+            <div className="search">
+                <InputProvider>
+                    <input
+                        type='text'
+                        className={`form__input`}
+                        value={searchQuery}
+                        onChange={handleSearchChange}
+                        required
+                        id='text01'
+                        name='검색'
+                        placeholder="검색" />
+                </InputProvider>
 
+                <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
+                    <button type="button" className={`button button__icon`} onClick={handleSearchSubmit}>
+                        <span className={`blind`}>검색</span>
+                        <i className={`icon__search`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
+                    </button>
+                </ButtonProvider>
+            </div>
+
+            <div className="story-list">
+                <h2>My 스토리</h2>
+                <StoryItemList
+                    storyList={storyList}
+                    onAddStory={openAddModal}
+                    onBatchedLikesChange={handleBatchedLikesChange}
+                    onBatchedLocksChange={handleBatchedLocksChange}
+                    handleModal={openStoryModal}
+                />
+            </div>
+        </div>
     );
 };
 export default MyStoryList;
