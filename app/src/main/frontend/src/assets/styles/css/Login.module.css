@@ -1,71 +1,113 @@
-.loginBody{
-    height: 100%;
-    margin: 0;
-    font-family: Arial, sans-serif;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, var(--color-primary), #B1EDF8);
-    /*background: linear-gradient(to bottom, green, red);*/
-    color: white;
-}
-
-/* Container */
+/* container */
 .container {
-    align-content: center;
-    width: 1200px;
-    justify-items: right;
-    height: 100vh;
-}
-
-.formContainer {
-    justify-items: left;
-}
-
-/* Title */
-.titleBox {
+    position: relative;
+    flex: 1;
     display: flex;
+    justify-content: end;
+    align-items: center;
+    width: 100%;
+    min-height: 100%;
+    padding: 76px;
+}
+
+.container::before {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 196px;
+    height: 100%;
+    background-color: var(--color-white);
+}
+
+/* title */
+.title__wrap {
     margin-bottom: 20px;
 }
 
-.titleLeft {
-    font-size: 100px;
-    font-weight: bold;
+.title {
+    display: flex;
+    font-weight: 700;
+    font-size: 140px;
+    line-height: 1.5;
+    letter-spacing: -0.03em;
 }
 
-.titleRight {
-    color: var(--color-black);
-    font-size: 100px;
-    font-weight: bold;
+.title__left {
+    padding-right: 2px;
+    color: var(--color-white);
 }
 
-/* Subtitle */
-.subtitle {
-    font-size: var(--code-font-family);
-    margin-bottom: 30px;
+.title__right {
+    position: relative;
+    background: linear-gradient(180deg, #4DA7FF 0%, #84cdfbd7 67.5%, #b1edf8b5 100%) no-repeat;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
 }
 
-.loginButton {
-    margin-bottom: 10px;
-    justify-items: left;
+/* title__sub */
+.title__sub {
+    padding-left: 52px;
+    margin-top: 10px;
 }
 
-.saveCheckBox {
+.title__sub__text {
+    font-weight: 100;
+    font-size: var(--font-size-text2);
+    line-height: 1.2;
+    color: #EDFCED;
+}
+
+/* Login Form */
+.login__form__wrap {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 240px;
+    box-sizing: content-box;
+}
+
+.login__button {
+    margin: 10px 0;
+}
+
+.login__button [class=button__text] {
+    font-weight: 400;
+    font-size: var(--font-size);
+}
+
+.checkbox__save {
     margin-left: 10px;
     color: var(--color-black);
 }
 
-.userAccount {
+.user__account {
     letter-spacing: 2px;
 }
 
-.userAccount > a{
+.user__account__link {
     color: var(--color-white);
+    font-weight: 200;
+    font-size: var(--font-size-sub);
+    line-height: 1.45;
+    letter-spacing: 0.5px;
+    vertical-align: middle;
 }
 
-/* Login Form */
-.loginForm {
-    display: flex;
-    flex-direction: column;
-    width: 300px;
+.user__account__link::after {
+    content: '|';
+    display: inline-block;
+    width: 10px;
+    margin: 0 4px;
+    text-align: center;
+}
+
+.user__account__link:last-of-type::after {
+    content: none;
+}
+
+.user__account__link:hover {
+    text-decoration: underline;
 }

@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
 import { useNavigate } from 'react-router-dom';
 import styles from '../assets/styles/css/Header.module.css';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { useEffect, useState } from "react";
 
 function Header() {
@@ -60,10 +60,16 @@ function Header() {
                     <nav className={styles.nav__aside}>
                         <div className={styles.nav__profile}>
                             <Link to="/my-page" className={styles.nav__profile__link}>
-                                <span className={styles.nav__profile__img__wrap}>
-                                    <img className={styles.nav__profile__img}
-                                        src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${userPath}`}
-                                    />
+                                <span className={`${styles.nav__profile__img__wrap} ${userPath || styles.nav__profile__img__name__wrap}`}>
+                                    {
+                                        userPath != null ?
+                                            <img className={styles.nav__profile__img}
+                                                src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${userPath}`}
+                                            />
+                                            :
+                                            <span className={`${styles.nav__profile__img__name} line1`}>{user ? user.nickname : "Guest"}</span>
+                                    }
+
                                 </span>
                                 <strong className={`${styles.nav__profile__name} line1`}>{user ? user.nickname : "Guest"}</strong>
                             </Link>
