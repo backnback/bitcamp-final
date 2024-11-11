@@ -3,6 +3,7 @@
 @import url('_button.css');
 @import url('_form.css');
 @import url('_modal.css');
+@import url('_photo.css');
 
 .blind {
     opacity: 0;

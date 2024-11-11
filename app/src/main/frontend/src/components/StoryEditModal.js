@@ -1,8 +1,14 @@
 import ReactModal from 'react-modal';
-import { StoryAddEditContext } from './StoryEdit';
+import React, { useState, useEffect } from 'react';
 import { ButtonProvider } from './ButtonProvider';
 
-const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true }) => {
+const StoryEditModal = ({ onSubmit, onClose, content }) => {
+    const [isOpen, setIsOpen] = useState(false);
+
+    useEffect(() => {
+        setIsOpen(true);
+    }, []);
+
     const handleClickSubmit = () => {
         onSubmit();
     };
@@ -13,11 +19,10 @@ const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true })
 
     return (
         <ReactModal
-            isOpen
+            isOpen={isOpen}
             onRequestClose={onClose}
-            shouldCloseOnOverlayClick={shouldCloseOnOverlayClick}
             className="modal modal-right"
-            overlayClassName="modal-overlay">
+            overlayClassName="modal-overlay" >
 
             <div className='modal__hedader'>
 
@@ -30,18 +35,20 @@ const StoryEditModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = true })
             </div>
 
             <div className='modal__body'>
-                <StoryAddEditContext />
+                {content}
             </div>
 
             <div className='modal__footer'>
+                {/*
                 <ButtonProvider>
                     <button type="button" className={`button button__primary`} onClick={handleClickSubmit}>
-                        <span className={`button__text`}>등록</span>
+                        <span className={`button__text`}>등록2</span>
                     </button>
                 </ButtonProvider>
+                */}
             </div>
 
-        </ReactModal>
+        </ReactModal >
     );
 };
 

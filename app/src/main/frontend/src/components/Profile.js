@@ -16,13 +16,6 @@ const Profile = ({ loginUser }) => {
       });
   };
 
-  <ButtonProvider width={'icon'}>
-    <button type="button" onClick={handleClick} className={`button button__icon`}>
-        <i data-button="icon" className={`icon icon__share__black`}></i>
-    </button>
- </ButtonProvider>
-
-
   return (
     <div className={styles.card}>
       <div className={styles.img}>
@@ -45,4 +38,3 @@ const Profile = ({ loginUser }) => {
 };
 
 export default Profile;
-

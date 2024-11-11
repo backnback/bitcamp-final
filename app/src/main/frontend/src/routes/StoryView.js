@@ -1,14 +1,19 @@
-import React, { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom'; // URL 파라미터와 페이지 이동을 위해 import
+import React, { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
-// import './StoryView.css';
+import { InputProvider } from '../components/InputProvider';
+import { useNavigate } from 'react-router-dom';
+import { Modals } from '../components/Modals';
+import StoryUpdateForm from './StoryUpdateForm';
+import StoryEditModal from '../components/StoryEditModal';
+import { ModalsDispatchContext } from '../components/ModalContext';
+import { ButtonProvider } from '../components/ButtonProvider';
+import { PhotosProvider } from '../components/PhotosProvider';
 
-const MyStoryView = () => {
-    const { storyId } = useParams(); // URL에서 ID 파라미터를 가져옴
-    const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
+const StoryView = ({ storyId }) => {
     const [accessToken, setAccessToken] = useState(null);
     const [storyViewDTO, setStoryViewDTO] = useState(null);
-
+    const navigate = useNavigate();
+    const { open } = useContext(ModalsDispatchContext);
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
@@ -40,6 +45,11 @@ const MyStoryView = () => {
         }
     }, [accessToken, storyId]);
 
+    if (!storyViewDTO) {
+        return <div>로딩 중...</div>;
+    }
+
+
 
     // 삭제 버튼 처리
     const handleDelete = async () => {
@@ -52,7 +62,7 @@ const MyStoryView = () => {
                     }
                 });
                 alert("스토리가 삭제되었습니다.");
-                navigate('/my-story/list'); // 삭제 후 목록 페이지로 이동
+                window.location.reload();
             } catch (error) {
                 console.error("스토리 삭제 중 오류가 발생했습니다!", error);
                 alert("스토리 삭제에 실패했습니다.");
@@ -63,7 +73,17 @@ const MyStoryView = () => {
 
     // 업데이트 버튼 처리
     const handleEdit = () => {
-        navigate(`/my-story/form/update/${storyId}`); // MyStoryUpdateForm으로 이동
+        {/*  navigate(`/my-story/form/update/${storyId}`); */} // MyStoryUpdateForm으로 이동
+        const content = <StoryUpdateForm storyId={storyId} />
+        open(StoryEditModal, {
+            onSubmit: () => {
+                console.log('확인 클릭');
+            },
+            onClose: () => {
+               console.log('취소 클릭이야 클릭');
+            },
+            content
+        });
     };
 
     if (!storyViewDTO) {
@@ -74,37 +94,33 @@ const MyStoryView = () => {
 
     return (
         <div className="story-view">
-            <h2>제목 : {storyViewDTO.title}</h2>
-            <p><strong>여행 날짜:</strong> {storyViewDTO.travelDate}</p>
-            <p><strong>위치:</strong> {storyViewDTO.locationDetail}</p>
-            <div className="photos">
-                {photos.length > 0 ? (
-                    <div className="photo-gallery">
-                        {photos.map(photo => (
-                            <div className="photo" key={photo.id}>
-                                <img
-                                    src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${photo.path ? photo.path : 'default.png'}`}
-                                    //                                    src={`/images${photo.path}`}
-                                    alt={`Photo ${photo.id}`}
-                                    className={`story-photo ${photo.mainPhoto ? 'main-photo' : ''}`} // Apply main-photo class if it's the main photo
-                                />
-                                {photo.mainPhoto && <span className="main-label">main</span>}
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p>사진이 없습니다.</p>
-                )}
-            </div>
-            <p><strong>내용:</strong> {storyViewDTO.content}</p>
-            <p><strong>공유 여부 :</strong> {storyViewDTO.share ? "예" : "아니오"}</p>
+          <h2>제목 : {storyViewDTO.title}</h2>
+          <p><strong>여행 날짜:</strong> {storyViewDTO.travelDate}</p>
+          <p><strong>위치:</strong> {storyViewDTO.locationDetail}</p>
+          <PhotosProvider
+              photos={storyViewDTO.photos}
+              viewMode={true}
+              className="custom-photo-container"
+              itemClassName="custom-photo-item"
+              layout="grid"
+          />
+          <p><strong>내용:</strong> {storyViewDTO.content}</p>
+          <p><strong>공유 여부 :</strong> {storyViewDTO.share ? "예" : "아니오"}</p>
 
-            <div className="button-group">
-                <button onClick={handleEdit}>수정</button> {/* 수정 버튼 클릭 시 handleEdit 호출 */}
-                <button onClick={handleDelete}>삭제</button>
-            </div>
+          <div className="button-group">
+                <ButtonProvider>
+                    <button type="button" className={`button button__primary`} onClick={handleEdit}>
+                        <span className={`button__text`}>수정</span>
+                    </button>
+                </ButtonProvider>
+                <ButtonProvider>
+                    <button type="button" className={`button button__whiteRed`} onClick={handleDelete}>
+                        <span className={`button__text`}>삭제</span>
+                    </button>
+                </ButtonProvider>
+          </div>
         </div>
     );
 };
 
-export default MyStoryView;
+export default StoryView;

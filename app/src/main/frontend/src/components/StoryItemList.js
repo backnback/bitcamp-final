@@ -5,7 +5,7 @@ import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
 
 
-function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange }) {
+function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange, handleModal }) {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
 
@@ -38,6 +38,10 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
     }, [batchedLocks]);
 
 
+    const handleModalWithStoryId = (storyId) => {
+        handleModal(storyId);
+    };
+
 
     return (
         <div className={styles.list}>
@@ -45,7 +49,12 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
                 {/* 스토리 추가 버튼 */}
                 {onAddStory && (
                     <li className={styles.list__add} onClick={onAddStory}>
-                        <StoryAddContext />
+                        <StoryAddContext>
+                            <button type="button" className={`button button__story__add`}>
+                                <span className={`blind`}>스토리 등록</span>
+                                <i className={`icon icon__plus__white`}></i>
+                            </button>
+                        </StoryAddContext>
                     </li>
                 )}
                 {/* 스토리 아이템 목록 */}
@@ -65,6 +74,7 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
                             storyDate={storyListDTO.travelDate} // 여행 날짜
                             onLikeChange={handleLikeChange}  // 좋아요 변경 시 호출할 함수 전달
                             onLockChange={handleLockChange}
+                            onClick={() => handleModalWithStoryId(storyListDTO.storyId)}
                         />
                     </li>
                 ))}

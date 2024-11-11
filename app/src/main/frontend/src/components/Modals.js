@@ -18,27 +18,33 @@ function Modals() {
 
     return openedModals.map((modal, index) => {
         const { Component, props } = modal;
-        const { onSubmit, ...restProps } = props;
-        const onClose = () => {
-            close(Component);
-        };
+        const { onSubmit, onClose, ...restProps } = props;
 
         const handleSubmit = async () => {
             if (typeof onSubmit === 'function') {
                 await onSubmit();
             }
-            onClose();
+            console.log("modals에서 지운다!");
+            close(Component);
         };
 
+        const handleClose = async () => {
+          if (typeof onClose === 'function') {
+            await onClose();
+          }
+          console.log("modals에서 지운다!");
+          close(Component);
+        };
 
         // return <Component {...restProps} isOpen={true} key={index} onRequestClose={onClose} />;
         return <Component
             {...restProps}
             {...props}
             key={index}
-            onClose={onClose}
             onSubmit={handleSubmit}
-            shouldCloseOnOverlayClick={true} />
+            onClose={handleClose}
+            isOpen={restProps.isOpen}
+            shouldCloseOnOverlayClick={restProps.shouldCloseOnOverlayClick} />
     });
 }
 

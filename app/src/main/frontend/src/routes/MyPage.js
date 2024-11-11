@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom'; // useNavigate import 추가
 // import './ShareStoryList.css'; // 스타일 파일 임포트
 import axios from 'axios'; // axios를 import하여 API 요청 사용
 import StoryItemList from "../components/StoryItemList";
 import AlarmCardList from "../components/AlarmCardList";
 import Profile from "../components/Profile";
+import ShareStoryView from './ShareStoryView.js';
+import useModals from '../useModals';
+import { modals } from '../components/Modals';
 
 
 const MyPage = () => {
@@ -15,6 +18,7 @@ const MyPage = () => {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
+    const { openModal } = useModals();
 
 
 
@@ -161,6 +165,17 @@ const MyPage = () => {
     }, [batchedLocks]);
 
 
+    // 스토리 조회 모달
+    const openStoryModal = (storyId) => {
+        const content = <ShareStoryView storyId={storyId} />
+        openModal(modals.modalSidebarRight, {
+            onSubmit: () => {
+                console.log('비지니스 로직 처리...2');
+            },
+            content
+        });
+    };
+    
 
 
     return (
@@ -172,6 +187,7 @@ const MyPage = () => {
                 storyList={storyList}
                 onBatchedLikesChange={handleBatchedLikesChange}
                 onBatchedLocksChange={handleBatchedLocksChange}
+                handleModal={openStoryModal}
             />
 
            <h3>알림</h3>
