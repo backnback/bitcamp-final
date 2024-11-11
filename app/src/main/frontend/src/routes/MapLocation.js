@@ -42,19 +42,19 @@ function MapLocation() {
         if (accessToken) {
             const fetchStoryViewDTO = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/my-story/list/${locationId}`, {
+                    const response = await axios.get(`http://localhost:8080/map/story/11110`, {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     });
-                    setStoryViewDTO(response.data);
+                    console.log(response.data)
                 } catch (error) {
                     console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
                 }
             };
             fetchStoryViewDTO();
         }
-    }, [accessToken, locationId]);
+    }, [accessToken]);
 
 
     // 삭제 버튼 처리

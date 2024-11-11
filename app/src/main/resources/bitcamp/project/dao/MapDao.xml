@@ -11,43 +11,32 @@
         <result column="count" property="count"/>
     </resultMap>
 
-<!--    <resultMap id="CityDTO" type="CityDTO">-->
-<!--        <id column="location_id" property="id"/>-->
-<!--        <result column="second_name" property="province"/>-->
-<!--        <collection property="stories" ofType="StoryListDTO">-->
-<!--            <id column="story_id" property="storyId"/>-->
-<!--            <result column="title" property="title"/>-->
-<!--            <result column="title" property="travelDate"/>-->
-<!--            <result column="title" property="locationDetail"/>-->
-<!--            <result column="title" property="content"/>-->
-<!--            <result column="title" property="share"/>-->
-<!--            <result column="title" property="userNickname"/>-->
-<!--            <result column="title" property="userPath"/>-->
-<!--            <result column="" property="likeCount"/>-->
-<!--            <result column="" property="likeStatus"/>-->
-<!--            <association property="mainPhoto" javaType="MainPhoto">-->
-<!--                <id column="" property="id"/>-->
-<!--                <result column="" property="mainPhoto"/>-->
-<!--                <result column="" property="path"/>-->
-<!--            </association>-->
-<!--        </collection>-->
-<!--    </resultMap>-->
+    <resultMap id="CityDTO" type="CityDTO">
+        <id column="location_id" property="id"/>
+        <result column="first_name" property="province"/>
+        <result column="second_name" property="city"/>
+        <result column="story_id" property="storyId"/>
+        <result column="path" property="mainPhotoPath"/>
+    </resultMap>
 
     <select id="findAllProvinceAndCount" resultMap="ProvinceDTO" parameterType="int">
         SELECT l.location_id, l.first_name,
                COUNT(CASE WHEN LEFT(l.location_id, 2) = LEFT(s.location_id, 2) THEN 1 END) AS count
         FROM location l
-            LEFT JOIN story s ON l.location_id=s.location_id AND s.user_id=#{id}
+            LEFT JOIN story s ON l.location_id=s.location_id AND s.user_id=19
         GROUP BY l.first_name;
     </select>
 
-    <select id="findCityAndStory" resultMap="CityDTO" parameterType="int">
-        SELECT l.location_id, l.second_name,
-               s.story_id, s.title, s.travel_date, s.location_detail, s.content, s.share,
-               count(sl.story_id) as count
+    <select id="findCityPhotoByLocationId" resultMap="CityDTO" parameterType="map">
+        SELECT l.location_id, l.first_name, l.second_name, s.story_id, p.path
         FROM location l
-            inner join story s on l.location_id=s.location_id
-            inner join story_photo p on s.story_id=p.story_id
-        WHERE s.user_id=19
+                 LEFT JOIN (SELECT story_id,
+                                   location_id,
+                                   create_date,
+                                   ROW_NUMBER() OVER(PARTITION BY location_id ORDER BY create_date DESC) AS rn
+                            FROM story
+                            WHERE user_id = #{userId}) s ON l.location_id = s.location_id AND s.rn = 1
+                 LEFT JOIN story_photo p ON s.story_id=p.story_id AND main_photo=1
+        WHERE LEFT(l.location_id, 2) = #{locationId}
     </select>
 </mapper>

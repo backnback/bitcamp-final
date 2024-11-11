@@ -11,7 +11,7 @@ function Map() {
             <svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" width="800" viewBox="0 0 800 760" strokeLinecap="round" strokeLinejoin="round" id="map" className={`map__list`}>
                 <g id="전국_시도_경계">
                     <g id="" className="city _active" data-count="5">
-                        <Link to={`/story/map/seoul`}>
+                        <Link to={`/map/story/11110`}>
                             <path d="M 236.02 146.95 239.07 143.2 245.65 144.33 250.73 142.13 252.31 134.57 260.1 134.28 263.99 126.88 272.32 129.18 274.76 139.82 273.24 146.87 280.88 143.64 277.07 153.5 277.86 157.47 269.28 164.21 261.31 159.51 251 163.62 247.56 156.59 241.81 157.19 242.18 149.28 236.02 146.95 Z"
                                 id="서울특별시" />
                         </Link>

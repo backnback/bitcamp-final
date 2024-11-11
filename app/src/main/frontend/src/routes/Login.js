@@ -58,8 +58,8 @@ function Login() {
                 } else {
                     localStorage.removeItem('lastLoginEmail'); // 체크 해제 시 이메일 삭제
                 }
-                navigate('/map');
-                // window.location.reload();
+                navigate('/');
+                window.location.reload();
             } else {
                 alert("로그인 실패: 이메일 또는 비밀번호를 확인해주세요.");
             }

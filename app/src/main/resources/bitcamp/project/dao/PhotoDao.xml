@@ -37,6 +37,14 @@
             story_id=#{storyId}
     </select>
 
+    <select id="getMainPhoto" resultMap="PhotoMap">
+        SELECT *
+        FROM
+            story_photo
+        WHERE
+            story_id=#{storyId} AND main_photo=1
+    </select>
+
 
     <delete id="deletePhoto" parameterType="int">
         delete from story_photo

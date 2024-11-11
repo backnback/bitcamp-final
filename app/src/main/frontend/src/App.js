@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Route, Routes, Link, useLocation } from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes, Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import Header from "./components/Header";
@@ -45,6 +45,7 @@ function App() {
   const [user, setUser] = useState(null);
   const currentLocation = useLocation();
   const [currentTime, setCurrentTime] = useState(Date.now());
+  const navigate = useNavigate();
 
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function App() {
           localStorage.removeItem('accessToken');
           setAccessToken(null);
           setUser(null);
+          navigate("/");
           window.location.reload();
         } else {
           setAccessToken(token);

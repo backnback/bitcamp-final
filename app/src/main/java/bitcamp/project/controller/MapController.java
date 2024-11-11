@@ -32,8 +32,8 @@ public class MapController {
     }
 
     @GetMapping("story/{locationId}")
-    public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable int locationId) {
-//        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), locationId);
-        return null;
+    public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable String locationId) {
+        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), Integer.parseInt(locationId));
+        return ResponseEntity.ok(cityDTOS);
     }
 }

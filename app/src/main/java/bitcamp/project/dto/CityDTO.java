@@ -7,6 +7,8 @@ import java.util.List;
 @Data
 public class CityDTO {
     private int id;
+    private String province;
     private String city;
-    private List<StoryListDTO> stories;
+    private int storyId;
+    private String mainPhotoPath;
 }

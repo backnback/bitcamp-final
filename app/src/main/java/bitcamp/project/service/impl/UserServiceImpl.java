@@ -44,7 +44,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private JwtTokenProvider jwtTokenProvider;
 
-    private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
 
     @Override
     public void add(User user) {
@@ -144,5 +145,17 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean updatePassword(String email, String password) throws Exception {
         return userDao.updatePassword(email, password);
+    }
+
+    @Override
+    public boolean userAuthentication(int id, String password) throws Exception {
+
+        User user = userDao.checkPassword(id);
+
+        if(user != null && passwordEncoder.matches(password, user.getPassword())){
+            return true;
+        }else {
+            return false;
+        }
     }
 }

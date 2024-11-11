@@ -7,14 +7,13 @@ function StoryMap() {
     useEffect(() => {
         document.body.className = 'body body__story body__map'
     })
-    const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
 
     useEffect(() => {
         if (accessToken) {
             const fetchStoryList = async () => {
                 try {
-                    const response = await axios.get('http://localhost:8080/map', {
+                    const response = await axios.get('http://localhost:8080/map/story', {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }
