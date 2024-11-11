@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { PhotosProvider } from '../components/PhotosProvider';
 
 
 const ShareStoryView = ({ storyId }) => {
@@ -47,25 +48,13 @@ const ShareStoryView = ({ storyId }) => {
             <h2>제목 : {storyViewDTO.title}</h2>
             <p><strong>여행 날짜:</strong> {storyViewDTO.travelDate}</p>
             <p><strong>위치:</strong> {storyViewDTO.locationDetail}</p>
-            <div className="photos">
-                {photos.length > 0 ? (
-                    <div className="photo-gallery">
-                        {photos.map(photo => (
-                            <div className="photo" key={photo.id}>
-                                <img
-                                    src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${photo.path ? photo.path : 'default.png'}`}
-                                    //                                    src={`/images${photo.path}`}
-                                    alt={`Photo ${photo.id}`}
-                                    className={`story-photo ${photo.mainPhoto ? 'main-photo' : ''}`} // Apply main-photo class if it's the main photo
-                                />
-                                {photo.mainPhoto && <span className="main-label">main</span>}
-                            </div>
-                        ))}
-                    </div>
-                ) : (
-                    <p>사진이 없습니다.</p>
-                )}
-            </div>
+            <PhotosProvider
+              photos={storyViewDTO.photos}
+              viewMode={true}
+              className="custom-photo-container"
+              itemClassName="custom-photo-item"
+              layout="grid"
+            />
             <p><strong>내용:</strong> {storyViewDTO.content}</p>
             <p><strong>공유 여부 :</strong> {storyViewDTO.share ? "예" : "아니오"}</p>
 
