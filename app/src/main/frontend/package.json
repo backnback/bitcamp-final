@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@egjs/flicking": "^4.11.4",
     "@egjs/react-flicking": "^4.11.4",
     "@loadable/component": "^5.16.4",
     "@testing-library/jest-dom": "^5.17.0",
