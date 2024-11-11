@@ -1,8 +1,8 @@
-/* 기본적인 사진 컨테이너 스타일 */
 .photo__photos {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: center; /* 사진들이 중앙에 정렬되도록 설정 */
 }
 
 /* viewMode가 false일 때 메인 사진을 숨기는 스타일 */
@@ -16,6 +16,7 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
+    justify-content: center; /* 중앙 정렬 */
 }
 
 /* layout이 custom일 경우 */
@@ -26,8 +27,8 @@
 
 /* 사진 아이템의 기본 스타일 */
 .photo__photoItem {
-    width: 150px;
-    height: 150px;
+    width: 158px;
+    height: 175px;
     position: relative;
     overflow: hidden;
     border-radius: 8px;
@@ -78,6 +79,13 @@ p {
     background-color: #f4f4f4;
 }
 
-.photo__photoItem:hover {
-    transform: scale(1.05); /* hover 시 사진을 살짝 확대 */
+/* photo__mainPhoto를 두 개의 사진 크기만큼 크게 하고, 가운데 정렬 */
+.photo__mainPhoto {
+    width: 530px;
+    height: 342px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto; /* 가운데 정렬 */
+    margin-bottom: 20px;
 }

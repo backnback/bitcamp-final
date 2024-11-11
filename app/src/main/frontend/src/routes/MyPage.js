@@ -175,7 +175,7 @@ const MyPage = () => {
             content
         });
     };
-    
+
 
 
     return (
