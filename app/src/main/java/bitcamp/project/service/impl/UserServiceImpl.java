@@ -60,7 +60,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean update(int id, User user) throws Exception {
-        return userDao.update(id, user);
+        if (userDao.update(id, user)){
+            System.out.println("-------------------------------------");
+            System.out.println("성공했습니다");
+            System.out.println("-------------------------------------");
+            return true;
+        }else {
+            System.out.println("-------------------------------------");
+            System.out.println("실패입니다");
+            System.out.println("-------------------------------------");
+            return false;
+        }
     }
 
     @Override

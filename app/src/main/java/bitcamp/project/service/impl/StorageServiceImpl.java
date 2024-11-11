@@ -9,6 +9,7 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.amazonaws.services.s3.model.S3Object;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,5 +57,12 @@ public class StorageServiceImpl implements StorageService {
     @Override
     public void delete(String filePath) throws Exception {
         s3.deleteObject(bucketName, filePath);
+    }
+
+    @Override
+    public InputStream download(String filePath) throws Exception {
+        // NCP Object Storage에서 파일 가져오기
+        S3Object s3Object = s3.getObject(bucketName, filePath);
+        return s3Object.getObjectContent();
     }
 }
