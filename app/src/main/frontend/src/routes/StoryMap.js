@@ -13,7 +13,7 @@ function StoryMap() {
         if (accessToken) {
             const fetchStoryList = async () => {
                 try {
-                    const response = await axios.get('http://localhost:8080/map/story', {
+                    const response = await axios.get('http://localhost:8080/map', {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }
