@@ -1,11 +1,13 @@
 package bitcamp.project.dao;
 
+import bitcamp.project.dto.AlarmListDTO;
 import bitcamp.project.vo.Like;
 import bitcamp.project.vo.User;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 @Mapper
 public interface LikeDao {
@@ -16,7 +18,7 @@ public interface LikeDao {
 
   List<Like> findAllByStory(int storyId) throws Exception;
 
-  List<User> findAllToMe(int userId) throws Exception;
+  List<Map<String, Object>> findAllToMe(int userId) throws Exception;
 
   boolean update(Like like) throws Exception;
 

@@ -1,5 +1,6 @@
 package bitcamp.project.service;
 
+import bitcamp.project.dto.AlarmListDTO;
 import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.vo.Like;
 import bitcamp.project.vo.User;
@@ -12,7 +13,7 @@ public interface LikeService {
 
   Like get(int storyId, int userId) throws Exception;
 
-  List<User> findAllToMe(int userId) throws Exception;
+  List<AlarmListDTO> findAllToMe(int userId) throws Exception;
 
   int countLikes(int storyId, boolean likeStatus) throws Exception;
 

@@ -3,11 +3,8 @@ import { Link } from "react-router-dom";
 import styles from "../assets/styles/css/AlarmCard.module.css";
 import Bin from "../components/Bin";
 
-const AlarmCard = ({ userImg, userName, content }) => {
+const AlarmCard = ({ userImg, userName, content, toggleBin }) => {
     const [liked, setLiked] = useState(false);
-
-    const toggleBin = () => {
-    };
 
     return (
         <div className={styles.card}>

@@ -1,10 +1,10 @@
 import React from 'react';
 import styles from "../assets/styles/css/Bin.module.css";
 
-const Bin = () => {
+const Bin = ( {onClick} ) => {
   return (
     <div>
-      <button className={styles.bin__button}>
+      <button className={styles.bin__button} onClick={onClick} >
         <svg className={styles.bin__top} viewBox="0 0 39 7" fill="none" xmlns="http://www.w3.org/2000/svg">
           <line y1={5} x2={39} y2={5} stroke="black" strokeWidth={4} />
           <line x1={12} y1="1.5" x2="26.0357" y2="1.5" stroke="black" strokeWidth={3} />

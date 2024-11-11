@@ -2,6 +2,7 @@ package bitcamp.project.service.impl;
 
 import bitcamp.project.dao.LikeDao;
 import bitcamp.project.dao.StoryDao;
+import bitcamp.project.dto.AlarmListDTO;
 import bitcamp.project.dto.BatchUpdateRequestDTO;
 import bitcamp.project.service.LikeService;
 import bitcamp.project.vo.Like;
@@ -11,7 +12,9 @@ import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
@@ -51,8 +54,22 @@ public class LikeServiceImpl implements LikeService {
 
 
   @Override
-  public List<User> findAllToMe(int userId) throws Exception {
-    return likeDao.findAllToMe(userId);
+  public List<AlarmListDTO> findAllToMe(int userId) throws Exception {
+
+    List<Map<String, Object>> result = likeDao.findAllToMe(userId);
+
+    List<AlarmListDTO> alarmListDTOs = new ArrayList<>();
+    for (Map<String, Object> row : result) {
+      AlarmListDTO alarmDTO = new AlarmListDTO();
+      alarmDTO.setUserId((Integer) row.get("user_id"));
+      alarmDTO.setUserEmail((String) row.get("email"));
+      alarmDTO.setUserNickname((String) row.get("nickname"));
+      alarmDTO.setUserPath((String) row.get("path"));
+      alarmDTO.setStoryId((Integer) row.get("story_id"));  // storyId 추가
+      alarmListDTOs.add(alarmDTO);
+    }
+
+    return alarmListDTOs;
   }
 
 

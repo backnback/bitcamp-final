@@ -38,12 +38,13 @@
     </select>
 
 
-    <select id="findAllToMe" resultMap="UserMap" parameterType="int">
+    <select id="findAllToMe" resultType="java.util.HashMap" parameterType="int">
         SELECT
             u.user_id,
             u.email,
             u.nickname,
-            u.path
+            u.path,
+            s.story_id
         FROM
             story_like l inner join story s on l.story_id=s.story_id
             inner join user u on l.user_id=u.user_id
