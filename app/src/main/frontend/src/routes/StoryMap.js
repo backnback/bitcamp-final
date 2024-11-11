@@ -8,22 +8,22 @@ function StoryMap() {
         document.body.className = 'body body__story body__map'
     })
     const [accessToken, setAccessToken] = useState(null);
-
+    const [mapStoryList, setMapStoryList] = useState(null);
     useEffect(() => {
         if (accessToken) {
-            const fetchStoryList = async () => {
+            const mapProvince = async () => {
                 try {
                     const response = await axios.get('http://localhost:8080/map', {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     }); // API 요청
-                    console.log(response.data)
+                    setMapStoryList(response.data);
                 } catch (error) {
                     console.error("There was an error", error);
                 }
             };
-            fetchStoryList();
+            mapProvince();
         }
     }, [accessToken]);
 
@@ -39,7 +39,7 @@ function StoryMap() {
 
     return (
         <div className={`map__container`}>
-            <Map />
+            <Map storyList={mapStoryList}/>
         </div>
     )
 }

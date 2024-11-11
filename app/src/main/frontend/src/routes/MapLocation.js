@@ -40,7 +40,7 @@ function MapLocation() {
         if (accessToken) {
             const fetchStoryViewDTO = async () => {
                 try {
-                    const response = await axios.get(`http://localhost:8080/map/story/11`, {
+                    const response = await axios.get(`http://localhost:8080/map/story/${locationId}`, {
                         headers: {
                             'Authorization': `Bearer ${accessToken}`
                         }

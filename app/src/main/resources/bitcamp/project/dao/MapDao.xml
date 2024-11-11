@@ -47,7 +47,7 @@
         SELECT l.location_id, l.first_name,
                COUNT(CASE WHEN LEFT(l.location_id, 2) = LEFT(s.location_id, 2) THEN 1 END) AS count
         FROM location l
-            LEFT JOIN story s ON l.location_id=s.location_id AND s.user_id=19
+            LEFT JOIN story s ON l.location_id=s.location_id AND s.user_id=#{userId}
         GROUP BY l.first_name;
     </select>
 

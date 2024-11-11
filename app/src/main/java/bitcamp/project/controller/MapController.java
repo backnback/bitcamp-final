@@ -40,6 +40,9 @@ public class MapController {
 
     @GetMapping("story/{provinceId}/{cityId}")
     public ResponseEntity<?> getStoryList(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
+        System.out.println("진입");
+        System.out.println(provinceId);
+        System.out.println(cityId);
         List<StoryListDTO> storyListDTOS = mapService.storyListByLocationId(loginUser.getId(), provinceId, cityId);
         return ResponseEntity.ok(storyListDTOS);
     }
