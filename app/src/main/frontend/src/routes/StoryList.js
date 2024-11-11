@@ -5,9 +5,9 @@ import { StoryAddContext } from '../components/StoryItem';
 import StoryItemList from '../components/StoryItemList';
 import StoryAddForm from './StoryAddForm';
 import StoryEditModal from '../components/StoryEditModal';
-import { ModalsDispatchContext } from '../components/ModalContext';
-import ModalSidebarRight from '../components/ModalSidebarRight';
 import StoryView from './StoryView.js';
+import useModals from '../useModals';
+import { modals } from '../components/Modals';
 
 
 const MyStoryList = () => {
@@ -16,8 +16,7 @@ const MyStoryList = () => {
     const navigate = useNavigate(); // navigate 함수를 사용하여 페이지 이동
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
-    const { open, close } = useContext(ModalsDispatchContext);
-
+    const { openModal } = useModals();
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -129,12 +128,9 @@ const MyStoryList = () => {
     // 스토리 조회 모달
     const openStoryModal = (storyId) => {
         const content = <StoryView storyId={storyId} />
-        open(ModalSidebarRight, {
+        openModal(modals.modalSidebarRight, {
             onSubmit: () => {
-                console.log('확인 클릭');
-            },
-            onClose: () => {
-               console.log('취소 클릭이야 클릭');
+                console.log('비지니스 로직 처리...2');
             },
             content
         });
@@ -144,12 +140,9 @@ const MyStoryList = () => {
     // 스토리 추가 모달
     const openAddModal = () => {
         const content = <StoryAddForm />
-        open(StoryEditModal, {
+        openModal(modals.storyEditModal, {
             onSubmit: () => {
-                console.log('확인 클릭');
-            },
-            onClose: () => {
-               console.log('취소 클릭이야 클릭');
+                console.log('비지니스 로직 처리...2');
             },
             content
         });

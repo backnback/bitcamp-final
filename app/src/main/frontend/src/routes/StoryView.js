@@ -99,10 +99,10 @@ const StoryView = ({ storyId }) => {
           <p><strong>위치:</strong> {storyViewDTO.locationDetail}</p>
           <PhotosProvider
               photos={storyViewDTO.photos}
+              viewMode={true}
               className="custom-photo-container"
               itemClassName="custom-photo-item"
               layout="grid"
-              emptyMessage="No photos available."
           />
           <p><strong>내용:</strong> {storyViewDTO.content}</p>
           <p><strong>공유 여부 :</strong> {storyViewDTO.share ? "예" : "아니오"}</p>

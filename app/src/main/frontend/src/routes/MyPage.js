@@ -5,9 +5,9 @@ import axios from 'axios'; // axios를 import하여 API 요청 사용
 import StoryItemList from "../components/StoryItemList";
 import AlarmCardList from "../components/AlarmCardList";
 import Profile from "../components/Profile";
-import { ModalsDispatchContext } from '../components/ModalContext';
-import ModalSidebarRight from '../components/ModalSidebarRight';
 import ShareStoryView from './ShareStoryView.js';
+import useModals from '../useModals';
+import { modals } from '../components/Modals';
 
 
 const MyPage = () => {
@@ -18,7 +18,8 @@ const MyPage = () => {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
-    const { open } = useContext(ModalsDispatchContext);
+    const { openModal } = useModals();
+
 
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
@@ -167,16 +168,14 @@ const MyPage = () => {
     // 스토리 조회 모달
     const openStoryModal = (storyId) => {
         const content = <ShareStoryView storyId={storyId} />
-        open(ModalSidebarRight, {
+        openModal(modals.modalSidebarRight, {
             onSubmit: () => {
-                console.log('확인 클릭');
-            },
-            onClose: () => {
-               console.log('취소 클릭이야 클릭');
+                console.log('비지니스 로직 처리...2');
             },
             content
         });
     };
+    
 
 
     return (
