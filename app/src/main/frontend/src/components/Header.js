@@ -26,7 +26,7 @@ function Header() {
         } else {
             console.log("토큰이 없습니다");
         }
-    }, []);
+    }, [accessToken]);
 
     return (
         <header className={styles.header}>
