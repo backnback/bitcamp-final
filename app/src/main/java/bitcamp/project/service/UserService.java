@@ -18,4 +18,5 @@ public interface UserService {
     User decodeToken(String token)throws Exception;
     boolean updatePassword(String email, String password)throws Exception;
     boolean userAuthentication(int id, String password)throws Exception;
+    JwtToken generateTokenWithoutAuthentication(User user)throws Exception;
 }

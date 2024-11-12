@@ -28,7 +28,7 @@
     </insert>
 
     <select id="findUser" resultMap="UserMap" parameterType="int">
-        SELECT user_id, email, nickname, path FROM user WHERE user_id = #{no}
+        SELECT * FROM user WHERE user_id = #{no}
     </select>
 
     <update id="update" parameterType="map">

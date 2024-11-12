@@ -2,8 +2,10 @@ package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.ViewUserDTO;
+import bitcamp.project.security.JwtTokenProvider;
 import bitcamp.project.service.StorageService;
 import bitcamp.project.service.UserService;
+import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,7 +46,7 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public boolean update(@LoginUser User loginUser,
+    public ResponseEntity<?> update(@LoginUser User loginUser,
                           @RequestPart(value = "profileImage", required = false) MultipartFile file,
                           @RequestPart(value = "nickname", required = false) String nickname,
                           @RequestPart(value = "password", required = false) String password) throws Exception {
@@ -65,10 +67,26 @@ public class UserController {
         }
 
         old.setNickname(nickname);
-        if (password != null) {
+
+        if(password != null){
             old.setPassword(userService.encodePassword(password));
+        }else {
+
         }
-        return userService.update(old.getId(), old);
+
+        // 사용자 정보 업데이트
+        if(userService.update(loginUser.getId(), old)) {
+            // 기존 방식으로 토큰 생성
+            JwtToken newToken = userService.generateTokenWithoutAuthentication(old);
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println(newToken);
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+            return ResponseEntity.ok(newToken); // 새로운 토큰 반환
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body("업데이트에 실패했습니다");
+        }
     }
 
     @DeleteMapping("delete/{id}")
