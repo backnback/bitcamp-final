@@ -27,6 +27,7 @@ function MapLocation() {
     // const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [accessToken, setAccessToken] = useState(null);
     const [id, setId] = useState(null);
+    const [storyList, setStoryList] = useState([]);
     const { openModal } = useModals();
 
     const [isOpenModalRequested, setIsOpenModalRequested] = useState(false);
@@ -48,7 +49,8 @@ function MapLocation() {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     });
-                    // console.log(response.data)
+
+                    console.log(response.data)
                 } catch (error) {
                     console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
                 }
@@ -58,11 +60,32 @@ function MapLocation() {
     }, [accessToken]);
 
     useEffect(() => {
-        if (isOpenModalRequested && id !== null) {
-            openAddModal();
-            setIsOpenModalRequested(false)
+        if(id !== null){
+            const getList = async () => {
+                try {
+                    const response = await axios.get(`http://localhost:8080/map/story/${locationId}/${id}/list`, {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    });
+
+                    if(response.data.length > 0){
+                        settingStoryList(response.data)
+                    }else {
+                        openAddModal();
+                    }
+                } catch (error) {
+                    console.error("LocationID 가져오는 중 오류", error);
+                }
+            };
+            getList();
         }
-    },[isOpenModalRequested])
+    }, [id]);
+
+    const settingStoryList = (data) => {
+        setStoryList(data);
+        console.log(storyList)
+    }
 
     const openAddModal = () => {
         const content = <StoryAddForm provinceId={locationId} cityId={id}/>
@@ -77,7 +100,6 @@ function MapLocation() {
 
     const handleClick = (event) => {
         setId(event.target.id);  // 클릭한 요소의 id를 가져옴
-        setIsOpenModalRequested(true)
     };
 
     // 삭제 버튼 처리

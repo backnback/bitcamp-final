@@ -52,6 +52,15 @@ public class MapController {
 
     }
 
+    @GetMapping("story/{provinceId}/{cityId}/form")
+    public ResponseEntity<?> mapForm(@PathVariable int provinceId, @PathVariable int cityId) {
+        try {
+            return ResponseEntity.ok(mapService.getLocationById(provinceId, cityId));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
+    }
+
     @GetMapping("story/{provinceId}/{cityId}/list")
     public ResponseEntity<?> getCityStoryList(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
         try {
@@ -62,12 +71,5 @@ public class MapController {
         }
     }
 
-    @GetMapping("story/{provinceId}/{cityId}/form")
-    public ResponseEntity<?> mapForm(@PathVariable int provinceId, @PathVariable int cityId) {
-        try {
-            return ResponseEntity.ok(mapService.getLocationById(provinceId, cityId));
-        } catch (Exception e) {
-            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
+
 }
