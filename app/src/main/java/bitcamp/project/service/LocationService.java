@@ -12,5 +12,5 @@ public interface LocationService {
 
   List<String> getFirstNames() throws Exception;
 
-
+  Location getLocationById(int id) throws Exception;
 }

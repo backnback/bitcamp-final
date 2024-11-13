@@ -4,15 +4,14 @@ import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.CityDTO;
 import bitcamp.project.dto.ProvinceDTO;
 import bitcamp.project.dto.StoryListDTO;
+import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.service.MapService;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -27,23 +26,48 @@ public class MapController {
         try {
             List<ProvinceDTO> provinceDTOs = mapService.getProvincesList(loginUser.getId());
             return ResponseEntity.ok(provinceDTOs);
-        } catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
     @GetMapping("story/{provinceId}")
     public ResponseEntity<?> getCityList(@LoginUser User loginUser, @PathVariable String provinceId) throws Exception {
-        List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), Integer.parseInt(provinceId));
-        return ResponseEntity.ok(cityDTOS);
+        try {
+            List<CityDTO> cityDTOS = mapService.getCitiesList(loginUser.getId(), Integer.parseInt(provinceId));
+            return ResponseEntity.ok(cityDTOS);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
     }
 
     @GetMapping("story/{provinceId}/{cityId}")
-    public ResponseEntity<?> getStoryList(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
-        System.out.println("진입");
-        System.out.println(provinceId);
-        System.out.println(cityId);
-        List<StoryListDTO> storyListDTOS = mapService.storyListByLocationId(loginUser.getId(), provinceId, cityId);
-        return ResponseEntity.ok(storyListDTOS);
+    public ResponseEntity<?> getCityMainPhoto(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
+        try {
+            List<StoryListDTO> photoDTOS = mapService.storyListByLocationId(loginUser.getId(), provinceId, cityId);
+            return ResponseEntity.ok(photoDTOS);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+
+    }
+
+    @GetMapping("story/{provinceId}/{cityId}/list")
+    public ResponseEntity<?> getCityStoryList(@LoginUser User loginUser, @PathVariable int provinceId, @PathVariable int cityId) throws Exception {
+        try {
+            List<StoryListDTO> storyListDTOS = mapService.storyListByLocationId(loginUser.getId(), provinceId, cityId);
+            return ResponseEntity.ok(storyListDTOS);
+        } catch (Exception e) {
+          return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+    @GetMapping("story/{provinceId}/{cityId}/form")
+    public ResponseEntity<?> mapForm(@PathVariable int provinceId, @PathVariable int cityId) {
+        try {
+            return ResponseEntity.ok(mapService.getLocationById(provinceId, cityId));
+        } catch (Exception e) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        }
     }
 }
