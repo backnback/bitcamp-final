@@ -7,7 +7,7 @@ import FormFileIcon from "../components/FormFileIcon";
 import Swal from 'sweetalert2';
 
 
-const MyStoryAddForm = () => {
+const MyStoryAddForm = ({provinceId, cityId}) => {
     const [title, setTitle] = useState('');
     const [travelDate, setTravelDate] = useState('');
     const [content, setContent] = useState('');
@@ -31,10 +31,21 @@ const MyStoryAddForm = () => {
         } else {
             console.warn("Access token이 없습니다.");
         }
-    }, []);
 
+        if (provinceId !== undefined && cityId !== undefined) {
+            const setLocation = async () => {
+                try {
+                    const locationId = provinceId + cityId;
+                    const response = await axios.get(`http://localhost:8080/location/${locationId}`);
+                    setSelectedFirstName(response.data.firstName)
+                    setSelectedSecondName(response.data.secondName)
+                } catch (error) {
+                    console.error("LocationID 가져오는 중 오류", error);
+                }
+            };
+            setLocation();
+        }
 
-    useEffect(() => {
         const fetchFirstNames = async () => {
             try {
                 const response = await axios.get('http://localhost:8080/location/list');
@@ -62,7 +73,6 @@ const MyStoryAddForm = () => {
         };
         fetchSecondNames();
     }, [selectedFirstName]);
-
 
     useEffect(() => {
         // 연도, 월, 일이 변경될 때 travelDate 업데이트
@@ -115,13 +125,16 @@ const MyStoryAddForm = () => {
               timer: 1500
             }).then(() => {
               // 3초 후 페이지 이동
-              window.location.href = '/my-story/list';
+                if(provinceId === undefined && cityId === undefined){
+                    window.location.href = '/my-story/list';
+                }else {
+                    window.location.href = `/map/story/${provinceId}`
+                }
             });
         } catch (error) {
             console.error("스토리 추가 중 오류가 발생했습니다!", error);
         }
     };
-
 
     const handleButtonClick = () => {
         handleSubmit(new Event('submit', { cancelable: true }));

@@ -5,6 +5,7 @@ import bitcamp.project.service.LocationService;
 import bitcamp.project.vo.Location;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -31,4 +32,9 @@ public class LocationServiceImpl implements LocationService {
     return locationDao.findAllFirstNames();
   }
 
+  @Override
+  @Transactional
+  public Location getLocationById(int id) throws Exception {
+    return locationDao.findById(id);
+  }
 }
