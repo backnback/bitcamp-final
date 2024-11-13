@@ -26,7 +26,6 @@ const fetchStoryList = async (accessToken, searchQuery, setStoryList) => {
     }
 };
 
-
 const ShareStoryList = () => {
     const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // accessToken 상태 추가
