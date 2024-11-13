@@ -8,7 +8,6 @@ import useModals from '../useModals';
 import { modals } from '../components/Modals';
 
 
-
 const ShareStoryList = () => {
     const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null); // accessToken 상태 추가
