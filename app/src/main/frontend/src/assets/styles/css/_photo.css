@@ -2,13 +2,15 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: center; /* 사진들이 중앙에 정렬되도록 설정 */
+    justify-content: center;
+    /* 사진들이 중앙에 정렬되도록 설정 */
 }
 
 /* viewMode가 false일 때 메인 사진을 숨기는 스타일 */
 .photo__photos__noMain {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); /* 작은 사진들이 나열되는 레이아웃 */
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    /* 작은 사진들이 나열되는 레이아웃 */
 }
 
 /* custom layout 스타일을 위한 클래스 */
@@ -16,7 +18,8 @@
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
-    justify-content: center; /* 중앙 정렬 */
+    justify-content: center;
+    /* 중앙 정렬 */
 }
 
 /* layout이 custom일 경우 */
@@ -38,7 +41,8 @@
 
 /* custom 스타일을 적용했을 때 사진 아이템 스타일 */
 .photo__photoItem__custom {
-    width: 200px; /* custom 스타일 적용 시 크기 조정 */
+    width: 200px;
+    /* custom 스타일 적용 시 크기 조정 */
 }
 
 /* 사진 이미지 기본 스타일 */
@@ -51,7 +55,8 @@
 
 /* main photo일 때 표시되는 스타일 */
 .main-photo {
-    border: 2px solid #ff5c5c; /* 메인 사진을 강조 */
+    border: 2px solid #ff5c5c;
+    /* 메인 사진을 강조 */
 }
 
 /* 'main' 텍스트 레이블 스타일 */
@@ -64,13 +69,6 @@
     font-size: 12px;
     padding: 2px 5px;
     border-radius: 3px;
-}
-
-/* 사진이 없을 때 표시되는 메시지 */
-p {
-    font-size: 16px;
-    color: #888;
-    text-align: center;
 }
 
 /* 추가적인 커스터마이징을 위한 클래스 */
@@ -86,6 +84,7 @@ p {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0 auto; /* 가운데 정렬 */
+    margin: 0 auto;
+    /* 가운데 정렬 */
     margin-bottom: 20px;
 }

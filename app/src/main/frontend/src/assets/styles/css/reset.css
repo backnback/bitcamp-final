@@ -164,12 +164,16 @@ a {
     color: black;
 }
 
+button,
+[role=button] {
+    cursor: pointer;
+}
+
 button {
     margin: 0;
     padding: 0;
     border: initial;
     background: initial;
-    cursor: pointer;
 }
 
 b,

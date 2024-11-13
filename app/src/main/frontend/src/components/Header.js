@@ -32,7 +32,7 @@ function Header() {
         <header className={styles.header}>
             <div className={styles.header__wrapper}>
                 <div className={styles.header__top}>
-                    <Link to="/" className={`${styles.logo__link} ${styles.header__logo}`}>
+                    <Link to="/map" className={`${styles.logo__link} ${styles.header__logo}`}>
                         <img src='/images/logo.svg' alt='기억하길 로고' className={`${styles.logo__img} ${styles.header__logo__img}`} />
                     </Link>
                 </div>

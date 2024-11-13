@@ -6,6 +6,7 @@
     justify-content: end;
     align-items: center;
     width: 100%;
+    max-width: 1200px;
     min-height: 100%;
     padding: 76px;
 }
@@ -14,8 +15,8 @@
     content: '';
     position: absolute;
     bottom: 0;
-    right: 0;
-    width: 196px;
+    left: calc(100% - 196px);
+    width: calc(100% - 196px);
     height: 100%;
     background-color: var(--color-white);
 }

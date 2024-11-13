@@ -10,8 +10,9 @@ import useModals from '../useModals';
 import { modals } from '../components/Modals';
 import { InputProvider } from '../components/InputProvider';
 import { ButtonProvider } from '../components/ButtonProvider';
-import styles from "../assets/styles/css/StoryItem.module.css";
-
+import { StoryTitleProvider } from '../components/TitleProvider.js';
+import { SelectProvider } from '../components/SelectProvider.js';
+import styles from '../assets/styles/css/StoryItemList.module.css';
 
 const fetchStoryList = async (accessToken, searchQuery, setStoryList) => {
     try {
@@ -27,7 +28,6 @@ const fetchStoryList = async (accessToken, searchQuery, setStoryList) => {
     }
 };
 
-
 const MyStoryList = () => {
     const [storyList, setStoryList] = useState([]);
     const [accessToken, setAccessToken] = useState(null);
@@ -37,41 +37,28 @@ const MyStoryList = () => {
     const { openModal } = useModals();
     const [searchQuery, setSearchQuery] = useState("");
 
-
-    // 로컬 스토리지에서 accessToken을 가져오는 함수
-    useEffect(() => {
-        const token = localStorage.getItem('accessToken');
-        if (token) {
-            setAccessToken(token);
-        } else {
-            console.warn("Access token이 없습니다.");
-        }
-    }, []);
-
-
-    // accessToken이 설정된 경우에만 fetchList 호출
-    useEffect(() => {
-        if (accessToken) {
-            fetchStoryList(accessToken, searchQuery, setStoryList);
-        }
-    }, [accessToken]);
-
-
     // 검색 값 변경
     const handleSearchChange = (event) => {
         setSearchQuery(event.target.value);
+        if (event.target.value == '') {
+            setBatchedLocks([]);
+        }
     };
 
-
     // 검색 제출 버튼
-    const handleSearchSubmit = () => {
+    const handleSearchSubmit = (event) => {
+        event.preventDefault();
         if (accessToken) {
             fetchStoryList(accessToken, searchQuery, setStoryList);
         }
     };
 
+    const handleSearchDelete = (event) => {
+        setSearchQuery((value) => value = '');
+        setBatchedLocks([]);
+    }
 
-     // StoryItemList에서 모아둔 like 변경 사항을 저장하는 함수
+    // StoryItemList에서 모아둔 like 변경 사항을 저장하는 함수
     const handleBatchedLikesChange = (newBatchedLikes) => {
         setBatchedLikes(newBatchedLikes);
     };
@@ -92,22 +79,6 @@ const MyStoryList = () => {
             console.error("좋아요 변경 사항 전송 중 에러 발생", error);
         }
     };
-
-    useEffect(() => {
-        // 페이지 새로고침 시 전송
-        window.addEventListener('beforeunload', handleSubmitLikes);
-
-        // 페이지 이동 시 전송
-        const unlisten = navigate((location) => {
-            handleSubmitLikes();
-        });
-        return () => {
-            window.removeEventListener('beforeunload', handleSubmitLikes);
-            handleSubmitLikes(); // 컴포넌트 언마운트 시에도 전송
-        };
-    }, [batchedLikes]);
-
-
 
     // StoryItemList에서 모아둔 Lock 변경 사항을 저장하는 함수
     const handleBatchedLocksChange = (newBatchedLocks) => {
@@ -131,21 +102,6 @@ const MyStoryList = () => {
         }
     };
 
-    useEffect(() => {
-        // 페이지 새로고침 시 전송
-        window.addEventListener('beforeunload', handleSubmitLocks);
-
-        // 페이지 이동 시 전송
-        const unlisten = navigate((location) => {
-            handleSubmitLocks();
-        });
-        return () => {
-            window.removeEventListener('beforeunload', handleSubmitLocks);
-            handleSubmitLocks(); // 컴포넌트 언마운트 시에도 전송
-        };
-    }, [batchedLocks]);
-
-
     // 스토리 조회 모달
     const openStoryModal = (storyId) => {
         const content = <StoryView storyId={storyId} />
@@ -156,7 +112,6 @@ const MyStoryList = () => {
             content
         });
     };
-
 
     // 스토리 추가 모달
     const openAddModal = () => {
@@ -170,33 +125,106 @@ const MyStoryList = () => {
         //navigate("/my-story/form/add");
     };
 
+    useEffect(() => {
+        // 로컬 스토리지에서 accessToken을 가져오는 함수
+        const token = localStorage.getItem('accessToken');
+        if (token) {
+            setAccessToken(token);
+        } else {
+            console.warn("Access token이 없습니다.");
+        }
 
+        // accessToken이 설정된 경우에만 fetchList 호출
+        if (accessToken) {
+            const fetchStoryList = async () => {
+                try {
+                    const response = await axios.get('http://localhost:8080/my-story/list', {
+                        headers: {
+                            'Authorization': `Bearer ${accessToken}`
+                        }
+                    }); // API 요청
+                    setStoryList(response.data);
+                } catch (error) {
+                    console.error("There was an error", error);
+                }
+            };
+            fetchStoryList();
+        }
+
+        // 페이지 새로고침 시 전송
+        window.addEventListener('beforeunload', handleSubmitLocks, handleSubmitLikes);
+
+        // 페이지 이동 시 전송
+        const unlisten = navigate((location) => {
+            handleSubmitLikes();
+            handleSubmitLocks();
+        });
+        return () => {
+            window.removeEventListener('beforeunload', handleSubmitLocks, handleSubmitLikes);
+            handleSubmitLikes(); // 컴포넌트 언마운트 시에도 전송
+            handleSubmitLocks(); // 컴포넌트 언마운트 시에도 전송
+        };
+    }, [accessToken, batchedLikes, batchedLocks]);
 
     return (
-        <div>
-            <div className="search">
-                <InputProvider>
-                    <input
-                        type='text'
-                        className={`form__input`}
-                        value={searchQuery}
-                        onChange={handleSearchChange}
-                        required
-                        id='text01'
-                        name='검색'
-                        placeholder="검색" />
-                </InputProvider>
+        <div className={styles.list__content__wrap}>
+            <div className='search__wrap'>
+                <form className="search__form" onSubmit={handleSearchSubmit}>
+                    <div className='search__form__wrap'>
+                        <div className={`search__form__item search__form__item__select`}>
+                            <SelectProvider>
+                                <select id="search-select" name="검색어" className={`form__select form__select__search`} title='검색'>
+                                    <option value={'0'}>제목</option>
+                                </select>
+                            </SelectProvider>
+                        </div>
 
-                <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
-                    <button type="button" className={`button button__icon`} onClick={handleSearchSubmit}>
-                        <span className={`blind`}>검색</span>
-                        <i className={`icon__search`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
-                    </button>
-                </ButtonProvider>
+                        <div className={`search__form__item search__form__item__input`}>
+                            <InputProvider>
+                                <input
+                                    type='text'
+                                    className={`form__input form__input__search`}
+                                    value={searchQuery}
+                                    onChange={handleSearchChange}
+                                    required
+                                    id='text01'
+                                    name='검색'
+                                    placeholder="검색" />
+                            </InputProvider>
+
+                            <div className={`search__input__item__button`}>
+                                {searchQuery && <ButtonProvider width={'icon'} className={`button__item__x`}>
+                                    <button type="button" className={`button button__icon button__icon__x`} onClick={handleSearchDelete}>
+                                        <span className={`blind`}>삭제</span>
+                                        <i className={`icon icon__x__black`}></i>
+                                    </button>
+                                </ButtonProvider>}
+
+                                <ButtonProvider width={'icon'} className={`button__item__search`}>
+                                    <button type="button" className={`button button__icon button__icon__search`} onClick={handleSearchSubmit}>
+                                        <span className={`blind`}>검색</span>
+                                        <i className={`icon__search`}></i>
+                                    </button>
+                                </ButtonProvider>
+                            </div>
+
+                        </div>
+                    </div>
+                </form>
             </div>
 
-            <div className="story-list">
-                <h2>My 스토리</h2>
+            <StoryTitleProvider
+                title={'내 스토리'}
+                selectChildren={
+                    <SelectProvider>
+                        <select id="select01" name="스토리 정렬" className={`form__select`} title='스토리 정렬 방식 선택'>
+                            <option value={'0'}>최신순</option>
+                            <option value={'1'}>과거순</option>
+                            <option value={'2'}>좋아요순</option>
+                        </select>
+                    </SelectProvider>}
+            />
+            <div className={styles.list__wrap}>
                 <StoryItemList
                     storyList={storyList}
                     onAddStory={openAddModal}
@@ -206,6 +234,7 @@ const MyStoryList = () => {
                 />
             </div>
         </div>
+
     );
 };
 export default MyStoryList;
