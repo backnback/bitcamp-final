@@ -14,6 +14,12 @@ public interface StoryDao {
 
     List<Story> findAll() throws Exception;
 
+    List<Story> findAllShareStories() throws Exception;
+
+    List<Story> findAllShareStoriesByTitle(String title) throws Exception;
+
+    List<Story> findAllShareStoriesByNickname(String userNickname) throws Exception;
+
     List<Story> findAllByUserId(int userId) throws Exception;
 
     List<Story> findAllByUserIdAndTitle(@Param("userId") int userId, @Param("title") String title) throws Exception;

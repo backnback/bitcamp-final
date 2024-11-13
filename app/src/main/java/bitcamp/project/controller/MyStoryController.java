@@ -6,9 +6,6 @@ import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.dto.UpdateStoryRequestDTO;
 import bitcamp.project.service.*;
-import bitcamp.project.vo.Location;
-import bitcamp.project.vo.Photo;
-import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,8 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-
-import javax.servlet.http.HttpSession;
 import java.util.*;
 
 @RestController
@@ -29,52 +24,6 @@ public class MyStoryController {
 
     private static final Logger logger = LoggerFactory.getLogger(MyStoryController.class);
     private final StoryService storyService;
-
-    @GetMapping("list")
-    public ResponseEntity<?> list(
-        @LoginUser User loginUser, @RequestParam(value = "title", required = false) String title) {
-        try {
-            List<StoryListDTO> storyListDTOs;
-            if (title != null && !title.isEmpty()) {
-                storyListDTOs = storyService.listAllMyStoriesByTitle(loginUser.getId(), title);
-            } else {
-                storyListDTOs = storyService.listAllMyStories(loginUser.getId());
-            }
-            return ResponseEntity.ok(storyListDTOs);
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-
-    @GetMapping("view/{storyId}")
-    public ResponseEntity<?> view(@PathVariable int storyId, @LoginUser User loginUser) {
-        try {
-            StoryViewDTO storyViewDTO = storyService.viewMyStory(storyId, loginUser.getId());
-            return ResponseEntity.ok(storyViewDTO);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
-
-    @GetMapping("form/add")
-    public void formAdd() {
-    }
-
-
-    @GetMapping("form/update/{storyId}")
-    public ResponseEntity<?> formUpdate(@PathVariable int storyId, @LoginUser User loginUser) {
-        try {
-            StoryViewDTO storyViewDTO = storyService.viewMyStory(storyId, loginUser.getId());
-            return ResponseEntity.ok(storyViewDTO);
-
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-        }
-    }
-
 
     @PostMapping("add")
     public ResponseEntity<?> add (

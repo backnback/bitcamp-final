@@ -2,6 +2,8 @@ package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
 import bitcamp.project.dto.BatchUpdateRequestDTO;
+import bitcamp.project.dto.StoryListDTO;
+import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.service.*;
 import bitcamp.project.vo.*;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +21,36 @@ import java.util.List;
 public class StoryController {
 
     private final StoryService storyService;
+
+    @GetMapping("list")
+    public ResponseEntity<?> list(
+        @LoginUser User loginUser,
+        @RequestParam(value = "title", required = false) String title,
+        @RequestParam(value = "userNickname", required = false) String userNickname,
+        @RequestParam(value = "share") boolean share) {
+        try {
+            List<StoryListDTO> storyListDTOs = storyService.listAllStories(loginUser.getId(), title, userNickname, share);
+            return ResponseEntity.ok(storyListDTOs);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
+
+    @GetMapping("view/{storyId}")
+    public ResponseEntity<?> view(
+        @PathVariable int storyId,
+        @LoginUser User loginUser,
+        @RequestParam(value = "share") boolean share) {
+        try {
+            StoryViewDTO storyViewDTO = storyService.viewStory(storyId, loginUser.getId(), share);
+            return ResponseEntity.ok(storyViewDTO);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
+
 
     @GetMapping("share/{storyId}")
     public ResponseEntity<?> share(@PathVariable int storyId, @LoginUser User loginUser) {
