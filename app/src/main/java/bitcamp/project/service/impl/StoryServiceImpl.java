@@ -227,18 +227,27 @@ public class StoryServiceImpl implements StoryService {
 
 
     @Override
-    public List<StoryListDTO> listAllShareStories(int userId) throws Exception {
-        // list : 공유 허용된 모든 스토리 목록   (로그인 ID에 따라 좋아요 상태 변화)
+    public List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share) throws Exception {
 
-        List<StoryListDTO> storyListDTOs = new ArrayList<>();
-
-        for (Story story : storyDao.findAll()) {
-            if (!story.isShare()) {
-                continue;
+        List<Story> stories;
+        if (share) {
+            if (title != null && !title.isEmpty()) {
+                stories = storyDao.findAllShareStoriesByTitle(title);  // 공유스토리 제목 검색
+            } else if (userNickname != null && !userNickname.isEmpty()) {
+                stories = storyDao.findAllShareStoriesByNickname(userNickname);  // 공유스토리 닉네임 검색
+            } else {
+                stories = storyDao.findAllShareStories();  // 공유스토리
             }
 
-            // story와 userId를 사용하여 스토리, 사진정보, 좋아요 정보로
-            // StoryListDTO를 만들어서 List에 담는다.
+        } else {
+            stories = (title != null && !title.isEmpty())
+                ? storyDao.findAllByUserIdAndTitle(userId, title)   // 내스토리 제목 검색
+                : storyDao.findAllByUserId(userId);   // 내스토리
+        }
+
+        // StoryListDTO를 만들어서 List에 담는다.
+        List<StoryListDTO> storyListDTOs = new ArrayList<>();
+        for (Story story : stories) {
             storyListDTOs.add(convertToStoryListDTO(story, userId));
         }
 
@@ -247,69 +256,19 @@ public class StoryServiceImpl implements StoryService {
 
 
     @Override
-    public StoryViewDTO viewShareStory(int storyId) throws Exception {
+    public StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception {
 
         Story story = storyDao.findByStoryId(storyId);
         if (story == null) {
             throw new Exception("스토리가 존재하지 않습니다.");
-        } else if (!story.isShare()) {
+        }
+
+        if (share && !story.isShare()) {
             throw new Exception("공개된 스토리가 아닙니다.");
         }
 
-        StoryViewDTO storyViewDTO = storyMapper.toStoryViewDTO(story);
-
-        List<Photo> photos = photoService.getPhotosByStoryId(storyId);
-        if (photos == null) {
-            throw new Exception("사진이 존재하지 않습니다.");
-        }
-
-        List<PhotoDTO> photoDTOS = new ArrayList<>();
-        for (Photo photo : photos) {
-            photoDTOS.add(storyMapper.toPhotoDTO(photo));
-        }
-
-        storyViewDTO.setPhotos(photoDTOS);
-
-        return storyViewDTO;
-    }
-
-
-    @Override
-    public List<StoryListDTO> listAllMyStories(int userId) throws Exception {
-        // list : 내가 올린 모든 스토리 목록  (공유 여부 상관 없음)
-        // (로그인 ID에 따라 좋아요 상태 변화)
-
-        List<StoryListDTO> storyListDTOs = new ArrayList<>();
-
-        for (Story story : storyDao.findAllByUserId(userId)) {
-
-            // story와 userId를 사용하여 스토리, 사진정보, 좋아요 정보로
-            // StoryListDTO를 만들어서 List에 담는다.
-            storyListDTOs.add(convertToStoryListDTO(story, userId));
-        }
-
-        return storyListDTOs;
-    }
-
-
-    @Override
-    public List<StoryListDTO> listAllMyStoriesByTitle(int userId, String title) throws Exception {
-        List<StoryListDTO> storyListDTOs = new ArrayList<>();
-
-        for (Story story : storyDao.findAllByUserIdAndTitle(userId, title)) {
-            storyListDTOs.add(convertToStoryListDTO(story, userId));
-        }
-
-        return storyListDTOs;
-    }
-
-
-    @Override
-    public StoryViewDTO viewMyStory(int storyId, int userId) throws Exception {
-
-        Story story = storyDao.findByStoryId(storyId);
-        if (story == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
+        if (!share && story.getUser().getId() != userId) {
+            throw new Exception("접근 권한이 없습니다.");
         }
 
         StoryViewDTO storyViewDTO = storyMapper.toStoryViewDTO(story);
