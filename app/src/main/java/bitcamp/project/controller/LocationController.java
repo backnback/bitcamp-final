@@ -21,7 +21,7 @@ public class LocationController {
   private final LocationService locationService;
 
   @GetMapping("list")
-  public ResponseEntity<?> getFirstNames() throws Exception {
+  public ResponseEntity<?> getFirstNames(){
     try {
       List<String> list = locationService.getFirstNames();
       return ResponseEntity.ok(list);
@@ -33,12 +33,27 @@ public class LocationController {
 
 
   @GetMapping("list/{firstName}")
-  public ResponseEntity<?> getSecondNames(@PathVariable String firstName) throws Exception {
+  public ResponseEntity<?> getSecondNames(@PathVariable String firstName){
     try {
       List<Location> list = locationService.getSecondNames(firstName);
       return ResponseEntity.ok(list);
 
     } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+  }
+
+  @GetMapping("{id}")
+  public ResponseEntity<?> getLocation(@PathVariable int id){
+    System.out.println("진입");
+    try {
+      Location location = locationService.getLocationById(id);
+      if(location == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }
+      return ResponseEntity.ok(location);
+    } catch (Exception e) {
+      e.printStackTrace();
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
   }

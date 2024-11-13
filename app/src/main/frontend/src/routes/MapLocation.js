@@ -18,11 +18,18 @@ import MapSouthGyeongsan from "../components/map/MapSouthGyeongsan";
 import MapSouthJeolla from "../components/map/MapSouthJeolla";
 import MapUlsan from "../components/map/MapUlsan";
 import MapNorthChungcheoung from "../components/map/MapNorthChungcheoung";
+import StoryAddForm from "./StoryAddForm";
+import useModals from "../useModals";
+import {modals} from "../components/Modals";
 
 function MapLocation() {
     const { locationId } = useParams(); // URL에서 ID 파라미터를 가져옴
     // const navigate = useNavigate(); // 페이지 이동을 위한 네비게이션 훅
     const [accessToken, setAccessToken] = useState(null);
+    const [id, setId] = useState(null);
+    const { openModal } = useModals();
+
+    const [isOpenModalRequested, setIsOpenModalRequested] = useState(false);
 
     // 로컬 스토리지에서 accessToken을 가져오는 함수
     useEffect(() => {
@@ -32,11 +39,7 @@ function MapLocation() {
         } else {
             console.warn("Access token이 없습니다.");
         }
-    }, []);
 
-
-    // accessToken이 설정된 경우에만 fetchList 호출
-    useEffect(() => {
         if (accessToken) {
             const fetchStoryViewDTO = async () => {
                 try {
@@ -45,7 +48,7 @@ function MapLocation() {
                             'Authorization': `Bearer ${accessToken}`
                         }
                     });
-                    console.log(response.data)
+                    // console.log(response.data)
                 } catch (error) {
                     console.error("스토리를 가져오는 중 오류가 발생했습니다!", error);
                 }
@@ -54,6 +57,28 @@ function MapLocation() {
         }
     }, [accessToken]);
 
+    useEffect(() => {
+        if (isOpenModalRequested && id !== null) {
+            openAddModal();
+            setIsOpenModalRequested(false)
+        }
+    },[isOpenModalRequested])
+
+    const openAddModal = () => {
+        const content = <StoryAddForm provinceId={locationId} cityId={id}/>
+        openModal(modals.storyEditModal, {
+            onSubmit: () => {
+                console.log('비지니스 로직 처리...2');
+            },
+            content
+        });
+        //navigate("/my-story/form/add");
+    };
+
+    const handleClick = (event) => {
+        setId(event.target.id);  // 클릭한 요소의 id를 가져옴
+        setIsOpenModalRequested(true)
+    };
 
     // 삭제 버튼 처리
     // const handleDelete = async () => {
@@ -76,23 +101,24 @@ function MapLocation() {
 
     return (
         <>
-            <MapSeoul />
-            <MapBusan />
-            <MapDaegu />
-            <MapDaejeon />
-            <MapGwangju />
-            <MapGwangwon />
-            <MapGyeonggi />
-            <MapIncheon />
-            <MapJeju />
-            <MapNorthChungcheoung />
-            <MapNorthGyeongsang />
-            <MapNorthJeolla />
-            <MapSejong />
-            <MapSouthChungcheong />
-            <MapSouthGyeongsan />
-            <MapSouthJeolla />
-            <MapUlsan />
+            <a onClick={handleClick} id="110">test</a>
+            <MapSeoul/>
+            <MapBusan/>
+            <MapDaegu/>
+            <MapDaejeon/>
+            <MapGwangju/>
+            <MapGwangwon/>
+            <MapGyeonggi/>
+            <MapIncheon/>
+            <MapJeju/>
+            <MapNorthChungcheoung/>
+            <MapNorthGyeongsang/>
+            <MapNorthJeolla/>
+            <MapSejong/>
+            <MapSouthChungcheong/>
+            <MapSouthGyeongsan/>
+            <MapSouthJeolla/>
+            <MapUlsan/>
         </>
     )
 }

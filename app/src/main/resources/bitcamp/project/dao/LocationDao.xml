@@ -23,4 +23,9 @@
         WHERE first_name = #{firstName} AND second_name = #{secondName}
     </select>
 
+    <select id="findById" resultMap="LocationMap" parameterType="int">
+        SELECT location_id, first_name, second_name
+        FROM location
+        WHERE location_id = #{id}
+    </select>
 </mapper>
