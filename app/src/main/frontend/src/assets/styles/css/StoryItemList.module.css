@@ -1,54 +1,45 @@
 .list {
     /* 전체 레이아웃 */
     display: flex;
-    justify-content: center; /* 전체 목록 중앙 정렬 */
-    padding: 30px 10px 30px; /* 주위 패딩 */
-
-    /* 위치 */
-    position: relative;
-    width: 100%; /* 부모 너비 */
-    top: 0px;
+    justify-content: center;
     border-radius: 0px;
 }
 
 .list__ul {
     /* Flexbox 설정 */
     display: flex;
-    flex-direction: row; /* 아이템을 가로로 배치 */
-    flex-wrap: wrap; /* 아이템이 넘치면 다음 줄로 넘어가도록 설정 */
-    gap: 30px; /* 아이템 간의 간격 */
-
-    padding-left: 30px;
-    margin: 0;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: 30px;
     width: 100%;
-    justify-content: flex-start; /* 왼쪽 정렬 (원할 경우 center로 변경 가능) */
 }
 
 .list__item {
-    /* 각 카드 스타일 */
-    width: calc(33.33% - 20px); /* 한 줄에 3개씩 배치되도록 너비 설정 (간격을 고려하여 계산) */
-    box-sizing: border-box; /* 패딩과 너비를 포함하여 계산 */
-    margin-top: 30px; /* 카드 간 위쪽 여백 */
-    transition: transform 0.2s; /* 부드러운 변환 효과 */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: calc(33.33% - 20px);
+    /* 카드 간 위쪽 여백 */
+    transition: transform 0.2s;
+    /* 부드러운 변환 효과 */
 }
 
 .list__item:hover {
-    transform: scale(1.02); /* 마우스 오버 시 확대 효과 */
+    transform: scale(1.02);
+    /* 마우스 오버 시 확대 효과 */
 }
 
 .list__add {
-    /* 스토리 추가 버튼을 카드와 같은 크기와 레이아웃으로 설정 */
-    width: calc(33.33% - 20px); /* 다른 카드와 같은 너비 */
-    box-sizing: border-box;
     display: flex;
     align-items: center;
-    justify-content: center; /* 버튼 내용을 중앙 정렬 */
-    height: auto; /* 필요시 높이 조정 */
-    margin-top: 30px;
-    cursor: pointer;
-    transition: transform 0.2s; /* hover 효과 */
+    justify-content: center;
+    width: calc(33.33% - 20px);
+    transition: transform 0.2s;
+    /* hover 효과 */
 }
 
 .list__add:hover {
-    transform: scale(1.02); /* 마우스 오버 시 확대 효과 */
+    transform: scale(1.02);
+    /* 마우스 오버 시 확대 효과 */
 }

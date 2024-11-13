@@ -17,27 +17,32 @@
     filter: invert(5%);
 }
 
-[data-count] {
-    fill: var(--color-blue-1a);
+[data-count='0'] {
+    fill: var(--color-gray-cc);
 }
 
 [data-count='1'] {
+    fill: var(--color-blue-1a);
     fill-opacity: 0.2;
 }
 
 [data-count='2'] {
+    fill: var(--color-blue-1a);
     fill-opacity: 0.4;
 }
 
 [data-count='3'] {
+    fill: var(--color-blue-1a);
     fill-opacity: 0.6;
 }
 
 [data-count='4'] {
+    fill: var(--color-blue-1a);
     fill-opacity: 0.8;
 }
 
 [data-count='5'] {
+    fill: var(--color-blue-1a);
     fill-opacity: 1;
 }
 

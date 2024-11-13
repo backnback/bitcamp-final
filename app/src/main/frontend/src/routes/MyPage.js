@@ -30,7 +30,7 @@ const MyPage = () => {
         } else {
             console.warn("Access token이 없습니다.");
         }
-    }, []);
+    }, [accessToken]);
 
 
     // accessToken이 설정된 경우에만 호출

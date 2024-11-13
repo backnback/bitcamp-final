@@ -1,6 +1,7 @@
 .modal-overlay {
     position: fixed;
     inset: 0px;
+    z-index: 10;
     background-color: transparent;
 }
 
@@ -11,4 +12,5 @@
     width: 100%;
     max-width: 590px;
     background-color: var(--color-white);
+    box-shadow: -5px 0px 10px rgba(0, 0, 0, 0.25);
 }

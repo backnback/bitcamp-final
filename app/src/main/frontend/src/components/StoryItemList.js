@@ -5,10 +5,9 @@ import StoryItem from '../components/StoryItem';
 import { StoryAddContext } from '../components/StoryItem';
 
 
-function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange, handleModal }) {
+function StoryItemList({ storyPage, storyList, onAddStory, onBatchedLikesChange, onBatchedLocksChange, handleModal }) {
     const [batchedLikes, setBatchedLikes] = useState([]);
     const [batchedLocks, setBatchedLocks] = useState([]);
-
 
     const handleLikeChange = (storyId, action) => {
         console.log(`Story ID: ${storyId}, Action: ${action}`);
@@ -17,11 +16,11 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
         return batchedLikes;
     };
 
-    useEffect(() => {
-        if (batchedLikes.length > 0) {
-            onBatchedLikesChange(batchedLikes);
-        }
-    }, [batchedLikes]);
+    // useEffect(() => {
+    //     if (batchedLikes.length > 0) {
+    //         onBatchedLikesChange(batchedLikes);
+    //     }
+    // }, [batchedLikes]);
 
 
     const handleLockChange = (storyId, action) => {
@@ -31,26 +30,29 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
         return batchedLocks;
     };
 
-    useEffect(() => {
-        if (batchedLocks.length > 0) {
-            onBatchedLocksChange(batchedLocks);
-        }
-    }, [batchedLocks]);
-
-
     const handleModalWithStoryId = (storyId) => {
         handleModal(storyId);
     };
 
+    useEffect(() => {
+        console.log('share ====> ', storyList)
+        if (batchedLikes.length > 0) {
+            onBatchedLikesChange(batchedLikes);
+        }
+
+        if (batchedLocks.length > 0) {
+            onBatchedLocksChange(batchedLocks);
+        }
+    }, [batchedLikes, batchedLocks]);
 
     return (
         <div className={styles.list}>
             <ul className={styles.list__ul}>
                 {/* 스토리 추가 버튼 */}
                 {onAddStory && (
-                    <li className={styles.list__add} onClick={onAddStory}>
+                    <li className={styles.list__add}>
                         <StoryAddContext>
-                            <button type="button" className={`button button__story__add`}>
+                            <button type="button" className={`button button__story__add`} onClick={onAddStory}>
                                 <span className={`blind`}>스토리 등록</span>
                                 <i className={`icon icon__plus__white`}></i>
                             </button>
@@ -61,6 +63,7 @@ function StoryItemList({ storyList, onAddStory, onBatchedLikesChange, onBatchedL
                 {Array.isArray(storyList) && storyList.map((storyListDTO) => (
                     <li className={styles.list__item} key={storyListDTO.storyId}>
                         <StoryItem
+                            storyPage={storyPage}
                             storyId={storyListDTO.storyId}
                             profileImg={storyListDTO.userPath || 'default.png'} // 프로필 이미지
                             profileName={storyListDTO.userNickname} // 프로필 이름

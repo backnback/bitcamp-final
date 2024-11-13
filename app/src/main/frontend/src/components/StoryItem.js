@@ -17,7 +17,7 @@ export const StoryAddContext = ({ children }) => {
     );
 }
 
-function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange, onLockChange, onClick }) {
+function StoryItem({ storyId, storyPage = 'my-story', profileImg, profileName, currentLock, storyThum, currentLike, currentLikeCount, storyTitle, storyContent, storyLocation, storyDate, onLikeChange, onLockChange, onClick }) {
     const [like, setLike] = useState(currentLike);
     const [lock, setLock] = useState(currentLock);
 
@@ -43,7 +43,7 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
         <div className={styles.item}>
             <div className={styles.top}>
                 <div className={styles.profile}>
-                    <Link to="/" className={styles.profile__link}>
+                    <div className={styles.profile__link}>
                         <span className={styles.profile__img__wrap}>
                             {/* <img src={'/images/profile-default.png'} alt="" className={styles.profile__img} /> */}
                             <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/user/${profileImg}`}
@@ -51,7 +51,7 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
                         </span>
                         {/* <span className={`${styles.profile__name} line1`}>제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토제펫토</span> */}
                         <span className={`${styles.profile__name} line1`}>{profileName}</span>
-                    </Link>
+                    </div>
                 </div>
                 {/*
                 <div className={`${styles.right}`}>
@@ -59,18 +59,22 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
                     <i className={`icon ${currentLock ? `icon__lock__black` : `icon__unlock`}`}></i>
                 </div>
                 */}
-                <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
-                    <button type="button" className={`button button__icon`} onClick={lockClick}>
-                        <span className={`blind`}>공개</span>
-                        <i className={`icon ${lock ? `icon__lock__black` : `icon__unlock`}`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
-                    </button>
-                </ButtonProvider>
+                {
+                    storyPage == 'my-story' ?
+                        <ButtonProvider width={'icon'} className={`${styles.button__item}`}>
+                            <button type="button" className={`button button__icon`} onClick={lockClick}>
+                                <span className={`blind`}>공개</span>
+                                <i className={`icon ${lock ? `icon__lock__black` : `icon__unlock`}`}></i>   {/* 테스트 후 변경해야함 이걸로 `icon__unlock` */}
+                            </button>
+                        </ButtonProvider> :
+                        null
+                }
+
             </div>
-            <div className={styles.middle}>
+            <div role="button" tabIndex={0} className={styles.middle} onClick={onClick}>
                 {/* <img src={"/images/sample.jpg"} alt={'story image'} className={`${styles.thumnail}`} /> */}
                 <img src={`https://kr.object.ncloudstorage.com/bitcamp-bucket-final/story/${storyThum}`}
-                    alt={'story image'} className={`${styles.thumnail}`}
-                    onClick={onClick} />
+                    alt={'story image'} className={`${styles.thumnail}`} />
             </div>
             <div className={styles.bottom}>
                 <div className={styles.bottom__header}>
@@ -83,7 +87,7 @@ function StoryItem({ storyId, profileImg, profileName, currentLock, storyThum, c
                     {/* <span className={`${styles.like__count}`}>999</span> */}
                     <span className={`${styles.like__count}`}>{like ? currentLikeCount + 1 : currentLikeCount}</span>
                 </div>
-                <button type="button" className={`${styles.view__button}`}>
+                <button type="button" className={`${styles.view__button}`} onClick={onClick}>
                     <div className={`${styles.bottom__body}`}>
                         {/* <strong className={`${styles.title} line1`}>카드 UI 짜는 중카드 UI 짜는 중카드 UI 짜는 중카드 UI 짜는 중</strong> */}
                         <strong className={`${styles.title} line1`}>{storyTitle}</strong>

@@ -51,15 +51,15 @@ const ReauthenticateModal = ({ onSubmit, onClose, shouldCloseOnOverlayClick = tr
             const response = await axios.post('http://localhost:8080/user/update', formData, {
                 headers: {
                     'Authorization': `Bearer ${accessToken}`
-                    //'Content-Type': 'multipart/form-data'
                 },
               });
-            if(response.data){
-                alert("수정되었습니다");
-                window.location.reload();
-            }else{
+              if (response.data.accessToken) {
+                localStorage.setItem('accessToken', response.data.accessToken);
+                setAccessToken(response.data.accessToken); 
+                alert("수정되었습니다.");
+                window.location.reload(); // 헤더 정보 업데이트
+            } else {
                 alert("수정 실패...");
-                window.location.reload();
             }
         } catch (error) {
                 console.error("회원정보 수정 중 오류 발생:", error);
