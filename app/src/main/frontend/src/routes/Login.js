@@ -36,10 +36,11 @@ function Login() {
             });
 
             if (response.data) {
-                const { accessToken } = response.data;
+                const { accessToken, refreshToken } = response.data;
 
                 // 토큰을 로컬 스토리지에 저장
                 localStorage.setItem('accessToken', accessToken);
+                localStorage.setItem('refreshToken', refreshToken);
 
                 // 토큰 디코딩하여 유저 정보 추출
                 const userInfo = jwtDecode(accessToken);

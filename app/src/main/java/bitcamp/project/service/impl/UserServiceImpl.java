@@ -5,11 +5,12 @@ import bitcamp.project.security.JwtTokenProvider;
 import bitcamp.project.service.UserService;
 import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -21,14 +22,16 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
     @Value("${jwt.secret}")
-    String secret;
+    private String secret;
 
     @Value("${admin.username}")
     private String adminUsername;
@@ -54,22 +57,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public List<User> list(){
+    public List<User> list() {
         return userDao.findAll();
     }
 
     @Transactional
     @Override
     public boolean update(int id, User user) throws Exception {
-        if (userDao.update(id, user)){
-            System.out.println("-------------------------------------");
-            System.out.println("성공했습니다");
-            System.out.println("-------------------------------------");
+        if (userDao.update(id, user)) {
             return true;
-        }else {
-            System.out.println("-------------------------------------");
-            System.out.println("실패입니다");
-            System.out.println("-------------------------------------");
+        } else {
             return false;
         }
     }
@@ -147,7 +144,7 @@ public class UserServiceImpl implements UserService {
             user.setRole(claims.get("auth", String.class)); // 역할
 
             return user;
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             throw e; // 예외를 다시 던져 호출자에게 알림
         }
@@ -163,9 +160,9 @@ public class UserServiceImpl implements UserService {
 
         User user = userDao.checkPassword(id);
 
-        if(user != null && passwordEncoder.matches(password, user.getPassword())){
+        if (user != null && passwordEncoder.matches(password, user.getPassword())) {
             return true;
-        }else {
+        } else {
             return false;
         }
     }
@@ -180,5 +177,46 @@ public class UserServiceImpl implements UserService {
 
         // JWT 토큰 생성
         return jwtTokenProvider.generateToken(user, authorities); // 기존 generateToken 메서드 호출
+    }
+
+    @Override
+    public ResponseEntity<?> generateRefreshToken(String refreshToken) throws Exception {
+        try {
+            // 1. Refresh Token 파싱
+            Jws<Claims> claims = Jwts.parserBuilder()
+                    .setSigningKey(secret)
+                    .build()
+                    .parseClaimsJws(refreshToken);
+
+            // 2. Refresh Token 만료 체크
+            if (claims.getBody().getExpiration().before(new Date())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh Token이 만료되었습니다.");
+            }
+
+            // 3. 사용자 정보 추출 (이 경우 사용자의 권한 정보도 필요합니다)
+            String userId = claims.getBody().getSubject();
+            System.out.println("-------------------------------------------------------------------");
+            System.out.println(userId);
+            System.out.println("-------------------------------------------------------------------");
+
+            // 사용자 정보를 데이터베이스 또는 서비스에서 가져오는 로직 추가
+            User user = userDao.findByEmailAndPassword(userId);
+            if (user == null) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
+            }
+
+            List<GrantedAuthority> authorities = new ArrayList<>();
+            if (user.getRole() != null) {
+                authorities.add(new SimpleGrantedAuthority(user.getRole())); // 사용자의 역할 추가
+            }
+
+            JwtToken token = jwtTokenProvider.generateToken(user, authorities);
+
+            return ResponseEntity.ok(token);
+
+
+        } catch (JwtException e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 Refresh Token입니다.");
+        }
     }
 }

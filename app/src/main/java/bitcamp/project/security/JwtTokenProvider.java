@@ -42,12 +42,13 @@ public class JwtTokenProvider {
                 .claim("nickname", user.getNickname()) // 사용자 닉네임 추가
                 .claim("userId", user.getId()) // 사용자 ID 추가
                 .claim("path", user.getPath()) // 사용자 ID 추가\
-                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60)) // 만료 시간 설정
+                .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60))
                 .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 설정
                 .compact();
 
         // Refresh Token 생성
         String refreshToken = Jwts.builder()
+                .setSubject(user.getEmail())
                 .setExpiration(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 36)) // 만료 시간 설정
                 .signWith(key, SignatureAlgorithm.HS256) // 서명 알고리즘 설정
                 .compact();
@@ -79,16 +80,20 @@ public class JwtTokenProvider {
     public boolean validateToken(String token) {
         try {
             logger.info("Validating token: {}", token);
-            Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(token);
+            Jwts.parserBuilder()
+                    .setSigningKey(key)
+                    .setAllowedClockSkewSeconds(1)  // 1초 허용 범위 추가
+                    .build()
+                    .parseClaimsJws(token);
             return true;
-        }catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
-            log.info("Invalid JWT Token", e);
+        } catch (io.jsonwebtoken.security.SecurityException | MalformedJwtException e) {
+            logger.info("Invalid JWT Token", e);
         } catch (ExpiredJwtException e) {
-            log.info("Expired JWT Token", e);
+            logger.info("Expired JWT Token", e);
         } catch (UnsupportedJwtException e) {
-            log.info("Unsupported JWT Token", e);
+            logger.info("Unsupported JWT Token", e);
         } catch (IllegalArgumentException e) {
-            log.info("JWT claims string is empty.", e);
+            logger.info("JWT claims string is empty.", e);
         }
         return false;
     }

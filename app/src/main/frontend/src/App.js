@@ -48,27 +48,43 @@ function App() {
   const [currentTime, setCurrentTime] = useState(Date.now());
   const navigate = useNavigate();
 
-
   useEffect(() => {
-    let token = null;
-    const checkTokenExpiration = () => {
-      token = localStorage.getItem('accessToken');
-      if (token) {
-        const decodedToken = jwtDecode(token);
-        const expirationTime = decodedToken.exp * 1000; // 초 단위의 만료 시간을 밀리초로 변환
+    let token = localStorage.getItem('accessToken');
 
-        if (Date.now() >= expirationTime) {
-          alert("로그인이 만료되었습니다. 다시 로그인해주세요.");
-          localStorage.removeItem('accessToken');
-          setAccessToken(null);
-          setUser(null);
-          navigate("/");
-          window.location.reload();
-        } else {
-          setAccessToken(token);
-          setUser(decodedToken);
+    const checkTokenExpiration = async () => {
+        if (token) {
+            const decodedToken = jwtDecode(token);
+            const expirationTime = decodedToken.exp * 1000; // 초 단위의 만료 시간을 밀리초로 변환
+
+            const remainTime = expirationTime - Date.now();
+
+            if (remainTime <= 1000 * 60 * 5) {
+                // 토큰이 만료되었으면, 재인증 작업 시작
+                const refreshToken = localStorage.getItem('refreshToken');
+                try {
+                    const response = await axios.post('http://localhost:8080/user/refreshtoken', {
+                      refreshToken: refreshToken
+                    }, {
+                        headers: {
+                            'Authorization': `Bearer ${token}`,
+                            'Content-Type': 'application/json'
+                        },
+                    });
+                    const newAccessToken = response.data.accessToken;
+                    localStorage.setItem('accessToken', newAccessToken);
+            
+                    setAccessToken(newAccessToken);
+                } catch (error) {
+                    console.error("회원 정보를 가져오던 중 오류 발생:", error);
+                }
+            } else {
+                // 토큰이 유효하다면, 사용자 정보를 상태로 설정
+                setAccessToken(token);
+                setUser(decodedToken);
+            }
+        }else{
+          console.log("토큰이 없음");
         }
-      }
     };
 
     checkTokenExpiration();
@@ -76,10 +92,10 @@ function App() {
     if (token != null) {
       // 1초마다 currentTime 업데이트
       const interval = setInterval(() => setCurrentTime(Date.now()), 1000);
-      // console.log(interval);
       return () => clearInterval(interval);
     }
-  }, [currentTime]);
+    
+}, [currentTime]);
 
 
   useEffect(() => {
