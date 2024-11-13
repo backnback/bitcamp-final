@@ -1,23 +1,19 @@
 package bitcamp.project.controller;
 
 import bitcamp.project.annotation.LoginUser;
+import bitcamp.project.dto.ViewUserDTO;
+import bitcamp.project.security.JwtTokenProvider;
 import bitcamp.project.service.StorageService;
 import bitcamp.project.service.UserService;
-import bitcamp.project.service.impl.FileServiceImpl;
+import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.InputStream;
 import java.util.*;
 
 @RestController
@@ -50,13 +46,11 @@ public class UserController {
     }
 
     @PostMapping("update")
-    public boolean update(
-            @RequestParam("id") int id,
-            @RequestParam("nickname") String nickname,
-            @RequestParam("password") String password,
-            @RequestParam(value = "file", required = false) MultipartFile file) throws Exception {
-
-        User old = userService.findUser(id);
+    public ResponseEntity<?> update(@LoginUser User loginUser,
+                          @RequestPart(value = "profileImage", required = false) MultipartFile file,
+                          @RequestPart(value = "nickname", required = false) String nickname,
+                          @RequestPart(value = "password", required = false) String password) throws Exception {
+        User old = userService.findUser(loginUser.getId());
 
         // 프로필 이미지 파일 처리
         if (file != null && file.getSize() > 0) {
@@ -69,16 +63,30 @@ public class UserController {
                     file.getInputStream(),
                     options);
 
-            // 사용자 객체에 파일 경로 설정
             old.setPath(filename);
         }
 
-        // 사용자 정보 업데이트
         old.setNickname(nickname);
-        if (password != null) {
+
+        if(password != null){
             old.setPassword(userService.encodePassword(password));
+        }else {
+
         }
-        return userService.update(id, old);
+
+        // 사용자 정보 업데이트
+        if(userService.update(loginUser.getId(), old)) {
+            // 기존 방식으로 토큰 생성
+            JwtToken newToken = userService.generateTokenWithoutAuthentication(old);
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+            System.out.println(newToken);
+            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
+            return ResponseEntity.ok(newToken); // 새로운 토큰 반환
+        } else {
+            return ResponseEntity
+                    .badRequest()
+                    .body("업데이트에 실패했습니다");
+        }
     }
 
     @DeleteMapping("delete/{id}")
@@ -99,5 +107,31 @@ public class UserController {
         return userService.userAuthentication(loginUser.getId(), password);
     }
 
+    @PostMapping("viewuser")
+    public ViewUserDTO findUserAndFile(@LoginUser User loginUser) throws Exception {
+        User user = userService.findUser(loginUser.getId());  // 로그인한 사용자의 정보 가져오기
+        ViewUserDTO sendInfo = new ViewUserDTO();
+        sendInfo.setNickname(user.getNickname());  // 닉네임 설정
+
+        // 파일 경로가 null이면 파일을 설정하지 않음
+        if (user.getPath() == null) {
+            sendInfo.setFilename(null);
+            sendInfo.setFile(null);
+            return sendInfo;  // 파일이 없을 경우, 닉네임만 반환
+        }
+
+        // 파일 경로를 설정
+        String filePath = folderName + user.getPath();
+        InputStream fileStream = storageService.download(filePath);  // 파일 다운로드
+
+        // 파일을 byte[]로 읽기
+        byte[] fileBytes = fileStream.readAllBytes();
+
+        // 파일 이름을 설정
+        sendInfo.setFilename(user.getPath());
+        sendInfo.setFile(fileBytes);  // fileBytes로 파일 데이터 저장
+
+        return sendInfo;  // UserDTO 반환
+    }
 
 }

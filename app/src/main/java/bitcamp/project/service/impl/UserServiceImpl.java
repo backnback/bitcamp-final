@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -60,7 +61,17 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean update(int id, User user) throws Exception {
-        return userDao.update(id, user);
+        if (userDao.update(id, user)){
+            System.out.println("-------------------------------------");
+            System.out.println("성공했습니다");
+            System.out.println("-------------------------------------");
+            return true;
+        }else {
+            System.out.println("-------------------------------------");
+            System.out.println("실패입니다");
+            System.out.println("-------------------------------------");
+            return false;
+        }
     }
 
     @Override
@@ -157,5 +168,17 @@ public class UserServiceImpl implements UserService {
         }else {
             return false;
         }
+    }
+
+    @Override
+    public JwtToken generateTokenWithoutAuthentication(User user) throws Exception {
+        // 사용자의 역할(role)에 따른 권한 생성
+        List<GrantedAuthority> authorities = new ArrayList<>();
+        if (user.getRole() != null) {
+            authorities.add(new SimpleGrantedAuthority(user.getRole())); // 사용자의 역할 추가
+        }
+
+        // JWT 토큰 생성
+        return jwtTokenProvider.generateToken(user, authorities); // 기존 generateToken 메서드 호출
     }
 }
