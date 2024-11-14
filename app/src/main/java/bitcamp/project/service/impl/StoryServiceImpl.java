@@ -35,53 +35,26 @@ public class StoryServiceImpl implements StoryService {
         MultipartFile[] files) throws Exception {
 
         // 위치 정보
-        Location location = locationService.findByFullName(addStoryRequestDTO.getFirstName(),
-            addStoryRequestDTO.getSecondName());
-        if (location == null) {
-            throw new Exception("위치 정보 없음");
-        }
+        Location location = getLocation(addStoryRequestDTO.getFirstName(), addStoryRequestDTO.getSecondName());
+
 
         if (files == null || files.length == 0 || Arrays.stream(files).allMatch(file -> file.getSize() == 0)) {
             throw new Exception("사진 입력 필요");
         }
 
-        // Story에 위치 정보 삽입
+        // Story DB 처리
         Story story = addStoryRequestDTO.toStory(location);
-        storyDao.insert(story);  // DB에 스토리 저장
+        storyDao.insert(story);
 
-        // Photo 정보
-        List<Photo> photos = new ArrayList<>();
 
-        for (MultipartFile file : files) {
-            if (file.getSize() == 0) {
-                continue;
-            }
-
-            // 첨부파일 저장
-            String filename = UUID.randomUUID().toString();
-
-            HashMap<String, Object> options = new HashMap<>();
-            options.put(StorageService.CONTENT_TYPE, file.getContentType());
-            storageService.upload(folderName + filename,
-                file.getInputStream(),
-                options);
-
-            Photo photo = new Photo();
-            photo.setStoryId(story.getId());
-            photo.setMainPhoto(false);
-            photo.setPath(filename);
-
-            photos.add(photo);
-        }
-
-        photos.getFirst().setMainPhoto(true);
-
-        // Photo DB 처리
-        photoService.addPhotos(photos);
+        // 신규 Photo DB 처리
+        List<Photo> uploadedPhotos = uploadNewPhotos(files, story.getId());
+        uploadedPhotos.get(addStoryRequestDTO.getMainPhotoIndex()).setMainPhoto(true);
+        photoService.addPhotos(uploadedPhotos);
 
         Map<String, Object> response = new HashMap<>();
         response.put("story", story);
-        response.put("photos", photos);
+        response.put("photos", uploadedPhotos);
 
         return ResponseEntity.ok(response);
     }
@@ -93,11 +66,7 @@ public class StoryServiceImpl implements StoryService {
         UpdateStoryRequestDTO updateStoryRequestDTO,
         MultipartFile[] files) throws Exception {
 
-        Story oldStory = storyDao.findByStoryId(updateStoryRequestDTO.getOldStoryId());
-        if (oldStory == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
-        }
-
+        Story oldStory = validateStory(updateStoryRequestDTO.getOldStoryId());
 
         if (oldStory.getUser() == null || oldStory.getUser().getId() != updateStoryRequestDTO.getLoginUser().getId()) {
             throw new Exception("접근 권한이 없습니다.");
@@ -118,49 +87,37 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("유효하지 않는 파일입니다.");
         }
 
+        // 위치 정보
+        Location location = getLocation(updateStoryRequestDTO.getFirstName(), updateStoryRequestDTO.getSecondName());
 
-        Location location = locationService.findByFullName(updateStoryRequestDTO.getFirstName(),
-            updateStoryRequestDTO.getSecondName());
-        if (location == null) {
-            throw new Exception("위치 정보 없음");
-        }
-
+        // 스토리 DB 처리
         Story story = updateStoryRequestDTO.toStory(location);
         story.setId(updateStoryRequestDTO.getOldStoryId());
         storyDao.update(story);
 
+        // 신규 Photo DB 처리
+        List<Photo> uploadedPhotos = uploadNewPhotos(files, story.getId());
+        photoService.addPhotos(uploadedPhotos);
 
-        // Photo 정보
-        List<Photo> photos = new ArrayList<>();
-
-        if (files != null) {
-            for (MultipartFile file : files) {
-                if (file == null || file.getSize() == 0) {
-                    continue; // null 파일 또는 크기가 0인 파일은 건너뜀
-                }
-
-                // 첨부파일 저장
-                String filename = UUID.randomUUID().toString();
-
-                HashMap<String, Object> options = new HashMap<>();
-                options.put(StorageService.CONTENT_TYPE, file.getContentType());
-                storageService.upload(folderName + filename, file.getInputStream(), options);
-
-                Photo photo = new Photo();
-                photo.setStoryId(story.getId());
-                photo.setMainPhoto(false);
-                photo.setPath(filename);
-
-                photos.add(photo);
+        // 메인 Photo 처리
+        List<Photo> photos = photoService.getPhotosByStoryId(story.getId());
+        if (updateStoryRequestDTO.getMainPhotoIndex() >= photos.size()) {
+            throw new Exception("유효하지 않는 메인 index 값");
+        }
+        for (int i = 0; i < photos.size(); i++) {
+            if (i == updateStoryRequestDTO.getMainPhotoIndex()) {
+                photos.get(i).setMainPhoto(true);
+            } else {
+                photos.get(i).setMainPhoto(false);
             }
         }
+        photoService.updatePhotos(photos);
 
-        // Photo DB 처리
-        photoService.addPhotos(photos);
-
+        // 아래 코드는 제거용 (POSTMAN 용 코드)
+        List<Photo> updatedPhotos = photoService.getPhotosByStoryId(story.getId());
         Map<String, Object> response = new HashMap<>();
         response.put("story", story);
-        response.put("photos", photos);
+        response.put("photos", updatedPhotos);
 
         return ResponseEntity.ok(response);
     }
@@ -171,10 +128,7 @@ public class StoryServiceImpl implements StoryService {
     @Transactional
     public void delete(int storyId, int userId) throws Exception {
 
-        Story story = storyDao.findByStoryId(storyId);
-        if (story == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
-        }
+        Story story = validateStory(storyId);
 
         if (story.getUser().getId() != userId) {
             throw new Exception("접근 권한이 없습니다.");
@@ -209,10 +163,7 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("없는 사진입니다.");
         }
 
-        Story story = storyDao.findByStoryId(photo.getStoryId());
-        if (story == null) {
-            throw new Exception("없는 스토리입니다.");
-        }
+        Story story = validateStory(photo.getStoryId());
 
         if (story.getUser().getId() != userId) {
             throw new Exception("접근 권한이 없습니다.");
@@ -262,10 +213,7 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception {
 
-        Story story = storyDao.findByStoryId(storyId);
-        if (story == null) {
-            throw new Exception("스토리가 존재하지 않습니다.");
-        }
+        Story story = validateStory(storyId);
 
         if (share && !story.isShare()) {
             throw new Exception("공개된 스토리가 아닙니다.");
@@ -316,10 +264,7 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public Story changeShare(int storyId, int userId) throws Exception {
-        Story story = storyDao.findByStoryId(storyId);
-        if (story == null) {
-            throw new Exception("스토리 정보 없음");
-        }
+        Story story = validateStory(storyId);
 
         if (story.getUser().getId() != userId) {
             throw new Exception("접근 권한이 없습니다.");
@@ -337,10 +282,8 @@ public class StoryServiceImpl implements StoryService {
 
         for (BatchUpdateRequestDTO batchUpdateRequestDTO : batchUpdateRequestDTOs) {
 
-            Story story = storyDao.findByStoryId(batchUpdateRequestDTO.getStoryId());
-            if (story == null) {
-                throw new Exception("없는 스토리입니다");
-            } else if (story.getUser().getId() != userId) {
+            Story story = validateStory(batchUpdateRequestDTO.getStoryId());
+            if (story.getUser().getId() != userId) {
                 throw new Exception("수정 권한이 없습니다");
             }
 
@@ -395,6 +338,54 @@ public class StoryServiceImpl implements StoryService {
 
         story.setShare(false);
         storyDao.update(story);
+    }
+
+
+    private Story validateStory(int storyId) throws Exception {
+        Story story = storyDao.findByStoryId(storyId);
+        if (story == null) {
+            throw new Exception("없는 스토리입니다.");
+        }
+        return story;
+    }
+
+
+    private Location getLocation(String firstName, String secondName) throws Exception {
+        Location location = locationService.findByFullName(firstName, secondName);
+        if (location == null) {
+            throw new Exception("위치 정보 없음");
+        }
+        return location;
+    }
+
+
+    private List<Photo> uploadNewPhotos(MultipartFile[] files, int storyId) throws Exception {
+
+        List<Photo> photos = new ArrayList<>();
+
+        if (files != null) {
+            for (MultipartFile file : files) {
+                if (file == null || file.getSize() == 0) {
+                    continue; // null 파일 또는 크기가 0인 파일은 건너뜀
+                }
+
+                // 첨부파일 저장
+                String filename = UUID.randomUUID().toString();
+
+                HashMap<String, Object> options = new HashMap<>();
+                options.put(StorageService.CONTENT_TYPE, file.getContentType());
+                storageService.upload(folderName + filename, file.getInputStream(), options);
+
+                Photo photo = new Photo();
+                photo.setStoryId(storyId);
+                photo.setMainPhoto(false);
+                photo.setPath(filename);
+
+                photos.add(photo);
+            }
+        }
+
+        return photos;
     }
 
 

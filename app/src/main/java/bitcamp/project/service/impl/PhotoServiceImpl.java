@@ -49,4 +49,13 @@ public class PhotoServiceImpl implements PhotoService {
   }
 
 
+  @Transactional
+  @Override
+  public void updatePhotos(List<Photo> photos) throws Exception {
+    for (Photo photo : photos) {
+      photoDao.updatePhoto(photo);
+    }
+  }
+
+
 }

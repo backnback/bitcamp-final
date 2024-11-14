@@ -18,4 +18,5 @@ public interface PhotoDao {
 
   boolean deletePhotos(int storyId) throws Exception;
 
+  void updatePhoto(Photo photo) throws Exception;
 }

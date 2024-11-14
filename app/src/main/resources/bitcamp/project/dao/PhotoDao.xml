@@ -58,4 +58,13 @@
     </delete>
 
 
+    <update id="updatePhoto" parameterType="photo">
+        update story_photo set
+            story_id=#{storyId},
+            main_photo=#{mainPhoto},
+            path=#{path}
+        where
+            photo_id=#{id}
+    </update>
+
 </mapper>
