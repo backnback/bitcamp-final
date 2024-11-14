@@ -20,15 +20,9 @@ public interface StoryService {
 
     void removePhoto(int photoId, int userId) throws Exception;
 
-    List<StoryListDTO> listAllShareStories(int userId) throws Exception;
+    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share) throws Exception;
 
-    StoryViewDTO viewShareStory(int storyId) throws Exception;
-
-    List<StoryListDTO> listAllMyStories(int userId) throws Exception;
-
-    List<StoryListDTO> listAllMyStoriesByTitle(int userId, String title) throws Exception;
-
-    StoryViewDTO viewMyStory(int storyId, int userId) throws Exception;
+    StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception;
 
     List<StoryListDTO> listAllMyLikeStories(int userId) throws Exception;
 

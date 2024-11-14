@@ -9,6 +9,7 @@ import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -30,8 +31,8 @@ public class UserController {
     private String folderName = "user/";
 
     @GetMapping("list")
-    public List<User> list() throws Exception{
-        List<User> users =  userService.list();
+    public List<User> list() throws Exception {
+        List<User> users = userService.list();
         return users;
     }
 
@@ -47,9 +48,9 @@ public class UserController {
 
     @PostMapping("update")
     public ResponseEntity<?> update(@LoginUser User loginUser,
-                          @RequestPart(value = "profileImage", required = false) MultipartFile file,
-                          @RequestPart(value = "nickname", required = false) String nickname,
-                          @RequestPart(value = "password", required = false) String password) throws Exception {
+                                    @RequestPart(value = "profileImage", required = false) MultipartFile file,
+                                    @RequestPart(value = "nickname", required = false) String nickname,
+                                    @RequestPart(value = "password", required = false) String password) throws Exception {
         User old = userService.findUser(loginUser.getId());
 
         // 프로필 이미지 파일 처리
@@ -68,19 +69,16 @@ public class UserController {
 
         old.setNickname(nickname);
 
-        if(password != null){
+        if (password != null) {
             old.setPassword(userService.encodePassword(password));
-        }else {
+        } else {
 
         }
 
         // 사용자 정보 업데이트
-        if(userService.update(loginUser.getId(), old)) {
+        if (userService.update(loginUser.getId(), old)) {
             // 기존 방식으로 토큰 생성
             JwtToken newToken = userService.generateTokenWithoutAuthentication(old);
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
-            System.out.println(newToken);
-            System.out.println("++++++++++++++++++++++++++++++++++++++++++++++");
             return ResponseEntity.ok(newToken); // 새로운 토큰 반환
         } else {
             return ResponseEntity
@@ -90,18 +88,18 @@ public class UserController {
     }
 
     @DeleteMapping("delete/{id}")
-    public boolean delete(@PathVariable int id) throws Exception{
+    public boolean delete(@PathVariable int id) throws Exception {
         User old = userService.findUser(id);
         if (userService.delete(id)) {
             storageService.delete(folderName + old.getPath());
             return true;
-        }else {
+        } else {
             return false;
         }
     }
 
     @PostMapping("userauthentication")
-    public Boolean userAuthentication(@LoginUser User loginUser, @RequestBody Map<String, String> getPassword)throws Exception{
+    public Boolean userAuthentication(@LoginUser User loginUser, @RequestBody Map<String, String> getPassword) throws Exception {
         String password = getPassword.get("password");
 
         return userService.userAuthentication(loginUser.getId(), password);
@@ -134,4 +132,9 @@ public class UserController {
         return sendInfo;  // UserDTO 반환
     }
 
+    @PostMapping("refreshtoken")
+    public ResponseEntity<?> refreshAccessToken(@RequestBody Map<String, String> request) throws Exception {
+        String refreshToken = request.get("refreshToken");
+        return userService.generateRefreshToken(refreshToken);
+    }
 }

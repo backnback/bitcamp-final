@@ -3,6 +3,7 @@ package bitcamp.project.service;
 import bitcamp.project.vo.JwtToken;
 import bitcamp.project.vo.User;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -19,4 +20,5 @@ public interface UserService {
     boolean updatePassword(String email, String password)throws Exception;
     boolean userAuthentication(int id, String password)throws Exception;
     JwtToken generateTokenWithoutAuthentication(User user)throws Exception;
+    ResponseEntity<?> generateRefreshToken(String refreshToken)throws Exception;
 }
