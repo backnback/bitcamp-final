@@ -87,10 +87,14 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("delete/{id}")
-    public boolean delete(@PathVariable int id) throws Exception {
-        User old = userService.findUser(id);
-        if (userService.delete(id)) {
+    @DeleteMapping("delete")
+    public boolean delete(@LoginUser User loginUser) throws Exception {
+
+
+
+        User old = userService.findUser(loginUser.getId());
+
+        if (userService.delete(loginUser.getId())) {
             storageService.delete(folderName + old.getPath());
             return true;
         } else {

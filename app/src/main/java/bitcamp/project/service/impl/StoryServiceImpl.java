@@ -196,6 +196,10 @@ public class StoryServiceImpl implements StoryService {
         storyDao.delete(storyId);
     }
 
+    @Override
+    public List<Story> getStories(int userId) throws Exception {
+        return storyDao.findAllByUserId(userId);
+    }
 
     @Override
     public void removePhoto(int photoId, int userId) throws Exception {
