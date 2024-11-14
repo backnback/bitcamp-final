@@ -30,4 +30,6 @@ public interface StoryService {
 
     void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId) throws Exception;
 
+    List<Story> getStories(int userId)throws Exception;
+
 }

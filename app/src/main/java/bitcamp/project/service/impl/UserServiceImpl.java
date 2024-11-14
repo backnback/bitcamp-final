@@ -1,9 +1,12 @@
 package bitcamp.project.service.impl;
 
+import bitcamp.project.dao.StoryDao;
 import bitcamp.project.dao.UserDao;
 import bitcamp.project.security.JwtTokenProvider;
+import bitcamp.project.service.StoryService;
 import bitcamp.project.service.UserService;
 import bitcamp.project.vo.JwtToken;
+import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
@@ -42,6 +45,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
+    private final StoryService storyService;
+
     @Autowired
     private AuthenticationManagerBuilder authenticationManagerBuilder;
 
@@ -79,6 +84,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     @Override
     public boolean delete(int id) throws Exception {
+
+        for(Story story : storyService.getStories(id)){
+            storyService.delete(story.getId(), id);
+        }
+
         return userDao.delete(id);
     }
 
