@@ -74,7 +74,7 @@ public class StoryServiceImpl implements StoryService {
             photos.add(photo);
         }
 
-        photos.getFirst().setMainPhoto(true);
+        photos.get(addStoryRequestDTO.getMainPhotoIndex()).setMainPhoto(true);
 
         // Photo DB 처리
         photoService.addPhotos(photos);
