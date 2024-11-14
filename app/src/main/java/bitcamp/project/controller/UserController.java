@@ -90,11 +90,22 @@ public class UserController {
     @DeleteMapping("delete")
     public boolean delete(@LoginUser User loginUser) throws Exception {
 
-
-
         User old = userService.findUser(loginUser.getId());
 
         if (userService.delete(loginUser.getId())) {
+            storageService.delete(folderName + old.getPath());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @PostMapping("admindelete")
+    public boolean adminDelete(@RequestBody Map<String, Integer> request) throws Exception {
+        int userId = request.get("userId");
+        User old = userService.findUser(userId);
+
+        if (userService.delete(userId)) {
             storageService.delete(folderName + old.getPath());
             return true;
         } else {
