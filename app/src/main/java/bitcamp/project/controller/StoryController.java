@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Collections;
 import java.util.List;
 
 
@@ -27,9 +28,15 @@ public class StoryController {
         @LoginUser User loginUser,
         @RequestParam(value = "title", required = false) String title,
         @RequestParam(value = "userNickname", required = false) String userNickname,
+        @RequestParam(value = "sortBy", required = false) String sortBy,
         @RequestParam(value = "share") boolean share) {
         try {
             List<StoryListDTO> storyListDTOs = storyService.listAllStories(loginUser.getId(), title, userNickname, share);
+
+            if (sortBy != null && sortBy.equals("과거순")) {
+                Collections.reverse(storyListDTOs);
+            }
+
             return ResponseEntity.ok(storyListDTOs);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
