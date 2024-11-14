@@ -17,6 +17,7 @@ public class UpdateStoryRequestDTO {
   private String locationDetail;
   private String content;
   private boolean share;
+  private int mainPhotoIndex;
   private String firstName;
   private String secondName;
   private int oldStoryId;

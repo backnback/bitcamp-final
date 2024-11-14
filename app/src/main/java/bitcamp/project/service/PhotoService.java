@@ -15,4 +15,6 @@ public interface PhotoService {
   void deletePhoto(int photoId) throws Exception;
 
   void deletePhotos(int storyId) throws Exception;
+
+  void updatePhotos(List<Photo> photos) throws Exception;
 }
