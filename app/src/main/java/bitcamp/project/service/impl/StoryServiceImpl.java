@@ -230,11 +230,18 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("사진이 존재하지 않습니다.");
         }
 
+        int currentIndex = 0;
+        int mainPhotoIndex = 0;
         List<PhotoDTO> photoDTOS = new ArrayList<>();
         for (Photo photo : photos) {
+            if (photo.isMainPhoto()) {
+                mainPhotoIndex = currentIndex;
+            }
             photoDTOS.add(storyMapper.toPhotoDTO(photo));
+            currentIndex++;
         }
 
+        storyViewDTO.setMainPhotoIndex(mainPhotoIndex);
         storyViewDTO.setPhotos(photoDTOS);
 
         return storyViewDTO;
