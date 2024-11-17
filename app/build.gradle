@@ -7,6 +7,20 @@ plugins {
 group = 'bitcamp'
 version = '0.0.1-SNAPSHOT'
 
+
+// 스프링부트 실행 jar 파일을 만들 때 파일명 설정
+bootJar {
+    archiveFileName = "${rootProject.name}.jar"
+}
+
+
+// jar 태스크를 수행하지 않게 설정
+tasks.named("jar") {
+    enabled = false
+}
+
+
+
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
