@@ -16,11 +16,16 @@ public interface StoryMapper {
   @Mapping(source = "user.path", target = "userPath")
   @Mapping(source = "location.firstName", target = "locationFirstName")
   @Mapping(source = "location.secondName", target = "locationSecondName")
+  @Mapping(target = "mainPhoto", ignore = true)
+  @Mapping(target = "likeCount", ignore = true)
+  @Mapping(target = "likeStatus", ignore = true)
   StoryListDTO toStoryListDTO(Story story) throws Exception;
 
   @Mapping(source = "id", target = "storyId")
   @Mapping(source = "location.firstName", target = "locationFirstName")
   @Mapping(source = "location.secondName", target = "locationSecondName")
+  @Mapping(target = "mainPhotoIndex", ignore = true)
+  @Mapping(target = "photos", ignore = true)
   StoryViewDTO toStoryViewDTO(Story story) throws Exception;
 
   PhotoDTO toPhotoDTO(Photo photo) throws Exception;

@@ -25,7 +25,7 @@ public class ExcelToDatabase {
 
         String excelFilePath = "app/temp/location.xlsx";
 
-        try (InputStream inputStream = new FileInputStream("app/src/main/resources/application.properties")) {
+        try (InputStream inputStream = new FileInputStream("app/src/main/resources/application-dev.properties")) {
             Properties prop = new Properties();
             prop.load(inputStream);
 
