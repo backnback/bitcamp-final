@@ -62,33 +62,71 @@
 
     <select id="findAllShareStories" resultMap="StoryMap">
         SELECT
-            s.story_id,
-            s.title,
-            s.travel_date,
-            s.create_date,
-            s.location_detail,
-            s.content,
-            s.share,
-            u.user_id,
-            u.email,
-            u.password,
-            u.nickname,
-            u.path,
-            l.location_id,
-            l.first_name,
-            l.second_name
+        s.story_id,
+        s.title,
+        s.travel_date,
+        s.create_date,
+        s.location_detail,
+        s.content,
+        s.share,
+        u.user_id,
+        u.email,
+        u.password,
+        u.nickname,
+        u.path,
+        l.location_id,
+        l.first_name,
+        l.second_name
         FROM
             story s
-            inner join user u on s.user_id=u.user_id
-            inner join location l on s.location_id=l.location_id
+            INNER JOIN user u ON s.user_id = u.user_id
+            INNER JOIN location l ON s.location_id = l.location_id
         WHERE
-            s.share=true
+            s.share = true
         ORDER BY
-            s.story_id desc
+            s.story_id DESC
+        LIMIT #{limit}
     </select>
 
+    <select id="countShareStories" resultType="int">
+        SELECT COUNT(*)
+        FROM story s
+        INNER JOIN user u ON s.user_id = u.user_id
+        INNER JOIN location l ON s.location_id = l.location_id
+        WHERE s.share = true
+        <if test="title != null">
+            AND s.title LIKE CONCAT('%', #{title}, '%')
+        </if>
+        <if test="userNickname != null">
+            AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
+        </if>
+    </select>
 
-    <select id="findAllShareStoriesByTitle" resultMap="StoryMap" parameterType="String">
+    <select id="countAllShareStoriesByTitle" parameterType="map" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        story s
+        inner join user u on s.user_id=u.user_id
+        inner join location l on s.location_id=l.location_id
+        WHERE
+        s.share=true
+        AND s.title LIKE CONCAT('%', #{title}, '%')
+    </select>
+
+    <select id="countAllShareStoriesByNickname" parameterType="map" resultType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        story s
+        inner join user u on s.user_id=u.user_id
+        inner join location l on s.location_id=l.location_id
+        WHERE
+        s.share=true
+        AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
+    </select>
+
+    <select id="findAllShareStoriesByTitle" resultMap="StoryMap" parameterType="map">
         SELECT
             s.story_id,
             s.title,
@@ -114,10 +152,11 @@
             AND s.title LIKE CONCAT('%', #{title}, '%')
         ORDER BY
             s.story_id desc
+        LIMIT #{limit}
     </select>
 
 
-    <select id="findAllShareStoriesByNickname" resultMap="StoryMap" parameterType="String">
+    <select id="findAllShareStoriesByNickname" resultMap="StoryMap" parameterType="map">
         SELECT
             s.story_id,
             s.title,
@@ -142,8 +181,10 @@
             s.share=true
             AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
         ORDER BY
-            s.story_id desc
+            s.story_id DESC
+        LIMIT #{limit}
     </select>
+
 
 
     <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">

@@ -13,7 +13,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -25,19 +27,37 @@ public class StoryController {
 
     @GetMapping("list")
     public ResponseEntity<?> list(
-        @LoginUser User loginUser,
-        @RequestParam(value = "title", required = false) String title,
-        @RequestParam(value = "userNickname", required = false) String userNickname,
-        @RequestParam(value = "sortBy", required = false) String sortBy,
-        @RequestParam(value = "share") boolean share) {
+            @LoginUser User loginUser,
+            @RequestParam(value = "title", required = false) String title,
+            @RequestParam(value = "userNickname", required = false) String userNickname,
+            @RequestParam(value = "sortBy", required = false) String sortBy,
+            @RequestParam(value = "share") boolean share,
+            @RequestParam(value = "limit", required = false, defaultValue = "24") int limit) { // limit 파라미터 추가
         try {
-            List<StoryListDTO> storyListDTOs = storyService.listAllStories(loginUser.getId(), title, userNickname, share);
+            Map<String, Object> response = new HashMap<>();
+            if(storyService.hasMoreStories(loginUser.getId(), title, userNickname, share, limit)) {
+                // StoryService에서 limit 값으로 데이터를 제한
+                List<StoryListDTO> storyListDTOs = storyService.listAllStories(
+                        loginUser.getId(), title, userNickname, share, limit
+                );
 
-            if (sortBy != null && sortBy.equals("과거순")) {
-                Collections.reverse(storyListDTOs);
+                if (sortBy != null && sortBy.equals("과거순")) {
+                    Collections.reverse(storyListDTOs);
+                }
+                response.put("stories", storyListDTOs);
+                response.put("hasMore", true);
+            }else{
+                int fullCount = storyService.countStories(loginUser.getId(), title, userNickname, share);
+                List<StoryListDTO> storyListDTOs = storyService.listAllStories(
+                        loginUser.getId(), title, userNickname, share, fullCount
+                );
+                if (sortBy != null && sortBy.equals("과거순")) {
+                    Collections.reverse(storyListDTOs);
+                }
+                response.put("stories", storyListDTOs);
+                response.put("hasMore", false);
             }
-
-            return ResponseEntity.ok(storyListDTOs);
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }

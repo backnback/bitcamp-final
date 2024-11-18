@@ -20,7 +20,7 @@ public interface StoryService {
 
     void removePhoto(int photoId, int userId) throws Exception;
 
-    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share) throws Exception;
+    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share, int limit) throws Exception;
 
     StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception;
 
@@ -31,5 +31,9 @@ public interface StoryService {
     void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId) throws Exception;
 
     List<Story> getStories(int userId)throws Exception;
+
+    boolean hasMoreStories(int userId, String title, String userNickname, boolean share, int currentSize) throws Exception;
+
+    int countStories(int userId, String title, String userNickname, boolean share) throws Exception;
 
 }
