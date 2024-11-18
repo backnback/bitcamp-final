@@ -22,7 +22,9 @@ public interface StoryDao {
 
     List<Story> findAllByUserId(int userId) throws Exception;
 
-    List<Story> findAllByUserIdAndTitle(@Param("userId") int userId, @Param("title") String title) throws Exception;
+    List<Story> findAllByUserIdLimit(int userId, int limit) throws Exception;
+
+    List<Story> findAllByUserIdAndTitle(@Param("userId") int userId, @Param("title") String title, int limit) throws Exception;
 
     List<Story> findAllByMyLike(int userId) throws Exception;
 

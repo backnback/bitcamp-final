@@ -185,6 +185,35 @@
         LIMIT #{limit}
     </select>
 
+    <select id="findAllByUserIdLimit" resultMap="StoryMap" parameterType="map">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s
+            inner join user u on s.user_id=u.user_id
+            inner join location l on s.location_id=l.location_id
+        WHERE
+            u.user_id=#{userId}
+        ORDER BY
+            s.story_id DESC
+        LIMIT #{limit}
+    </select>
+
+
 
 
     <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">
@@ -214,7 +243,7 @@
     </select>
 
 
-    <select id="findAllByUserIdAndTitle" resultMap="StoryMap">
+    <select id="findAllByUserIdAndTitle" resultMap="StoryMap" parameterType="map">
         SELECT
             s.story_id,
             s.title,
@@ -232,14 +261,17 @@
             l.first_name,
             l.second_name
         FROM
-            story s inner join user u on s.user_id=u.user_id
+            story s
+            inner join user u on s.user_id=u.user_id
             inner join location l on s.location_id=l.location_id
         WHERE
             u.user_id=#{userId}
             AND s.title LIKE CONCAT('%', #{title}, '%')
         ORDER BY
-            s.story_id desc
+            s.story_id DESC
+        LIMIT #{limit}
     </select>
+
 
 
     <select id="findAllByMyLike" resultMap="StoryMap" parameterType="int">

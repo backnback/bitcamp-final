@@ -202,14 +202,8 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public int countStories(int userId, String title, String userNickname, boolean share) throws Exception {
         if(title != null && !title.isEmpty()){
-            System.out.println("------------------------------------------------------------");
-            System.out.println("제목 검색 : countStories");
-            System.out.println("------------------------------------------------------------");
             return storyDao.countAllShareStoriesByTitle(userId, title, share);
         } else if (userNickname != null && !userNickname.isEmpty()) {
-            System.out.println("------------------------------------------------------------");
-            System.out.println("닉네임 검색 : countStories");
-            System.out.println("------------------------------------------------------------");
             return  storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
         }else{
             return storyDao.countShareStories(userId, title, userNickname, share);
@@ -231,8 +225,8 @@ public class StoryServiceImpl implements StoryService {
 
         } else {
             stories = (title != null && !title.isEmpty())
-                ? storyDao.findAllByUserIdAndTitle(userId, title)   // 내스토리 제목 검색
-                : storyDao.findAllByUserId(userId);   // 내스토리
+                ? storyDao.findAllByUserIdAndTitle(userId, title, limit)   // 내스토리 제목 검색
+                : storyDao.findAllByUserIdLimit(userId, limit);   // 내스토리
         }
 
         // StoryListDTO를 만들어서 List에 담는다.
