@@ -180,18 +180,53 @@ public class StoryServiceImpl implements StoryService {
         photoService.deletePhoto(photoId);
     }
 
+    @Override
+    public boolean hasMoreStories(int userId, String title, String userNickname, boolean share, int currentSize) throws Exception {
+        int totalStories = 0;
+        if(title != null && !title.isEmpty()){
+            totalStories = storyDao.countAllShareStoriesByTitle(userId, title, share);
+            System.out.println("------------------------------------------------------------");
+            System.out.println("제목 검색 : hasMoreStories");
+            System.out.println("------------------------------------------------------------");
+        } else if (userNickname != null && !userNickname.isEmpty()) {
+            totalStories = storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+            System.out.println("------------------------------------------------------------");
+            System.out.println("닉네임 검색 : hasMoreStories");
+            System.out.println("------------------------------------------------------------");
+        }else{
+            totalStories = storyDao.countShareStories(userId, title, userNickname, share);
+        }
+        return currentSize < totalStories;
+    }
 
     @Override
-    public List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share) throws Exception {
+    public int countStories(int userId, String title, String userNickname, boolean share) throws Exception {
+        if(title != null && !title.isEmpty()){
+            System.out.println("------------------------------------------------------------");
+            System.out.println("제목 검색 : countStories");
+            System.out.println("------------------------------------------------------------");
+            return storyDao.countAllShareStoriesByTitle(userId, title, share);
+        } else if (userNickname != null && !userNickname.isEmpty()) {
+            System.out.println("------------------------------------------------------------");
+            System.out.println("닉네임 검색 : countStories");
+            System.out.println("------------------------------------------------------------");
+            return  storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+        }else{
+            return storyDao.countShareStories(userId, title, userNickname, share);
+        }
+    }
+
+    @Override
+    public List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share, int limit) throws Exception {
 
         List<Story> stories;
         if (share) {
             if (title != null && !title.isEmpty()) {
-                stories = storyDao.findAllShareStoriesByTitle(title);  // 공유스토리 제목 검색
+                stories = storyDao.findAllShareStoriesByTitle(title, limit);  // 공유스토리 제목 검색
             } else if (userNickname != null && !userNickname.isEmpty()) {
-                stories = storyDao.findAllShareStoriesByNickname(userNickname);  // 공유스토리 닉네임 검색
+                stories = storyDao.findAllShareStoriesByNickname(userNickname, limit);  // 공유스토리 닉네임 검색
             } else {
-                stories = storyDao.findAllShareStories();  // 공유스토리
+                stories = storyDao.findAllShareStories(limit);  // 공유스토리
             }
 
         } else {

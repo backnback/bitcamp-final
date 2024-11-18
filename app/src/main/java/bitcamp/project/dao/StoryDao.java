@@ -14,11 +14,11 @@ public interface StoryDao {
 
     List<Story> findAll() throws Exception;
 
-    List<Story> findAllShareStories() throws Exception;
+    List<Story> findAllShareStories(int limit) throws Exception;
 
-    List<Story> findAllShareStoriesByTitle(String title) throws Exception;
+    List<Story> findAllShareStoriesByTitle(String title, int limit) throws Exception;
 
-    List<Story> findAllShareStoriesByNickname(String userNickname) throws Exception;
+    List<Story> findAllShareStoriesByNickname(String userNickname, int limit) throws Exception;
 
     List<Story> findAllByUserId(int userId) throws Exception;
 
@@ -31,5 +31,11 @@ public interface StoryDao {
     boolean update(Story story) throws Exception;
 
     boolean delete(int storyId) throws Exception;
+
+    int countShareStories(int userId, String title, String userNickname, boolean share) throws Exception;
+
+    int countAllShareStoriesByTitle(int userId, String title, boolean share) throws Exception;
+
+    int countAllShareStoriesByNickname(int userId, String userNickname, boolean share) throws Exception;
 
 }
