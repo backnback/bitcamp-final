@@ -313,10 +313,8 @@ public class StoryServiceImpl implements StoryService {
 
 
     @Override
-    public void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId)
+    public void changeShare(BatchUpdateRequestDTO batchUpdateRequestDTO, int userId)
         throws Exception {
-
-        for (BatchUpdateRequestDTO batchUpdateRequestDTO : batchUpdateRequestDTOs) {
 
             Story story = validateStory(batchUpdateRequestDTO.getStoryId());
             if (story.getUser().getId() != userId) {
@@ -329,7 +327,6 @@ public class StoryServiceImpl implements StoryService {
             } else if (batchUpdateRequestDTO.getAction().equals("delete")) {
                 disableShare(story);
             }
-        }
 
     }
 
