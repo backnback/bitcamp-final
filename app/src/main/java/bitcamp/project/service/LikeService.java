@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface LikeService {
 
-  void batchUpdateLikes(List<BatchUpdateRequestDTO> batchUpdateRequestDTOS, int userId) throws Exception;
+  void changeLike(BatchUpdateRequestDTO batchUpdateRequestDTO, int userId) throws Exception;
 
   Like get(int storyId, int userId) throws Exception;
 

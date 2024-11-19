@@ -27,10 +27,9 @@ public class LikeServiceImpl implements LikeService {
 
 
   @Override
-  public void batchUpdateLikes(List<BatchUpdateRequestDTO> batchUpdateRequestDTOS, int userId)
+  public void changeLike(BatchUpdateRequestDTO batchUpdateRequestDTO, int userId)
       throws Exception {
 
-    for (BatchUpdateRequestDTO batchUpdateRequestDTO : batchUpdateRequestDTOS) {
       int storyId = batchUpdateRequestDTO.getStoryId();
       Story story = storyDao.findByStoryId(storyId);
       if (story == null) {
@@ -43,7 +42,6 @@ public class LikeServiceImpl implements LikeService {
       } else if (batchUpdateRequestDTO.getAction().equals("delete")) {
         deleteLike(storyId, userId);
       }
-    }
   }
 
 
