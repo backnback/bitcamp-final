@@ -32,7 +32,7 @@ public class StoryController {
             @RequestParam(value = "userNickname", required = false) String userNickname,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "share") boolean share,
-            @RequestParam(value = "limit", required = false, defaultValue = "5") int limit) { // limit 파라미터 추가
+            @RequestParam(value = "limit", required = false, defaultValue = "6") int limit) { // limit 파라미터 추가
         try {
             Map<String, Object> response = new HashMap<>();
             if(storyService.hasMoreStories(loginUser.getId(), title, userNickname, share, limit)) {

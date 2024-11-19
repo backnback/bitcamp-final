@@ -214,6 +214,16 @@
     </select>
 
 
+    <select id="countAllMyStories" resultType="int" parameterType="int">
+        SELECT
+        COUNT(*)
+        FROM
+        story s
+        INNER JOIN user u ON s.user_id = u.user_id
+        INNER JOIN location l ON s.location_id = l.location_id
+        WHERE
+        u.user_id = #{userId}
+    </select>
 
 
     <select id="findAllByUserId" resultMap="StoryMap" parameterType="int">
@@ -272,6 +282,18 @@
         LIMIT #{limit}
     </select>
 
+
+    <select id="countAllMyStoriesByTitle" resultType="int" parameterType="map">
+        SELECT
+        COUNT(*)
+        FROM
+        story s
+        INNER JOIN user u ON s.user_id = u.user_id
+        INNER JOIN location l ON s.location_id = l.location_id
+        WHERE
+        u.user_id = #{userId}
+        AND s.title LIKE CONCAT('%', #{title}, '%')
+    </select>
 
 
     <select id="findAllByMyLike" resultMap="StoryMap" parameterType="int">

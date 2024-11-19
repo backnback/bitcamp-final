@@ -1,6 +1,5 @@
 package bitcamp.project.dao;
 
-import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -39,5 +38,10 @@ public interface StoryDao {
     int countAllShareStoriesByTitle(int userId, String title, boolean share) throws Exception;
 
     int countAllShareStoriesByNickname(int userId, String userNickname, boolean share) throws Exception;
+
+    int countAllMyStoriesByTitle(int userId, String title) throws Exception;
+
+    int countAllMyStories(int userId) throws Exception;
+
 
 }
