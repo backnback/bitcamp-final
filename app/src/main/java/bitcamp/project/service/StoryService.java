@@ -28,7 +28,7 @@ public interface StoryService {
 
     Story changeShare(int storyId, int userId) throws Exception;
 
-    void batchUpdateShares(List<BatchUpdateRequestDTO> batchUpdateRequestDTOs, int userId) throws Exception;
+    void changeShare(BatchUpdateRequestDTO batchUpdateRequestDTO, int userId) throws Exception;
 
     List<Story> getStories(int userId)throws Exception;
 

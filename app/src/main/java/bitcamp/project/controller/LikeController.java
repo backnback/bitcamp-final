@@ -55,14 +55,14 @@ public class LikeController {
   }
 
 
-  // 좋아요 목록 배치 업데이트 (등록 및 삭제)
-  @PostMapping("batch-update")
-  public ResponseEntity<?> batchUpdate(
-      @RequestBody List<BatchUpdateRequestDTO> batchUpdateRequestDTOS,
+  // 좋아요 업데이트 (등록 및 삭제)
+  @PostMapping("update")
+  public ResponseEntity<?> updateLike(
+      @RequestBody BatchUpdateRequestDTO batchUpdateRequestDTO,
       @LoginUser User loginUser) {
     try {
-      likeService.batchUpdateLikes(batchUpdateRequestDTOS, loginUser.getId());
-      return ResponseEntity.ok("좋아요 목록 배치 처리 완료!");
+      likeService.changeLike(batchUpdateRequestDTO, loginUser.getId());
+      return ResponseEntity.ok("좋아요 처리 완료!");
 
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());

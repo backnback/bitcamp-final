@@ -91,12 +91,12 @@ public class StoryController {
     }
 
     // 공유 버튼 배치 업데이트
-    @PostMapping("batch-update")
-    public ResponseEntity<?> batchUpdate(
-        @RequestBody List<BatchUpdateRequestDTO> batchUpdateRequestDTOs,
+    @PostMapping("share-update")
+    public ResponseEntity<?> shareUpdate(
+        @RequestBody BatchUpdateRequestDTO batchUpdateRequestDTO,
         @LoginUser User loginUser) {
         try {
-            storyService.batchUpdateShares(batchUpdateRequestDTOs, loginUser.getId());
+            storyService.changeShare(batchUpdateRequestDTO, loginUser.getId());
             return ResponseEntity.ok("공유 버튼 배치 처리 완료!");
 
         } catch (Exception e) {
