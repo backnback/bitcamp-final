@@ -183,30 +183,40 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public boolean hasMoreStories(int userId, String title, String userNickname, boolean share, int currentSize) throws Exception {
         int totalStories = 0;
-        if(title != null && !title.isEmpty()){
-            totalStories = storyDao.countAllShareStoriesByTitle(userId, title, share);
-            System.out.println("------------------------------------------------------------");
-            System.out.println("제목 검색 : hasMoreStories");
-            System.out.println("------------------------------------------------------------");
-        } else if (userNickname != null && !userNickname.isEmpty()) {
-            totalStories = storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
-            System.out.println("------------------------------------------------------------");
-            System.out.println("닉네임 검색 : hasMoreStories");
-            System.out.println("------------------------------------------------------------");
+        if(share) {
+            if (title != null && !title.isEmpty()) {
+                totalStories = storyDao.countAllShareStoriesByTitle(userId, title, share);
+            } else if (userNickname != null && !userNickname.isEmpty()) {
+                totalStories = storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+            } else {
+                totalStories = storyDao.countShareStories(userId, title, userNickname, share);
+            }
         }else{
-            totalStories = storyDao.countShareStories(userId, title, userNickname, share);
+            if (title != null && !title.isEmpty()){
+                totalStories = storyDao.countAllMyStoriesByTitle(userId, title);
+            }else{
+                totalStories = storyDao.countAllMyStories(userId);
+            }
         }
         return currentSize < totalStories;
     }
 
     @Override
     public int countStories(int userId, String title, String userNickname, boolean share) throws Exception {
-        if(title != null && !title.isEmpty()){
-            return storyDao.countAllShareStoriesByTitle(userId, title, share);
-        } else if (userNickname != null && !userNickname.isEmpty()) {
-            return  storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+        if(share) {
+            if (title != null && !title.isEmpty()) {
+                return storyDao.countAllShareStoriesByTitle(userId, title, share);
+            } else if (userNickname != null && !userNickname.isEmpty()) {
+                return storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+            } else {
+                return storyDao.countShareStories(userId, title, userNickname, share);
+            }
         }else{
-            return storyDao.countShareStories(userId, title, userNickname, share);
+            if (title != null && !title.isEmpty()){
+                return storyDao.countAllMyStoriesByTitle(userId, title);
+            }else{
+                return storyDao.countAllMyStories(userId);
+            }
         }
     }
 
