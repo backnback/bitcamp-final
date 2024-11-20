@@ -225,15 +225,20 @@ public class StoryServiceImpl implements StoryService {
     public List<StoryListDTO> listAllStories(
         int userId, String title, String userNickname, boolean share, String sortBy, int limit) throws Exception {
 
-        // 정렬 판단
-        boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
-
         List<Story> stories;
+
+        if(sortBy != null && sortBy.equals("과거순") && share){
+            stories = storyDao.findAllShareStoriesAsc(title, userNickname, limit);
+        }else{
+            // 정렬 판단
+            boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
+
             if (share) {
                 stories = storyDao.findAllShareStories(title, userNickname, sortByLikes, limit);  // 공유스토리 (+ 검색, 정렬)
             } else {
                 stories = storyDao.findAllByUserIdLimitTest(userId, title, sortByLikes, limit);  // 내스토리 (+ 검색, 정렬)
             }
+        }
 
         // StoryListDTO를 만들어서 List에 담는다.
         List<StoryListDTO> storyListDTOs = new ArrayList<>();

@@ -42,20 +42,16 @@ public class StoryController {
                     loginUser.getId(), title, userNickname, share, sortBy, limit
                 );
 
-                if (sortBy != null && sortBy.equals("과거순")) {
-                    Collections.reverse(storyListDTOs);
-                }
                 response.put("stories", storyListDTOs);
                 response.put("hasMore", true);
 
             }else{
                 int fullCount = storyService.countStories(loginUser.getId(), title, userNickname, share);
+
                 List<StoryListDTO> storyListDTOs = storyService.listAllStories(
                     loginUser.getId(), title, userNickname, share, sortBy, fullCount
                 );
-                if (sortBy != null && sortBy.equals("과거순")) {
-                    Collections.reverse(storyListDTOs);
-                }
+
                 response.put("stories", storyListDTOs);
                 response.put("hasMore", false);
             }

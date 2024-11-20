@@ -107,6 +107,35 @@
     </select>
 
 
+    <select id="findAllShareStoriesAsc" resultMap="StoryMap">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s
+            INNER JOIN user u ON s.user_id = u.user_id
+            INNER JOIN location l ON s.location_id = l.location_id
+        WHERE
+            s.share = true
+        ORDER BY
+            s.story_id ASC
+        LIMIT #{limit}
+    </select>
+
+
     <select id="countShareStories" resultType="int">
         SELECT COUNT(*)
         FROM story s
