@@ -60,33 +60,52 @@
             s.story_id desc
     </select>
 
+
     <select id="findAllShareStories" resultMap="StoryMap">
         SELECT
-        s.story_id,
-        s.title,
-        s.travel_date,
-        s.create_date,
-        s.location_detail,
-        s.content,
-        s.share,
-        u.user_id,
-        u.email,
-        u.password,
-        u.nickname,
-        u.path,
-        l.location_id,
-        l.first_name,
-        l.second_name
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
         FROM
             story s
             INNER JOIN user u ON s.user_id = u.user_id
             INNER JOIN location l ON s.location_id = l.location_id
+            LEFT JOIN story_like sl ON s.story_id = sl.story_id
         WHERE
             s.share = true
-        ORDER BY
-            s.story_id DESC
+            <if test="title != null">
+                AND s.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <if test="userNickname != null">
+                AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
+            </if>
+            <choose>
+                <when test="sortByLikes != null and sortByLikes == true">
+                    GROUP BY s.story_id, s.title, s.travel_date, s.create_date, s.location_detail, s.content, s.share,
+                    u.user_id, u.email, u.password, u.nickname, u.path, l.location_id, l.first_name, l.second_name
+                    ORDER BY COUNT(sl.user_id) DESC, s.story_id DESC
+                </when>
+                <otherwise>
+                    GROUP BY s.story_id, s.title, s.travel_date, s.create_date, s.location_detail, s.content, s.share,
+                    u.user_id, u.email, u.password, u.nickname, u.path, l.location_id, l.first_name, l.second_name
+                    ORDER BY s.story_id DESC
+                </otherwise>
+            </choose>
         LIMIT #{limit}
     </select>
+
 
     <select id="countShareStories" resultType="int">
         SELECT COUNT(*)
@@ -126,64 +145,6 @@
         AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
     </select>
 
-    <select id="findAllShareStoriesByTitle" resultMap="StoryMap" parameterType="map">
-        SELECT
-            s.story_id,
-            s.title,
-            s.travel_date,
-            s.create_date,
-            s.location_detail,
-            s.content,
-            s.share,
-            u.user_id,
-            u.email,
-            u.password,
-            u.nickname,
-            u.path,
-            l.location_id,
-            l.first_name,
-            l.second_name
-        FROM
-            story s
-            inner join user u on s.user_id=u.user_id
-            inner join location l on s.location_id=l.location_id
-        WHERE
-            s.share=true
-            AND s.title LIKE CONCAT('%', #{title}, '%')
-        ORDER BY
-            s.story_id desc
-        LIMIT #{limit}
-    </select>
-
-
-    <select id="findAllShareStoriesByNickname" resultMap="StoryMap" parameterType="map">
-        SELECT
-            s.story_id,
-            s.title,
-            s.travel_date,
-            s.create_date,
-            s.location_detail,
-            s.content,
-            s.share,
-            u.user_id,
-            u.email,
-            u.password,
-            u.nickname,
-            u.path,
-            l.location_id,
-            l.first_name,
-            l.second_name
-        FROM
-            story s
-            inner join user u on s.user_id=u.user_id
-            inner join location l on s.location_id=l.location_id
-        WHERE
-            s.share=true
-            AND u.nickname LIKE CONCAT('%', #{userNickname}, '%')
-        ORDER BY
-            s.story_id DESC
-        LIMIT #{limit}
-    </select>
 
     <select id="findAllByUserIdLimit" resultMap="StoryMap" parameterType="map">
         SELECT
@@ -210,6 +171,49 @@
             u.user_id=#{userId}
         ORDER BY
             s.story_id DESC
+        LIMIT #{limit}
+    </select>
+
+
+    <select id="findAllByUserIdLimitTest" resultMap="StoryMap">
+        SELECT
+            s.story_id,
+            s.title,
+            s.travel_date,
+            s.create_date,
+            s.location_detail,
+            s.content,
+            s.share,
+            u.user_id,
+            u.email,
+            u.password,
+            u.nickname,
+            u.path,
+            l.location_id,
+            l.first_name,
+            l.second_name
+        FROM
+            story s
+            INNER JOIN user u ON s.user_id = u.user_id
+            INNER JOIN location l ON s.location_id = l.location_id
+            LEFT JOIN story_like sl ON s.story_id = sl.story_id
+        WHERE
+            u.user_id=#{userId}
+            <if test="title != null">
+                AND s.title LIKE CONCAT('%', #{title}, '%')
+            </if>
+            <choose>
+                <when test="sortByLikes != null and sortByLikes == true">
+                    GROUP BY s.story_id, s.title, s.travel_date, s.create_date, s.location_detail, s.content, s.share,
+                    u.user_id, u.email, u.password, u.nickname, u.path, l.location_id, l.first_name, l.second_name
+                    ORDER BY COUNT(sl.user_id) DESC, s.story_id DESC
+                </when>
+                <otherwise>
+                    GROUP BY s.story_id, s.title, s.travel_date, s.create_date, s.location_detail, s.content, s.share,
+                    u.user_id, u.email, u.password, u.nickname, u.path, l.location_id, l.first_name, l.second_name
+                    ORDER BY s.story_id DESC
+                </otherwise>
+            </choose>
         LIMIT #{limit}
     </select>
 

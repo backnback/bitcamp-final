@@ -13,15 +13,21 @@ public interface StoryDao {
 
     List<Story> findAll() throws Exception;
 
-    List<Story> findAllShareStories(int limit) throws Exception;
-
-    List<Story> findAllShareStoriesByTitle(String title, int limit) throws Exception;
-
-    List<Story> findAllShareStoriesByNickname(String userNickname, int limit) throws Exception;
+    List<Story> findAllShareStories(
+        @Param("title") String title,
+        @Param("userNickname") String userNickname,
+        @Param("sortByLikes") boolean sortByLikes,
+        @Param("limit") int limit ) throws Exception;
 
     List<Story> findAllByUserId(int userId) throws Exception;
 
     List<Story> findAllByUserIdLimit(int userId, int limit) throws Exception;
+
+    List<Story> findAllByUserIdLimitTest(
+        @Param("userId") int userId,
+        @Param("title") String title,
+        @Param("sortByLikes") boolean sortByLikes,
+        @Param("limit") int limit ) throws Exception;
 
     List<Story> findAllByUserIdAndTitle(@Param("userId") int userId, @Param("title") String title, int limit) throws Exception;
 

@@ -25,7 +25,6 @@ public class LikeServiceImpl implements LikeService {
   private final StoryDao storyDao;
 
 
-
   @Override
   public void changeLike(BatchUpdateRequestDTO batchUpdateRequestDTO, int userId)
       throws Exception {

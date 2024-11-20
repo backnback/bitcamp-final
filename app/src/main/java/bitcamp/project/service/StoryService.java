@@ -20,7 +20,7 @@ public interface StoryService {
 
     void removePhoto(int photoId, int userId) throws Exception;
 
-    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share, int limit) throws Exception;
+    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share, String sortBy, int limit) throws Exception;
 
     StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception;
 
