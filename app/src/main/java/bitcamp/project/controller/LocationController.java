@@ -31,7 +31,6 @@ public class LocationController {
     }
   }
 
-
   @GetMapping("list/{firstName}")
   public ResponseEntity<?> getSecondNames(@PathVariable String firstName){
     try {
@@ -45,7 +44,6 @@ public class LocationController {
 
   @GetMapping("{id}")
   public ResponseEntity<?> getLocation(@PathVariable int id){
-    System.out.println("진입");
     try {
       Location location = locationService.getLocationById(id);
       if(location == null){
@@ -54,6 +52,19 @@ public class LocationController {
       return ResponseEntity.ok(location);
     } catch (Exception e) {
       e.printStackTrace();
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+  }
+
+  @GetMapping("province")
+  public ResponseEntity<?> getProvinceList(){
+    try {
+      List<Location> locations = locationService.getProvinceAndIdList();
+      if(locations == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }
+      return ResponseEntity.ok(locations);
+    } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
     }
   }

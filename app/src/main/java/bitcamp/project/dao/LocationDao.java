@@ -16,4 +16,6 @@ public interface LocationDao {
   Location findByFullName(@Param("firstName") String firstName, @Param("secondName") String secondName) throws Exception;
 
   Location findById(int id) throws Exception;
+
+  List<Location> getListAndId() throws Exception;
 }

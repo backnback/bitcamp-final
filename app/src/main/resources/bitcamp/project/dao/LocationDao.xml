@@ -28,4 +28,9 @@
         FROM location
         WHERE location_id = #{id}
     </select>
+
+    <select id="getListAndId" resultMap="LocationMap">
+        SELECT DISTINCT LEFT(location_id, 2) AS location_id, first_name
+        FROM location
+    </select>
 </mapper>
