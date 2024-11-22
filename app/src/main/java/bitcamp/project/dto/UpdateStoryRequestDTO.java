@@ -1,12 +1,14 @@
 package bitcamp.project.dto;
 
 import bitcamp.project.vo.Location;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.Story;
 import bitcamp.project.vo.User;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.sql.Date;
+import java.util.List;
 
 
 @Data

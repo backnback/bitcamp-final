@@ -14,7 +14,7 @@ public interface StoryService {
 
     ResponseEntity<Map<String, Object>> add(AddStoryRequestDTO addStoryRequestDTO, MultipartFile[] files) throws Exception;
 
-    ResponseEntity<Map<String, Object>> update(UpdateStoryRequestDTO updateStoryRequestDTO, MultipartFile[] files) throws Exception;
+    ResponseEntity<Map<String, Object>> update(UpdateStoryRequestDTO updateStoryRequestDTO, MultipartFile[] files, String photosJson) throws Exception;
 
     void delete(int storyId, int userId) throws Exception;
 
