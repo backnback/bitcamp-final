@@ -6,6 +6,7 @@ import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.dto.StoryViewDTO;
 import bitcamp.project.dto.UpdateStoryRequestDTO;
 import bitcamp.project.service.*;
+import bitcamp.project.vo.Photo;
 import bitcamp.project.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -48,13 +49,14 @@ public class MyStoryController {
     public ResponseEntity<?> update(
         @ModelAttribute UpdateStoryRequestDTO updateStoryRequestDTO,
         MultipartFile[] files,
+        String photosJson,
         @LoginUser User loginUser) {
         try {
             // 로그인 사용자를 설정
             updateStoryRequestDTO.setLoginUser(loginUser);
 
             // API 요청 테스트로 인한 return
-            ResponseEntity<Map<String, Object>> response = storyService.update(updateStoryRequestDTO, files);
+            ResponseEntity<Map<String, Object>> response = storyService.update(updateStoryRequestDTO, files, photosJson);
             return ResponseEntity.ok(response);
 
         } catch (Exception e) {

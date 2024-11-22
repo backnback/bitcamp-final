@@ -5,13 +5,17 @@ import bitcamp.project.dto.*;
 import bitcamp.project.mapper.StoryMapper;
 import bitcamp.project.service.*;
 import bitcamp.project.vo.*;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -64,7 +68,8 @@ public class StoryServiceImpl implements StoryService {
     @Override
     public ResponseEntity<Map<String, Object>> update(
         UpdateStoryRequestDTO updateStoryRequestDTO,
-        MultipartFile[] files) throws Exception {
+        MultipartFile[] files,
+        String photosJson) throws Exception {
 
         Story oldStory = validateStory(updateStoryRequestDTO.getOldStoryId());
 
@@ -72,11 +77,10 @@ public class StoryServiceImpl implements StoryService {
             throw new Exception("접근 권한이 없습니다.");
         }
 
+        ObjectMapper objectMapper = new ObjectMapper();
         List<Photo> oldPhotos = photoService.getPhotosByStoryId(updateStoryRequestDTO.getOldStoryId());
+        List<Photo> newPhotos = objectMapper.readValue(photosJson, new TypeReference<List<Photo>>() {});
 
-
-        // 기존 사진이 있는 경우  =>  예외 없음
-        // 기존 사진이 없는 겨우
         // (1) files가 들어오지 않거나 들어와도 내부에 파일이 없는 경우  =>  예외 발생
         // (2) 유효하지 않는 (손상된) 파일  =>  예외 발생
         if ((files == null || files.length == 0) && oldPhotos.isEmpty()) {
@@ -90,14 +94,56 @@ public class StoryServiceImpl implements StoryService {
         // 위치 정보
         Location location = getLocation(updateStoryRequestDTO.getFirstName(), updateStoryRequestDTO.getSecondName());
 
+        // 삭제할 Photo가 있다면 Ncp 파일 삭제
+        HashSet<Integer> newPhotosSet
+            = newPhotos.stream().map(Photo::getId).collect(Collectors.toCollection(HashSet::new));
+
+        List<Photo> photosToDelete = oldPhotos.stream()
+            .filter(photo -> !newPhotosSet.contains(photo.getId())).toList();
+
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println(photosToDelete);
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+        System.out.println("**********************************************");
+
+        try {
+            for (Photo photo : photosToDelete) {
+                storageService.delete(folderName + photo.getPath());
+            }
+        } catch (Exception e) {
+            throw new Exception("파일 삭제 실패");
+        }
+
         // 스토리 DB 처리
         Story story = updateStoryRequestDTO.toStory(location);
         story.setId(updateStoryRequestDTO.getOldStoryId());
         storyDao.update(story);
 
-        // 신규 Photo DB 처리
+
+        // 기존 Photo DB 삭제
+        photoService.deletePhotos(updateStoryRequestDTO.getOldStoryId());
+
+
+        // 새로운 Photo DB 처리
         List<Photo> uploadedPhotos = uploadNewPhotos(files, story.getId());
+        uploadedPhotos.addAll(newPhotos);
         photoService.addPhotos(uploadedPhotos);
+
 
         // 메인 Photo 처리
         List<Photo> photos = photoService.getPhotosByStoryId(story.getId());
