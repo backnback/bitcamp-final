@@ -1,7 +1,9 @@
 package bitcamp.project.security;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,10 +18,20 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     private final JwtTokenProvider jwtTokenProvider;
 
+    @Autowired
+    private OAuthAuthenticationSuccessHandler oAuthAuthenticationSuccessHandler;
+
+    private static final String[] PERMIT_ALL_PATHS = {
+            "/sign/in",
+            "/oauth2/**",
+            "/api/auth/login-success",
+            "/favicon.ico",
+            "/error"
+    };
+
     public SecurityConfig(JwtTokenProvider jwtTokenProvider) {
         this.jwtTokenProvider = jwtTokenProvider;
     }
-
 
     @Bean
     public BCryptPasswordEncoder encoder() {
@@ -39,7 +51,11 @@ public class SecurityConfig {
                 .authorizeRequests()
                 .antMatchers("/sign/in").permitAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
+                .oauth2Login()
+                .successHandler(oAuthAuthenticationSuccessHandler)
+                .failureUrl("/login?error=true");
+
+        http.addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 }

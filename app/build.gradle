@@ -83,7 +83,12 @@ dependencies {
     implementation 'com.sun.mail:jakarta.mail:1.6.7'
     // Spring Context Support
     implementation 'org.springframework:spring-context-support:5.3.18'
+    implementation 'org.springframework:spring-context-support:5.3.18'
+
+    implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
+    implementation 'io.github.cdimascio:dotenv-java:3.0.0'
 }
+
 
 tasks.named('test') {
     useJUnitPlatform()
