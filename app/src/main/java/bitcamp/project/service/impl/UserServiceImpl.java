@@ -200,16 +200,13 @@ public class UserServiceImpl implements UserService {
 
             // 2. Refresh Token 만료 체크
             if (claims.getBody().getExpiration().before(new Date())) {
-                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Refresh Token이 만료되었습니다.");
+                // 만료된 토큰에 대한 에러 응답
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                        .body(Map.of("error", "Refresh Token이 만료되었습니다."));
             }
 
-            // 3. 사용자 정보 추출 (이 경우 사용자의 권한 정보도 필요합니다)
+            // 3. 사용자 정보 추출
             String userId = claims.getBody().getSubject();
-            System.out.println("-------------------------------------------------------------------");
-            System.out.println(userId);
-            System.out.println("-------------------------------------------------------------------");
-
-            // 사용자 정보를 데이터베이스 또는 서비스에서 가져오는 로직 추가
             User user = userDao.findByEmailAndPassword(userId);
             if (user == null) {
                 return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("사용자를 찾을 수 없습니다.");
@@ -224,9 +221,9 @@ public class UserServiceImpl implements UserService {
 
             return ResponseEntity.ok(token);
 
-
         } catch (JwtException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("유효하지 않은 Refresh Token입니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("error", "유효하지 않은 Refresh Token입니다."));
         }
     }
+
 }
