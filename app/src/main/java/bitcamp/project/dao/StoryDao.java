@@ -1,5 +1,6 @@
 package bitcamp.project.dao;
 
+import bitcamp.project.dto.StoryListDTO;
 import bitcamp.project.vo.Story;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,7 +20,18 @@ public interface StoryDao {
         @Param("sortByLikes") boolean sortByLikes,
         @Param("limit") int limit ) throws Exception;
 
+    List<Story> findAllStories(
+            @Param("title") String title,
+            @Param("userNickname") String userNickname,
+            @Param("sortByLikes") boolean sortByLikes,
+            @Param("limit") int limit ) throws Exception;
+
     List<Story> findAllShareStoriesAsc(
+            @Param("title") String title,
+            @Param("userNickname") String userNickname,
+            @Param("limit") int limit ) throws Exception;
+
+    List<Story> findAllStoriesAsc(
             @Param("title") String title,
             @Param("userNickname") String userNickname,
             @Param("limit") int limit ) throws Exception;
@@ -54,5 +66,6 @@ public interface StoryDao {
 
     int countAllMyStories(int userId) throws Exception;
 
+    int countAllStories() throws Exception;
 
 }

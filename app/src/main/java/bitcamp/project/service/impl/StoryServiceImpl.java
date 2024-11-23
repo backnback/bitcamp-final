@@ -197,6 +197,26 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    @Transactional
+    public void adminDelete(int storyId) throws Exception {
+
+        for (Photo photo : photoService.getPhotosByStoryId(storyId)) {
+            try {
+                // 첨부파일 삭제
+                storageService.delete(folderName + photo.getPath());
+
+            } catch (Exception e) {
+                System.out.printf("%s 파일 ", photo.getPath());
+                throw new Exception("삭제 실패 !");
+            }
+        }
+
+        likeService.deleteLikes(storyId);
+        photoService.deletePhotos(storyId);
+        storyDao.delete(storyId);
+    }
+
+    @Override
     public List<Story> getStories(int userId) throws Exception {
         return storyDao.findAllByUserId(userId);
     }
@@ -248,6 +268,11 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
+    public int countAllStories() throws Exception {
+        return storyDao.countAllStories();
+    }
+
+    @Override
     public int countStories(int userId, String title, String userNickname, boolean share) throws Exception {
         if(share) {
             if (title != null && !title.isEmpty()) {
@@ -295,6 +320,27 @@ public class StoryServiceImpl implements StoryService {
         return storyListDTOs;
     }
 
+    @Override
+    public List<StoryListDTO> adminListAllStories(int userId, String title, String userNickname, String sortBy, int limit) throws Exception {
+        List<Story> stories;
+
+        if(sortBy != null && sortBy.equals("과거순")){
+            stories = storyDao.findAllStoriesAsc(title, userNickname, limit);
+        }else{
+            // 정렬 판단
+            boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
+
+            stories = storyDao.findAllStories(title, userNickname, sortByLikes, limit);  // 공유스토리 (+ 검색, 정렬)
+        }
+
+        // StoryListDTO를 만들어서 List에 담는다.
+        List<StoryListDTO> storyListDTOs = new ArrayList<>();
+        for (Story story : stories) {
+            storyListDTOs.add(convertToStoryListDTO(story, userId));
+        }
+
+        return storyListDTOs;
+    }
 
     @Override
     public StoryViewDTO viewStory(int storyId, int userId, boolean share) throws Exception {
@@ -477,6 +523,5 @@ public class StoryServiceImpl implements StoryService {
 
         return photos;
     }
-
 
 }
