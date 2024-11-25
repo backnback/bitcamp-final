@@ -69,4 +69,17 @@ public class LocationController {
     }
   }
 
+  @GetMapping("province/{id}")
+  public ResponseEntity<?> getCitiesList(@PathVariable int id){
+    try {
+      List<Location> citiesList = locationService.getCitiesList(id);
+      if(citiesList == null){
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+      }
+      return ResponseEntity.ok(citiesList);
+    }catch (Exception e){
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    }
+  }
+
 }

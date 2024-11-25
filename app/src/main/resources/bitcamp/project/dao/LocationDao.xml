@@ -29,6 +29,13 @@
         WHERE location_id = #{id}
     </select>
 
+    <select id="getSecondListById" resultMap="LocationMap" parameterType="int">
+        SELECT location_id, second_name
+        FROM location
+        WHERE LEFT(location_id, 2)=#{id}
+        ORDER BY second_name ASC
+    </select>
+
     <select id="getListAndId" resultMap="LocationMap">
         SELECT DISTINCT LEFT(location_id, 2) AS location_id, first_name
         FROM location

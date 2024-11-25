@@ -18,4 +18,6 @@ public interface LocationDao {
   Location findById(int id) throws Exception;
 
   List<Location> getListAndId() throws Exception;
+
+  List<Location> getSecondListById(int id) throws Exception;
 }

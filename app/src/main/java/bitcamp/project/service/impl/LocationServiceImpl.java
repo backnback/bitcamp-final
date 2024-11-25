@@ -42,4 +42,9 @@ public class LocationServiceImpl implements LocationService {
   public List<Location> getProvinceAndIdList() throws Exception {
     return locationDao.getListAndId();
   }
+
+  @Override
+  public List<Location> getCitiesList(int id) throws Exception {
+    return locationDao.getSecondListById(id);
+  }
 }

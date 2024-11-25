@@ -15,4 +15,6 @@ public interface LocationService {
   Location getLocationById(int id) throws Exception;
 
   List<Location> getProvinceAndIdList() throws Exception;
+
+  List<Location> getCitiesList(int id) throws Exception;
 }
