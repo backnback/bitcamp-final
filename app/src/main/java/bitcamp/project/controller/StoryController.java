@@ -67,7 +67,7 @@ public class StoryController {
     @DeleteMapping("admindelete/{storyId}")
     public ResponseEntity<String> adminDelete(
             @PathVariable int storyId, @LoginUser User loginUser) {
-        
+
         try {
             storyService.adminDelete(storyId);
             return ResponseEntity.ok("스토리 제거가 성공하였습니다.");
@@ -85,6 +85,7 @@ public class StoryController {
             @RequestParam(value = "userNickname", required = false) String userNickname,
             @RequestParam(value = "sortBy", required = false) String sortBy,
             @RequestParam(value = "limit", required = false, defaultValue = "6") int limit) { // limit 파라미터 추가
+        
         try {
             Map<String, Object> response = new HashMap<>();
             if(storyService.countAllStories() > limit) {
