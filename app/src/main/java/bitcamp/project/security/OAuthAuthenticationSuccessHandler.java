@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +26,6 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
 
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
-
 
     public OAuthAuthenticationSuccessHandler(JwtTokenProvider jwtTokenProvider, @Lazy UserService userService) {
         this.jwtTokenProvider = jwtTokenProvider;
@@ -40,22 +40,29 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
             // OAuth2 사용자 정보 가져오기
             Map<String, Object> attributes = authToken.getPrincipal().getAttributes();
             String email = (String) attributes.get("email");
+            String name = (String) attributes.get("name");
+            String picture = (String) attributes.get("picture");
 
             try {
                 // 사용자 확인
                 User user = userService.findByEmailAndPassword(email);
 
-                List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities()); // 권한 정보 가져오기
-                user.setRole("USER"); // 기본 사용자 역할 설정
+                if (user != null) {
+                    // 기존 사용자: JWT 생성 후 리다이렉션
+                    List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
+                    JwtToken token = jwtTokenProvider.generateToken(user, authorities);
+                    String redirectUrl = "http://localhost:3000/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
+                    response.sendRedirect(redirectUrl);
+                } else {
+                    // 신규 사용자: 추가 정보 입력 페이지로 리다이렉션
+                    String registrationRedirectUrl = "http://localhost:3000/signup";
+                    registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
+                    registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
+                    registrationRedirectUrl += "&picture=" + URLEncoder.encode(picture, "UTF-8");
 
-                // JWT 토큰 생성
-                JwtToken token = jwtTokenProvider.generateToken(user, authorities);
+                    response.sendRedirect(registrationRedirectUrl);
+                }
 
-                String redirectUrl = "http://localhost:3000/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
-
-                // 프론트엔드로 리디렉션
-                response.sendRedirect(redirectUrl);
-                System.out.println(redirectUrl);
             } catch (Exception e) {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().write("{\"error\":\"Failed to process OAuth2 login\"}");
@@ -67,8 +74,8 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
             response.getWriter().flush();
         }
     }
-
 }
+
 
 
 
