@@ -33,6 +33,7 @@ public class StoryController {
         @RequestParam(value = "sortBy", required = false) String sortBy,
         @RequestParam(value = "share") boolean share,
         @RequestParam(value = "limit", required = false, defaultValue = "6") int limit) { // limit 파라미터 추가
+
         try {
             Map<String, Object> response = new HashMap<>();
             if(storyService.hasMoreStories(loginUser.getId(), title, userNickname, share, limit)) {
@@ -56,11 +57,13 @@ public class StoryController {
                 response.put("hasMore", false);
             }
             return ResponseEntity.ok(response);
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
         }
     }
 
+    
     @DeleteMapping("admindelete/{storyId}")
     public ResponseEntity<String> adminDelete(
             @PathVariable int storyId, @LoginUser User loginUser) {
