@@ -4,12 +4,6 @@ temp/
 svg/
 
 
-# config 폴더와 그 안의 파일들 (final.properties, email.properties 등)
-config/
-
-# .env 파일
-.env
-
 
 # Created by https://www.toptal.com/developers/gitignore/api/windows,macos,linux,visualstudiocode,eclipse,intellij,java,c,c++,node,gradle,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=windows,macos,linux,visualstudiocode,eclipse,intellij,java,c,c++,node,gradle,maven
