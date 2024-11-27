@@ -26,6 +26,12 @@ public interface StoryDao {
             @Param("sortByLikes") boolean sortByLikes,
             @Param("limit") int limit ) throws Exception;
 
+
+    List<Story> findAllByUserIdAsc(
+        @Param("userId") int userId,
+        @Param("title") String title,
+        @Param("limit") int limit ) throws Exception;
+
     List<Story> findAllShareStoriesAsc(
             @Param("title") String title,
             @Param("userNickname") String userNickname,
