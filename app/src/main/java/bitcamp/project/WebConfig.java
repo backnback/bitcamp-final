@@ -21,6 +21,4 @@ public class WebConfig implements WebMvcConfigurer {
                 .allowedHeaders("Authorization", "Content-Type")
                 .allowCredentials(true);
     }
-    
-
 }
