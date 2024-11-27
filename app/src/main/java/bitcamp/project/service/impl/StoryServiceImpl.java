@@ -302,9 +302,11 @@ public class StoryServiceImpl implements StoryService {
         if (sortBy != null && sortBy.equals("과거순")) {
             if (share) {
                 stories = storyDao.findAllShareStoriesAsc(title, userNickname, limit); // 공유된 과거순 정렬
+
             } else {
                 stories = storyDao.findAllByUserIdAsc(userId, title, limit); // 내 스토리 과거순 정렬
             }
+            
         } else {
             // "좋아요순" 처리
             boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
