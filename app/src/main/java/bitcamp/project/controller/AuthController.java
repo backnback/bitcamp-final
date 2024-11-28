@@ -50,7 +50,7 @@ public class AuthController {
                    options);
            user.setPath(filename);
        }else{
-           user.setPath("");
+           user.setPath("default.png");
        }
         user.setRole("ROLE_USER");
         user.setPassword(userService.encodePassword(user.getPassword()));
