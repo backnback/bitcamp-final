@@ -24,6 +24,8 @@ import java.util.UUID;
 @RequestMapping("/sign")
 public class AuthController {
 
+    private String code;
+
     @Autowired
     private StorageService storageService;
 
@@ -78,24 +80,24 @@ public class AuthController {
     }
 
     @PostMapping("emailverification")
-    public Boolean EmailVerification(@RequestBody EmailDTO emailDTO, HttpServletRequest request) throws Exception {
+    public Boolean EmailVerification(@RequestBody EmailDTO emailDTO) throws Exception {
         String email = emailDTO.getEmail();
         String authCode = mailService.joinEmail(email);
         if (authCode != null){
-            HttpSession session = request.getSession();;
-            session.setAttribute("authCode", authCode);
+            code = authCode;
             return true;
         }
         return false;
     }
 
     @PostMapping("verificationcode")
-    public Boolean VerificationCode(@RequestBody EmailDTO emailDTO, HttpServletRequest request) throws Exception {
+    public Boolean VerificationCode(@RequestBody EmailDTO emailDTO) throws Exception {
         String authCode = emailDTO.getAuthCode();
         System.out.println(authCode);
-        HttpSession session = request.getSession();
-        String code = (String) session.getAttribute("authCode");
+        System.out.println(code);
+
         if (code.equals(authCode)){
+            code = null;
             return  true;
         }
         return false;
