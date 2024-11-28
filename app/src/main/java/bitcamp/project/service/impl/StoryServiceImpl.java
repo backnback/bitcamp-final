@@ -140,9 +140,10 @@ public class StoryServiceImpl implements StoryService {
 
 
         // 새로운 Photo DB 처리
-        List<Photo> uploadedPhotos = uploadNewPhotos(files, story.getId());
-        uploadedPhotos.addAll(newPhotos);
-        photoService.addPhotos(uploadedPhotos);
+//        List<Photo> uploadedPhotos = newPhotos;
+        newPhotos.addAll(uploadNewPhotos(files, story.getId()));
+//        uploadedPhotos.addAll(newPhotos);
+        photoService.addPhotos(newPhotos);
 
 
         // 메인 Photo 처리
