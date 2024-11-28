@@ -33,7 +33,7 @@ public class MailServiceImpl implements MailService {
         makeRandomNumber();
         String setFrom = "nerostarin@naver.com";
         String toMail = email;
-        String title = "현재 메일이 실존하는지에 대한 인증 이메일 입니다."; // 이메일 제목
+        String title = "이메일 인증 입니다."; // 이메일 제목
         String content =
                 "안녕하세요 기억하길 입니다" + 	//html 형식으로 작성 !
                         "<br><br>" +
