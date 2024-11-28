@@ -306,7 +306,7 @@ public class StoryServiceImpl implements StoryService {
             } else {
                 stories = storyDao.findAllByUserIdAsc(userId, title, limit); // 내 스토리 과거순 정렬
             }
-            
+
         } else {
             // "좋아요순" 처리
             boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
@@ -323,6 +323,7 @@ public class StoryServiceImpl implements StoryService {
         for (Story story : stories) {
             storyListDTOs.add(convertToStoryListDTO(story, userId));
         }
+
 
         return storyListDTOs;
     }
