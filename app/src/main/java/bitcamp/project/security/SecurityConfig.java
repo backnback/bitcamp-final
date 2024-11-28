@@ -24,7 +24,6 @@ public class SecurityConfig {
     private static final String[] PERMIT_ALL_PATHS = {
             "/sign/in",
             "/oauth2/**",
-            "/api/auth/login-success",
             "/favicon.ico",
             "/error"
     };
@@ -49,7 +48,7 @@ public class SecurityConfig {
                 .formLogin().disable()
                 .httpBasic().disable()
                 .authorizeRequests()
-                .antMatchers("/sign/in").permitAll()
+                .antMatchers(PERMIT_ALL_PATHS).permitAll()
                 .and()
                 .oauth2Login()
                 .successHandler(oAuthAuthenticationSuccessHandler)
