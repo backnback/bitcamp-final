@@ -51,11 +51,11 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                     // 기존 사용자: JWT 생성 후 리다이렉션
                     List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
                     JwtToken token = jwtTokenProvider.generateToken(user, authorities);
-                    String redirectUrl = "http://localhost:3000/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
+                    String redirectUrl = "http://go.remapber.p-e.kr/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
                     response.sendRedirect(redirectUrl);
                 } else {
                     // 신규 사용자: 추가 정보 입력 페이지로 리다이렉션
-                    String registrationRedirectUrl = "http://localhost:3000/signup";
+                    String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
                     registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
                     registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
                     registrationRedirectUrl += "&picture=" + URLEncoder.encode(picture, "UTF-8");
