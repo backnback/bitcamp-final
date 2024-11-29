@@ -56,12 +56,7 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                     response.setStatus(HttpServletResponse.SC_OK); // HTTP 200 응답
                     response.setHeader("Access-Token", token.getAccessToken());
                     response.setHeader("Refresh-Token", token.getRefreshToken());
-
-                    // 리다이렉트 없이 JSON 응답 전달 (React에서 처리 가능)
-                    response.setContentType("application/json");
-                    PrintWriter writer = response.getWriter();
-                    writer.write("{\"status\":\"success\", \"message\":\"Authentication successful.\"}");
-                    writer.flush();
+                    response.sendRedirect("http://go.remapber.p-e.kr/oauth2/redirect");
                 } else {
                     // 신규 사용자: 추가 정보 입력 URL을 헤더로 전달
                     String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
