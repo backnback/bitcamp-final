@@ -97,7 +97,9 @@ public class UserController {
         User old = userService.findUser(loginUser.getId());
 
         if (userService.delete(loginUser.getId())) {
-            storageService.delete(folderName + old.getPath());
+            if(!old.getPath().equals("default.png")) {
+                storageService.delete(folderName + old.getPath());
+            }
             return true;
         } else {
             return false;
@@ -110,7 +112,9 @@ public class UserController {
         User old = userService.findUser(userId);
 
         if (userService.delete(userId)) {
-            storageService.delete(folderName + old.getPath());
+            if(!old.getPath().equals("default.png")) {
+                storageService.delete(folderName + old.getPath());
+            }
             return true;
         } else {
             return false;
@@ -130,7 +134,6 @@ public class UserController {
         ViewUserDTO sendInfo = new ViewUserDTO();
         sendInfo.setNickname(user.getNickname());  // 닉네임 설정
 
-        // 파일 경로가 null이면 파일을 설정하지 않음
         if (user.getPath().equals("default.png")) {
             sendInfo.setFilename("default.png");
             sendInfo.setFile(null);
