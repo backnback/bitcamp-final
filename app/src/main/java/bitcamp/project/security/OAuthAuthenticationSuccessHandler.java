@@ -49,23 +49,19 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                 User user = userService.findByEmailAndPassword(email);
 
                 if (user != null) {
-                    // 기존 사용자: JWT 생성 후 헤더로 전달
+                    // 기존 사용자: JWT 생성 후 리다이렉션
                     List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
                     JwtToken token = jwtTokenProvider.generateToken(user, authorities);
-
-                    response.setStatus(HttpServletResponse.SC_OK); // HTTP 200 응답
-                    response.setHeader("Access-Token", token.getAccessToken());
-                    response.setHeader("Refresh-Token", token.getRefreshToken());
-                    response.sendRedirect("http://go.remapber.p-e.kr/oauth2/redirect");
+                    String redirectUrl = "http://go.remapber.p-e.kr/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
+                    response.sendRedirect(redirectUrl);
                 } else {
-                    // 신규 사용자: 추가 정보 입력 URL을 헤더로 전달
+                    // 신규 사용자: 추가 정보 입력 페이지로 리다이렉션
                     String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
                     registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
                     registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
                     registrationRedirectUrl += "&picture=" + URLEncoder.encode(picture, "UTF-8");
 
-                    response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT); // HTTP 307 리다이렉션
-                    response.setHeader("Location", registrationRedirectUrl);
+                    response.sendRedirect(registrationRedirectUrl);
                 }
 
             } catch (Exception e) {
@@ -80,7 +76,3 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
         }
     }
 }
-
-
-
-
