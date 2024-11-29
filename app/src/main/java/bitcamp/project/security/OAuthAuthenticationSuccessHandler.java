@@ -16,6 +16,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,19 +49,28 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                 User user = userService.findByEmailAndPassword(email);
 
                 if (user != null) {
-                    // 기존 사용자: JWT 생성 후 리다이렉션
+                    // 기존 사용자: JWT 생성 후 헤더로 전달
                     List<GrantedAuthority> authorities = new ArrayList<>(authentication.getAuthorities());
                     JwtToken token = jwtTokenProvider.generateToken(user, authorities);
-                    String redirectUrl = "http://go.remapber.p-e.kr/oauth2/redirect?accessToken=" + token.getAccessToken() + "&refreshToken=" + token.getRefreshToken();
-                    response.sendRedirect(redirectUrl);
+
+                    response.setStatus(HttpServletResponse.SC_OK); // HTTP 200 응답
+                    response.setHeader("Access-Token", token.getAccessToken());
+                    response.setHeader("Refresh-Token", token.getRefreshToken());
+
+                    // 리다이렉트 없이 JSON 응답 전달 (React에서 처리 가능)
+                    response.setContentType("application/json");
+                    PrintWriter writer = response.getWriter();
+                    writer.write("{\"status\":\"success\", \"message\":\"Authentication successful.\"}");
+                    writer.flush();
                 } else {
-                    // 신규 사용자: 추가 정보 입력 페이지로 리다이렉션
+                    // 신규 사용자: 추가 정보 입력 URL을 헤더로 전달
                     String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
                     registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
                     registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
                     registrationRedirectUrl += "&picture=" + URLEncoder.encode(picture, "UTF-8");
 
-                    response.sendRedirect(registrationRedirectUrl);
+                    response.setStatus(HttpServletResponse.SC_TEMPORARY_REDIRECT); // HTTP 307 리다이렉션
+                    response.setHeader("Location", registrationRedirectUrl);
                 }
 
             } catch (Exception e) {
