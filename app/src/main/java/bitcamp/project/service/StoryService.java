@@ -22,7 +22,7 @@ public interface StoryService {
 
     void removePhoto(int photoId, int userId) throws Exception;
 
-    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, boolean share, String sortBy, int limit) throws Exception;
+    List<StoryListDTO> listAllStories(int userId, String title, String userNickname, String locationSearch, boolean share, String sortBy, int limit) throws Exception;
 
     List<StoryListDTO> adminListAllStories(int userId, String title, String userNickname, String sortBy, int limit) throws Exception;
 
@@ -36,9 +36,9 @@ public interface StoryService {
 
     List<Story> getStories(int userId)throws Exception;
 
-    boolean hasMoreStories(int userId, String title, String userNickname, boolean share, int currentSize) throws Exception;
+    boolean hasMoreStories(int userId, String title, String userNickname, String locationSearch, boolean share, int currentSize) throws Exception;
 
-    int countStories(int userId, String title, String userNickname, boolean share) throws Exception;
+    int countStories(int userId, String title, String userNickname, String locationSearch, boolean share) throws Exception;
 
     int countAllStories()throws Exception;
 }
