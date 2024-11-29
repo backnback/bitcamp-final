@@ -17,8 +17,8 @@ public class EnvConfig {
         System.setProperty("GOOGLE_CLIENT_ID", dotenv.get("GOOGLE_CLIENT_ID"));
         System.setProperty("GOOGLE_CLIENT_SECRET", dotenv.get("GOOGLE_CLIENT_SECRET"));
 
-//        // 확인용 로그
-//        System.out.println("GOOGLE_CLIENT_ID: " + System.getProperty("GOOGLE_CLIENT_ID"));
-//        System.out.println("GOOGLE_CLIENT_SECRET: " + System.getProperty("GOOGLE_CLIENT_SECRET"));
+        // 확인용 로그
+        System.out.println("GOOGLE_CLIENT_ID: " + System.getProperty("GOOGLE_CLIENT_ID"));
+        System.out.println("GOOGLE_CLIENT_SECRET: " + System.getProperty("GOOGLE_CLIENT_SECRET"));
     }
 }
