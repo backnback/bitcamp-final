@@ -57,8 +57,8 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                 } else {
                     // 신규 사용자: 추가 정보 입력 페이지로 리다이렉션
                     String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
-//                    registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
-//                    registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
+                    registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
+                    registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
 
                     response.sendRedirect(registrationRedirectUrl);
                 }
