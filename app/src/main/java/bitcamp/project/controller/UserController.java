@@ -50,12 +50,16 @@ public class UserController {
     public ResponseEntity<?> update(@LoginUser User loginUser,
                                     @RequestPart(value = "profileImage", required = false) MultipartFile file,
                                     @RequestPart(value = "nickname", required = false) String nickname,
-                                    @RequestPart(value = "password", required = false) String password) throws Exception {
+                                    @RequestPart(value = "password", required = false) String password,
+                                    @RequestPart(value = "filename", required = false) String checkFilename) throws Exception {
         User old = userService.findUser(loginUser.getId());
 
-        // 프로필 이미지 파일 처리
-        if (file != null && file.getSize() > 0) {
-            storageService.delete(folderName + old.getPath());
+        if(checkFilename.equals("default.png")) {
+            old.setPath(checkFilename);
+        }else if (file != null && file.getSize() > 0) {
+            if(!old.getPath().equals("default.png")){
+                storageService.delete(folderName + old.getPath());
+            }
 
             String filename = UUID.randomUUID().toString();
             HashMap<String, Object> options = new HashMap<>();
@@ -127,10 +131,10 @@ public class UserController {
         sendInfo.setNickname(user.getNickname());  // 닉네임 설정
 
         // 파일 경로가 null이면 파일을 설정하지 않음
-        if (user.getPath() == null) {
-            sendInfo.setFilename(null);
+        if (user.getPath().equals("default.png")) {
+            sendInfo.setFilename("default.png");
             sendInfo.setFile(null);
-            return sendInfo;  // 파일이 없을 경우, 닉네임만 반환
+            return sendInfo;
         }
 
         // 파일 경로를 설정
