@@ -59,7 +59,6 @@ public class OAuthAuthenticationSuccessHandler implements AuthenticationSuccessH
                     String registrationRedirectUrl = "http://go.remapber.p-e.kr/signup";
                     registrationRedirectUrl += "?email=" + URLEncoder.encode(email, "UTF-8");
                     registrationRedirectUrl += "&name=" + URLEncoder.encode(name, "UTF-8");
-                    registrationRedirectUrl += "&picture=" + URLEncoder.encode(picture, "UTF-8");
 
                     response.sendRedirect(registrationRedirectUrl);
                 }
