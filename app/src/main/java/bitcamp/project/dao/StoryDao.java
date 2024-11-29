@@ -12,13 +12,20 @@ public interface StoryDao {
 
     boolean insert(Story story) throws Exception;
 
-    List<Story> findAll() throws Exception;
-
     List<Story> findAllShareStories(
         @Param("title") String title,
         @Param("userNickname") String userNickname,
-        @Param("sortByLikes") boolean sortByLikes,
+        @Param("locationSearch") String locationSearch,
+        @Param("sortBy") String sortBy,
         @Param("limit") int limit ) throws Exception;
+
+    List<Story> findAllStoriesByUserId(
+        @Param("userId") int userId,
+        @Param("title") String title,
+        @Param("locationSearch") String locationSearch,
+        @Param("sortBy") String sortBy,
+        @Param("limit") int limit ) throws Exception;
+
 
     List<Story> findAllStories(
             @Param("title") String title,
@@ -26,33 +33,17 @@ public interface StoryDao {
             @Param("sortByLikes") boolean sortByLikes,
             @Param("limit") int limit ) throws Exception;
 
-
-    List<Story> findAllByUserIdAsc(
-        @Param("userId") int userId,
-        @Param("title") String title,
-        @Param("limit") int limit ) throws Exception;
-
-    List<Story> findAllShareStoriesAsc(
-            @Param("title") String title,
-            @Param("userNickname") String userNickname,
-            @Param("limit") int limit ) throws Exception;
-
     List<Story> findAllStoriesAsc(
             @Param("title") String title,
             @Param("userNickname") String userNickname,
             @Param("limit") int limit ) throws Exception;
 
-    List<Story> findAllByUserId(int userId) throws Exception;
+    List<Story> findAllListByUserId(int userId) throws Exception;
 
-    List<Story> findAllByUserIdLimit(int userId, int limit) throws Exception;
 
-    List<Story> findAllByUserIdLimitTest(
-        @Param("userId") int userId,
-        @Param("title") String title,
-        @Param("sortByLikes") boolean sortByLikes,
-        @Param("limit") int limit ) throws Exception;
 
-    List<Story> findAllByUserIdAndTitle(@Param("userId") int userId, @Param("title") String title, int limit) throws Exception;
+
+
 
     List<Story> findAllByMyLike(int userId) throws Exception;
 
@@ -68,7 +59,11 @@ public interface StoryDao {
 
     int countAllShareStoriesByNickname(int userId, String userNickname, boolean share) throws Exception;
 
+    int countAllShareStoriesByLocation(int userId, String locationSearch, boolean share) throws Exception;
+
     int countAllMyStoriesByTitle(int userId, String title) throws Exception;
+
+    int countAllMyStoriesByLocation(int userId, String locationSearch) throws Exception;
 
     int countAllMyStories(int userId) throws Exception;
 

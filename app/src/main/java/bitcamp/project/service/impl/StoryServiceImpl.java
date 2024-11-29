@@ -101,26 +101,6 @@ public class StoryServiceImpl implements StoryService {
         List<Photo> photosToDelete = oldPhotos.stream()
             .filter(photo -> !newPhotosSet.contains(photo.getId())).toList();
 
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println(photosToDelete);
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-        System.out.println("**********************************************");
-
         try {
             for (Photo photo : photosToDelete) {
                 storageService.delete(folderName + photo.getPath());
@@ -219,7 +199,7 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public List<Story> getStories(int userId) throws Exception {
-        return storyDao.findAllByUserId(userId);
+        return storyDao.findAllListByUserId(userId);
     }
 
     @Override
@@ -248,19 +228,26 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
-    public boolean hasMoreStories(int userId, String title, String userNickname, boolean share, int currentSize) throws Exception {
+    public boolean hasMoreStories(
+        int userId, String title, String userNickname, String locationSearch, boolean share, int currentSize
+    ) throws Exception {
+
         int totalStories = 0;
         if(share) {
             if (title != null && !title.isEmpty()) {
                 totalStories = storyDao.countAllShareStoriesByTitle(userId, title, share);
             } else if (userNickname != null && !userNickname.isEmpty()) {
                 totalStories = storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+            } else if (locationSearch != null && !locationSearch.isEmpty()) {
+                totalStories = storyDao.countAllShareStoriesByLocation(userId, locationSearch, share);
             } else {
                 totalStories = storyDao.countShareStories(userId, title, userNickname, share);
             }
         }else{
             if (title != null && !title.isEmpty()){
                 totalStories = storyDao.countAllMyStoriesByTitle(userId, title);
+            } else if (locationSearch != null && !locationSearch.isEmpty()) {
+                totalStories = storyDao.countAllMyStoriesByLocation(userId, locationSearch);
             }else{
                 totalStories = storyDao.countAllMyStories(userId);
             }
@@ -274,19 +261,23 @@ public class StoryServiceImpl implements StoryService {
     }
 
     @Override
-    public int countStories(int userId, String title, String userNickname, boolean share) throws Exception {
+    public int countStories(int userId, String title, String userNickname, String locationSearch, boolean share) throws Exception {
         if(share) {
             if (title != null && !title.isEmpty()) {
                 return storyDao.countAllShareStoriesByTitle(userId, title, share);
             } else if (userNickname != null && !userNickname.isEmpty()) {
                 return storyDao.countAllShareStoriesByNickname(userId, userNickname, share);
+            } else if (locationSearch != null && !locationSearch.isEmpty()) {
+                return storyDao.countAllShareStoriesByLocation(userId, locationSearch, share);
             } else {
                 return storyDao.countShareStories(userId, title, userNickname, share);
             }
         }else{
             if (title != null && !title.isEmpty()){
                 return storyDao.countAllMyStoriesByTitle(userId, title);
-            }else{
+            } else if (locationSearch != null && !locationSearch.isEmpty()) {
+                return storyDao.countAllMyStoriesByLocation(userId, locationSearch);
+            } else{
                 return storyDao.countAllMyStories(userId);
             }
         }
@@ -295,39 +286,25 @@ public class StoryServiceImpl implements StoryService {
 
     @Override
     public List<StoryListDTO> listAllStories(
-        int userId, String title, String userNickname, boolean share, String sortBy, int limit) throws Exception {
+        int userId, String title, String userNickname, String locationSearch, boolean share, String sortBy, int limit) throws Exception {
 
         List<Story> stories;
 
-        // "과거순" 처리
-        if (sortBy != null && sortBy.equals("과거순")) {
-            if (share) {
-                stories = storyDao.findAllShareStoriesAsc(title, userNickname, limit); // 공유된 과거순 정렬
-
-            } else {
-                stories = storyDao.findAllByUserIdAsc(userId, title, limit); // 내 스토리 과거순 정렬
-            }
-
+        if (share) {
+            stories = storyDao.findAllShareStories(title, userNickname, locationSearch, sortBy, limit);  // 공유스토리 (+ 검색, 정렬)
         } else {
-            // "좋아요순" 처리
-            boolean sortByLikes = sortBy != null && sortBy.equals("좋아요순");
-
-            if (share) {
-                stories = storyDao.findAllShareStories(title, userNickname, sortByLikes, limit);  // 공유스토리 (+ 검색, 정렬)
-            } else {
-                stories = storyDao.findAllByUserIdLimitTest(userId, title, sortByLikes, limit);  // 내스토리 (+ 검색, 정렬)
-            }
+            stories = storyDao.findAllStoriesByUserId(userId, title, locationSearch, sortBy, limit);  // 내스토리 (+ 검색, 정렬)
         }
 
-        // StoryListDTO를 만들어서 List에 담는다.
+        // StoryListDTO를 만들어서 담는다.
         List<StoryListDTO> storyListDTOs = new ArrayList<>();
         for (Story story : stories) {
             storyListDTOs.add(convertToStoryListDTO(story, userId));
         }
 
-
         return storyListDTOs;
     }
+
 
     @Override
     public List<StoryListDTO> adminListAllStories(int userId, String title, String userNickname, String sortBy, int limit) throws Exception {

@@ -30,27 +30,28 @@ public class StoryController {
         @LoginUser User loginUser,
         @RequestParam(value = "title", required = false) String title,
         @RequestParam(value = "userNickname", required = false) String userNickname,
+        @RequestParam(value = "locationSearch", required = false) String locationSearch,
         @RequestParam(value = "sortBy", required = false) String sortBy,
         @RequestParam(value = "share") boolean share,
         @RequestParam(value = "limit", required = false, defaultValue = "6") int limit) { // limit 파라미터 추가
 
         try {
             Map<String, Object> response = new HashMap<>();
-            if(storyService.hasMoreStories(loginUser.getId(), title, userNickname, share, limit)) {
+            if(storyService.hasMoreStories(loginUser.getId(), title, userNickname, locationSearch, share, limit)) {
                 // StoryService에서 limit 값으로 데이터를 제한
 
                 List<StoryListDTO> storyListDTOs = storyService.listAllStories(
-                    loginUser.getId(), title, userNickname, share, sortBy, limit
+                    loginUser.getId(), title, userNickname, locationSearch, share, sortBy, limit
                 );
 
                 response.put("stories", storyListDTOs);
                 response.put("hasMore", true);
 
-            }else{
-                int fullCount = storyService.countStories(loginUser.getId(), title, userNickname, share);
+            } else {
+                int fullCount = storyService.countStories(loginUser.getId(), title, userNickname, locationSearch, share);
 
                 List<StoryListDTO> storyListDTOs = storyService.listAllStories(
-                    loginUser.getId(), title, userNickname, share, sortBy, fullCount
+                    loginUser.getId(), title, userNickname, locationSearch, share, sortBy, fullCount
                 );
 
                 response.put("stories", storyListDTOs);
