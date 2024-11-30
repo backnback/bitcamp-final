@@ -26,6 +26,8 @@ public interface StoryMapper {
   @Mapping(source = "location.secondName", target = "locationSecondName")
   @Mapping(target = "mainPhotoIndex", ignore = true)
   @Mapping(target = "photos", ignore = true)
+  @Mapping(source = "user.nickname", target = "userNickname")
+  @Mapping(source = "user.path", target = "userPath")
   StoryViewDTO toStoryViewDTO(Story story) throws Exception;
 
   PhotoDTO toPhotoDTO(Photo photo) throws Exception;
