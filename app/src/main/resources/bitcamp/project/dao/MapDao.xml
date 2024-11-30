@@ -93,7 +93,7 @@
         WHERE
             s.location_id=#{locationId} AND s.user_id=#{userId}
         ORDER BY
-            s.create_date ASC;
+            s.create_date desc;
     </select>
 
     <select id="getLocationById" resultMap="LocationMap" parameterType="int">
