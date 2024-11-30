@@ -92,6 +92,8 @@
                     inner join location l on s.location_id=l.location_id
         WHERE
             s.location_id=#{locationId} AND s.user_id=#{userId}
+        ORDER BY
+            s.create_date ASC;
     </select>
 
     <select id="getLocationById" resultMap="LocationMap" parameterType="int">
