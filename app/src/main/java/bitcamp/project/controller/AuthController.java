@@ -80,14 +80,25 @@ public class AuthController {
     }
 
     @PostMapping("emailverification")
-    public Boolean EmailVerification(@RequestBody EmailDTO emailDTO) throws Exception {
+    public String EmailVerification(@RequestBody EmailDTO emailDTO) throws Exception {
+
+        // user가 null인지 확인
+        if (!userService.checkEmail(emailDTO.getEmail())) {
+            System.out.println("여기에 오니까 뜨는거 아닐까?");
+            return "가입되지않은이메일"; // user가 null인 경우 처리
+        }
+
+
+        // user가 null이 아니면 이메일을 확인하고 인증코드 생성
         String email = emailDTO.getEmail();
         String authCode = mailService.joinEmail(email);
-        if (authCode != null){
+
+        if (authCode != null) {
             code = authCode;
-            return true;
+            return "성공";
+        } else {
+            return "코드생성실패";
         }
-        return false;
     }
 
     @PostMapping("verificationcode")

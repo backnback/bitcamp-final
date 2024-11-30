@@ -21,4 +21,5 @@ public interface UserService {
     boolean userAuthentication(int id, String password)throws Exception;
     JwtToken generateTokenWithoutAuthentication(User user)throws Exception;
     ResponseEntity<?> generateRefreshToken(String refreshToken)throws Exception;
+    boolean checkEmail (String email) throws Exception;
 }

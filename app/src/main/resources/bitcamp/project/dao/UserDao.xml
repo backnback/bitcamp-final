@@ -45,6 +45,12 @@
         SELECT * FROM user WHERE email = #{email}
     </select>
 
+    <select id="checkEmail" resultType="boolean">
+        SELECT COUNT(*) > 0
+        FROM user
+        WHERE email = #{email}
+    </select>
+
     <update id="updatePassword" parameterType="map">
         UPDATE user
         SET password=#{password}

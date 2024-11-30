@@ -226,4 +226,8 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    public boolean checkEmail(String email) throws Exception {
+        return userDao.checkEmail(email);
+    }
 }
