@@ -14,6 +14,8 @@ public class StoryViewDTO {
   private String locationDetail;
   private String content;
   private boolean share;
+  private String userNickname;
+  private String userPath;
   private int mainPhotoIndex;
   private String locationFirstName;
   private String locationSecondName;
