@@ -21,10 +21,11 @@ public class WebConfig implements WebMvcConfigurer {
                     "http://211.188.63.97",
                     "http://211.188.48.5",
                     "http://211.188.48.5:80",
+                    "http://211.188.57.30",
+                    "http://211.188.58.142",
                     "http://211.188.63.97:3000",
                     "http://211.188.48.5:3000",
                     "http://211.188.58.142:3000",
-                    "http://211.188.57.30",
                     "http://localhost:3000"
             )  // 리액트 앱이 실행되는 주소
             .allowedMethods("GET", "POST", "PUT", "DELETE")
