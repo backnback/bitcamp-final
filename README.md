@@ -1,6 +1,11 @@
 # bitcamp-final
 
 ---
+
+![](docs/ppt/8d8af627f76c4cb7234fa886822e4d93-0.jpg)
+
+
+
 ### 서버 및 리액트 실행 방법
 #### 스프링부트
 시작 : IDE에서 java > app.java 파일에서 실행 버튼 클릭   
