@@ -21,4 +21,5 @@ public class StoryListDTO {
   private PhotoDTO mainPhoto;
   private int likeCount;
   private boolean likeStatus;
+
 }
